@@ -12,7 +12,7 @@ def load_instruction() -> str:
 
 root_agent = Agent(
     # You can change this to any supported Gemini model in your account.
-    model="gemini-3-pro-preview",
+    model="gemini-2.5-flash",
     name="email_orchestrator",
     description=(
         "An orchestrator agent that plans and writes e-commerce marketing emails "
