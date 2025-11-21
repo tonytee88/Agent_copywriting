@@ -2,7 +2,7 @@ import os
 import requests
 from typing import AsyncGenerator, Dict, Any
 from dotenv import load_dotenv
-
+from email_orchestrator.tools.trace_manager import TRACE
 from google.adk.models.base_llm import BaseLlm
 from google.adk.models.llm_request import LlmRequest
 from google.adk.models.llm_response import LlmResponse
@@ -73,7 +73,7 @@ class StraicoLLM(BaseLlm):
         #print("STRAICO REQUEST → URL:", url)
         #print("STRAICO REQUEST → HEADERS:", headers)
         #print("STRAICO REQUEST → BODY:", body)
-
+        TRACE.log_llm_request(agent=self.model, messages=messages)
         resp = requests.post(url, headers=headers, json=body)
 
         #print("STRAICO RESPONSE → status:", resp.status_code)
@@ -92,6 +92,7 @@ class StraicoLLM(BaseLlm):
         if resp_json and "choices" in resp_json and len(resp_json["choices"]) > 0:
             # … inside your generate_content_async method …
             assistant_text = resp_json["choices"][0]["message"]["content"]
+            TRACE.log_llm_response(agent=self.model, content=assistant_text)
 
             # Build Content object
             content_obj = Content(

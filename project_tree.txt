@@ -1,0 +1,40 @@
+.
+├── email_orchestrator
+│   ├── __init__.py
+│   ├── __pycache__
+│   │   ├── __init__.cpython-311.pyc
+│   │   ├── __init__.cpython-312.pyc
+│   │   ├── agent.cpython-311.pyc
+│   │   ├── agent.cpython-312.pyc
+│   │   ├── config.cpython-312.pyc
+│   │   ├── run_wrapper.cpython-311.pyc
+│   │   └── run_wrapper.cpython-312.pyc
+│   ├── agent.py
+│   ├── config.py
+│   ├── main.py
+│   ├── prompts
+│   │   ├── brief_planner
+│   │   │   └── v1.txt
+│   │   └── orchestrator
+│   │       └── v1.txt
+│   ├── run_wrapper.py
+│   ├── subagents
+│   │   ├── __init__.py
+│   │   ├── __pycache__
+│   │   │   ├── __init__.cpython-311.pyc
+│   │   │   └── brief_planner_agent.cpython-311.pyc
+│   │   └── brief_planner_agent.py
+│   └── tools
+│       ├── __init__.py
+│       ├── __pycache__
+│       │   ├── __init__.cpython-311.pyc
+│       │   ├── __init__.cpython-312.pyc
+│       │   ├── straico_llm.cpython-311.pyc
+│       │   ├── straico_llm.cpython-312.pyc
+│       │   └── trace_manager.cpython-312.pyc
+│       ├── logged_agent_tool.py
+│       ├── straico_llm.py
+│       └── trace_manager.py
+└── project_tree.txt
+
+10 directories, 28 files

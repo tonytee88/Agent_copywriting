@@ -1,0 +1,35 @@
+[
+  {
+    "time": 1763760351.919515,
+    "type": "agent_start",
+    "agent": "email_orchestrator"
+  },
+  {
+    "time": 1763760351.933783,
+    "type": "llm_request",
+    "agent": "openai/gpt-4o-mini",
+    "messages": [
+      {
+        "role": "user",
+        "content": "a"
+      }
+    ]
+  },
+  {
+    "time": 1763760353.730101,
+    "type": "llm_response",
+    "agent": "openai/gpt-4o-mini",
+    "content": "Hello! It looks like you entered a single letter. How can I assist you today?"
+  },
+  {
+    "time": 1763760353.7357209,
+    "type": "runner_event",
+    "event_type": null,
+    "content_preview": "Hello! It looks like you entered a single letter. How can I assist you today?"
+  },
+  {
+    "time": 1763760353.739039,
+    "type": "agent_end",
+    "agent": "email_orchestrator"
+  }
+]

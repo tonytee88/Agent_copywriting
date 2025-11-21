@@ -1,6 +1,6 @@
 from pathlib import Path
 from email_orchestrator.tools.straico_llm import StraicoLLM
-from google.adk.agents.llm_agent import Agent  # type: ignore
+from google.adk.agents.llm_agent import Agent
 
 def load_instruction():
     prompt_path = Path(__file__).parent.parent / "prompts" / "brief_planner" / "v1.txt"
@@ -18,4 +18,3 @@ brief_planner_agent = Agent(
     tools=[],
     
 )
-print("[LOG] 📘 Brief Planner Agent loaded.")
