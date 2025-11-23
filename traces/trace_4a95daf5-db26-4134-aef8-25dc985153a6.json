@@ -1,0 +1,35 @@
+[
+  {
+    "time": 1763781076.156477,
+    "type": "agent_start",
+    "agent": "email_orchestrator"
+  },
+  {
+    "time": 1763781076.1586812,
+    "type": "llm_request",
+    "agent": "openai/gpt-4o-mini",
+    "messages": [
+      {
+        "role": "user",
+        "content": "exit"
+      }
+    ]
+  },
+  {
+    "time": 1763781077.093662,
+    "type": "llm_response",
+    "agent": "openai/gpt-4o-mini",
+    "content": "If you're looking to end our conversation, that's perfectly fine! If you have any more questions in the future or need assistance, feel free to return. Have a great day!"
+  },
+  {
+    "time": 1763781077.094846,
+    "type": "runner_event",
+    "event_type": null,
+    "content_preview": "If you're looking to end our conversation, that's perfectly fine! If you have any more questions in the future or need assistance, feel free to return. Have a great day!"
+  },
+  {
+    "time": 1763781077.098594,
+    "type": "agent_end",
+    "agent": "email_orchestrator"
+  }
+]

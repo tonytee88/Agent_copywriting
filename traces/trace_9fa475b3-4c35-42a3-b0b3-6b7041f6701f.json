@@ -1,0 +1,35 @@
+[
+  {
+    "time": 1763781010.452857,
+    "type": "agent_start",
+    "agent": "email_orchestrator"
+  },
+  {
+    "time": 1763781010.46735,
+    "type": "llm_request",
+    "agent": "openai/gpt-4o-mini",
+    "messages": [
+      {
+        "role": "user",
+        "content": "j'aimerais faire un email pour le black friday pour Bopied. peux-tu m'aider"
+      }
+    ]
+  },
+  {
+    "time": 1763781016.7825558,
+    "type": "llm_response",
+    "agent": "openai/gpt-4o-mini",
+    "content": "Bien s\u00fbr ! Voici un exemple d'e-mail que vous pourriez utiliser pour promouvoir les offres de Black Friday pour Bopied. N'h\u00e9sitez pas \u00e0 personnaliser le texte selon vos besoins.\n\n---\n\n**Objet : \ud83c\udf89 Black Friday : Des offres irr\u00e9sistibles chez Bopied ! \ud83c\udf89**\n\nBonjour [Pr\u00e9nom],\n\nLe moment que vous attendiez est enfin arriv\u00e9 ! Pour c\u00e9l\u00e9brer le Black Friday, Bopied vous propose des offres exceptionnelles sur une s\u00e9lection de produits qui vont faire le bonheur de vos pieds.\n\n\ud83d\udda4 **Jusqu'\u00e0 -50 % de r\u00e9duction** sur nos meilleures ventes  \n\ud83d\udda4 Des nouveaut\u00e9s \u00e0 d\u00e9couvrir en exclusivit\u00e9  \n\ud83d\udda4 Livraison gratuite \u00e0 partir de [montant] d'achat\n\n**Quand ?** Du [date de d\u00e9but] au [date de fin]  \n**O\u00f9 ?** Sur notre site : [lien vers le site]  \n\nNe manquez pas cette occasion unique de vous faire plaisir ou de faire plaisir \u00e0 vos proches. Les stocks sont limit\u00e9s, alors soyez rapide !\n\nPour vous remercier de votre fid\u00e9lit\u00e9, utilisez le code promo **BLACKFRIDAY23** lors de votre commande pour b\u00e9n\u00e9ficier d'une remise suppl\u00e9mentaire de [XX]% sur votre premier achat.\n\nNous vous souhaitons un excellent shopping et un joyeux Black Friday !\n\nCordialement,  \nL\u2019\u00e9quipe de Bopied\n\n[P.S. : N'h\u00e9sitez pas \u00e0 nous suivre sur nos r\u00e9seaux sociaux pour ne rien manquer de nos offres et nouveaut\u00e9s !]\n\n---\n\nN'h\u00e9sitez pas \u00e0 ajuster les informations, les dates et le ton de l'e-mail pour correspondre \u00e0 votre marque et \u00e0 votre audience. Bonne chance avec votre campagne de Black Friday !"
+  },
+  {
+    "time": 1763781016.786891,
+    "type": "runner_event",
+    "event_type": null,
+    "content_preview": "Bien s\u00fbr ! Voici un exemple d'e-mail que vous pourriez utiliser pour promouvoir les offres de Black Friday pour Bopied. N'h\u00e9sitez pas \u00e0 personnaliser le texte selon vos besoins.\n\n---\n\n**Objet : \ud83c\udf89 Blac"
+  },
+  {
+    "time": 1763781016.790503,
+    "type": "agent_end",
+    "agent": "email_orchestrator"
+  }
+]

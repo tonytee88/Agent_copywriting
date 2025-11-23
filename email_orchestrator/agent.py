@@ -18,14 +18,14 @@ def load_instruction():
 
 load_dotenv()
 
-llm = StraicoLLM(model="openai/gpt-4o-mini")
+llm = StraicoLLM(model="openai/gpt-5")
 
 TRACE.log_agent_start("email_orchestrator")
 
 root_agent = Agent(
     model=llm,
     name="email_orchestrator",
-    description="Orchestrator using Straico backend",
+    description="Email creation Orchestrator to help the user transform an idea into actual email campaign following a rigourous methodology.",
     instruction=load_instruction(),
     tools=[brief_planner_tool],
 )

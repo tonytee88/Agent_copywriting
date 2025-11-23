@@ -1,0 +1,34 @@
+[
+  {
+    "time": 1763781283.554367,
+    "type": "agent_start",
+    "agent": "email_orchestrator"
+  },
+  {
+    "time": 1763781283.555362,
+    "type": "llm_request",
+    "agent": "openai/gpt-5",
+    "messages": [
+      {
+        "role": "user",
+        "content": "I'd like to prepare a copy for an email for Bopied for Black Friday"
+      }
+    ]
+  },
+  {
+    "time": 1763781290.29131,
+    "type": "llm_response",
+    "agent": "openai/gpt-5",
+    "content": ""
+  },
+  {
+    "time": 1763781290.292483,
+    "type": "runner_event",
+    "event_type": null
+  },
+  {
+    "time": 1763781290.295892,
+    "type": "agent_end",
+    "agent": "email_orchestrator"
+  }
+]
