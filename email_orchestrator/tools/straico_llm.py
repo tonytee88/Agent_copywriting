@@ -124,7 +124,7 @@ class StraicoLLM(BaseLlm):
             return tools_payload
 
         # DEBUG
-        print(f"[StraicoLLM] Extracting tools from request. Found: {list(tools_map.keys())}")
+        #print(f"[StraicoLLM] Extracting tools from request. Found: {list(tools_map.keys())}")
 
         for tool_name, tool in tools_map.items():
             # Each tool is a BaseTool (AgentTool, FunctionTool, etc.)
@@ -133,7 +133,7 @@ class StraicoLLM(BaseLlm):
             try:
                 fn_decl = tool.declaration()
             except Exception as e:
-                print(f"[StraicoLLM] Error getting declaration for tool {tool_name}: {e}")
+                #print(f"[StraicoLLM] Error getting declaration for tool {tool_name}: {e}")
                 fn_decl = None
 
             if fn_decl is not None:
@@ -239,7 +239,7 @@ class StraicoLLM(BaseLlm):
         # 1) Tool calls
         tool_calls = message.get("tool_calls") or []
         if tool_calls:
-            print("[StraicoLLM] Tool calls from Straico:", tool_calls)
+            #print("[StraicoLLM] Tool calls from Straico:", tool_calls)
 
             for tc in tool_calls:
                 fn = tc.get("function", {}) or {}
@@ -285,7 +285,7 @@ class StraicoLLM(BaseLlm):
                             raise ValueError("No JSON object found")
 
                     if "tool" in data and "arguments" in data:
-                            print(f"[StraicoLLM] Detected manual JSON tool call: {data['tool']}")
+                            #print(f"[StraicoLLM] Detected manual JSON tool call: {data['tool']}")
                             fc = genai_types.FunctionCall(
                                 name=data["tool"],
                                 args=data["arguments"],
@@ -376,8 +376,8 @@ class StraicoLLM(BaseLlm):
             #         "name": tools[0]["function"]["name"]
             #     }
             # }
-            print(f"[StraicoLLM] Sending {len(tools)} tools to Straico: {[t['function']['name'] for t in tools]}")
-            print(f"[StraicoLLM] Full tools payload: {json.dumps(tools, indent=2)}")
+            #print(f"[StraicoLLM] Sending {len(tools)} tools to Straico: {[t['function']['name'] for t in tools]}")
+            #print(f"[StraicoLLM] Full tools payload: {json.dumps(tools, indent=2)}")
 
         url = f"{self._base_url}/chat/completions"
         headers = {
@@ -386,17 +386,17 @@ class StraicoLLM(BaseLlm):
         }
 
         # DEBUG (you can comment these out later)
-        print("[StraicoLLM] REQUEST URL:", url)
-        print("[StraicoLLM] REQUEST BODY:", json.dumps(body, indent=2)[:2000])
+        #print("[StraicoLLM] REQUEST URL:", url)
+        #print("[StraicoLLM] REQUEST BODY:", json.dumps(body, indent=2)[:2000])
 
         resp = requests.post(url, headers=headers, json=body)
 
-        print("[StraicoLLM] RESPONSE STATUS:", resp.status_code)
+        #print("[StraicoLLM] RESPONSE STATUS:", resp.status_code)
         try:
             resp_json = resp.json()
         except ValueError:
             resp_json = None
-        print("[StraicoLLM] RESPONSE JSON (truncated):", str(resp_json)[:2000])
+        #print("[StraicoLLM] RESPONSE JSON (truncated):", str(resp_json)[:2000])
 
         if resp.status_code == 404:
             raise RuntimeError(
