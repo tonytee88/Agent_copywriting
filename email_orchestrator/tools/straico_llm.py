@@ -295,7 +295,7 @@ class StraicoLLM(BaseLlm):
                             # If we successfully parsed a tool call, we might want to suppress the text
                             # or keep it if it contains other info. 
                             # For now, if the entire content is just the JSON, suppress text.
-                            if len(text_content) < len(json_str) + 20: # heuristic
+                            if len(text_content) < len(clean_text) + 20: # heuristic
                                 text_content = ""
                 except Exception as e:
                     print(f"[StraicoLLM] Failed to parse manual tool call: {e}")
