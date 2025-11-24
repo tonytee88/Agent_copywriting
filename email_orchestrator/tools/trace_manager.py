@@ -59,8 +59,21 @@ class TraceManager:
         if not ENABLE_TRACING:
             return
 
+        event_type = getattr(event, "event_type", None)
+        
+        # Infer type if missing
+        if not event_type:
+            # Check if it's a model response (has content)
+            if getattr(event, "content", None):
+                event_type = "model_turn"
+            # Check if it's a tool request (has function_call) - though usually inside content
+            elif hasattr(event, "tool_calls"):
+                event_type = "tool_call_request"
+            else:
+                event_type = "unknown_event"
+
         data: Dict[str, Any] = {
-            "event_type": getattr(event, "event_type", None),
+            "event_type": event_type,
         }
 
         # if there's content text, include a short preview
@@ -71,8 +84,13 @@ class TraceManager:
                 txt = getattr(p, "text", "")
                 if txt:
                     texts.append(txt)
+                # Also preview function calls
+                if getattr(p, "function_call", None):
+                    fc = p.function_call
+                    texts.append(f"[FunctionCall: {fc.name}]")
+                    
             if texts:
-                data["content_preview"] = " | ".join(texts)[:200]
+                data["content_preview"] = " | ".join(texts)[:300]
 
         self.log("runner_event", **data)
 
