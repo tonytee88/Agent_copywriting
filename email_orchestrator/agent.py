@@ -1,30 +1,33 @@
 # email_orchestrator/agent.py
 
 from pathlib import Path
+import os
 
 from dotenv import load_dotenv
-from google.adk.agents.llm_agent import Agent  # type: ignore
 
-from email_orchestrator.tools.straico_llm import StraicoLLM
-from email_orchestrator.tools.logged_agent_tool import LoggedAgentTool
-from email_orchestrator.subagents.brief_planner_agent import brief_planner_agent
+# Load environment variables from the .env file located in this package
+env_path = Path(__file__).parent / ".env"
+load_dotenv(dotenv_path=env_path)
+
+from google.adk.agents.llm_agent import Agent  # type: ignore
+from google import genai
+
+# Import our Straico tool functions
+from email_orchestrator.tools.straico_tool import brief_planner, persona_selector
 
 
 def load_instruction() -> str:
-    prompt_path = Path(__file__).parent / "prompts" / "orchestrator" / "v1.txt"
+    prompt_path = Path(__file__).parent / "prompts" / "orchestrator" / "v5.txt"
     return prompt_path.read_text(encoding="utf-8")
 
 
-load_dotenv()
+# Use Gemini for orchestrator (supports reliable tool calling!)
+# ADK has built-in support for Gemini models via google-genai
+# Just pass the model name and set GOOGLE_API_KEY env var
 
-# Main LLM for the orchestrator (Straico backend)
-llm = StraicoLLM(model="openai/gpt-4o-2024-08-06")
-
-# Brief Planner tool – wraps the brief_planner_agent
-brief_planner_tool = LoggedAgentTool(agent=brief_planner_agent)
-
+# Create orchestrator with Gemini model
 root_agent = Agent(
-    model=llm,
+    model="gemini-2.0-flash",  # Valid model from list
     name="email_orchestrator",
     description=(
         "An orchestrator agent that plans and writes e-commerce marketing emails "
@@ -32,6 +35,7 @@ root_agent = Agent(
     ),
     instruction=load_instruction(),
     tools=[
-        brief_planner_tool,
+        brief_planner,      # Simple async function tool
+        persona_selector,   # Simple async function tool
     ],
 )

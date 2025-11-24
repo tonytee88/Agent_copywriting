@@ -1,6 +1,7 @@
 import os
 import json
-import requests
+import asyncio
+import aiohttp
 from typing import AsyncGenerator, Dict, Any
 
 from dotenv import load_dotenv
@@ -11,7 +12,11 @@ from google.adk.models.llm_response import LlmResponse  # type: ignore
 
 from google.genai import types as genai_types  # type: ignore
 
-load_dotenv()
+from pathlib import Path
+
+# Load environment variables from the .env file located in the email_orchestrator package (two levels up)
+env_path = Path(__file__).parent.parent / ".env"
+load_dotenv(dotenv_path=env_path)
 
 
 class StraicoLLM(BaseLlm):
@@ -46,10 +51,10 @@ class StraicoLLM(BaseLlm):
     def supported_models(cls) -> list[str]:  # type: ignore[override]
         return [
             "openai/gpt-4o-mini",
+            "openai/gpt-4o",
             "openai/gpt-4o-2024-08-06",
             "openai/gpt-4-turbo-2024-04-09",
             "amazon/nova-micro-v1",
-            # add more here if you want to experiment
         ]
 
     # ---- Helper: map ADK contents → OpenAI messages ----
@@ -65,43 +70,36 @@ class StraicoLLM(BaseLlm):
         messages: list[Dict[str, Any]] = []
 
         # Add system instruction if present
-        # Check llm_request.system_instruction (direct) or llm_request.config.system_instruction
         sys_content = getattr(llm_request, "system_instruction", None)
         if not sys_content and getattr(llm_request, "config", None):
             sys_content = getattr(llm_request.config, "system_instruction", None)
 
         if sys_content:
-            # sys_content is usually a Content object or string
             sys_text = ""
             if isinstance(sys_content, str):
                 sys_text = sys_content
             elif hasattr(sys_content, "parts"):
-                # It's a Content object
                 sys_text = "".join([p.text for p in sys_content.parts if p.text])
             
             if sys_text:
                 messages.append({"role": "system", "content": sys_text})
 
         for content in llm_request.contents:
-            # Content is a Pydantic model; model_dump() is the safest way.
             c = content.model_dump()
             role = c.get("role", "user")
             text_parts: list[str] = []
 
             for part in c.get("parts", []):
-                # We only care about plain text for the outbound request.
                 if "text" in part and part["text"]:
                     text_parts.append(part["text"])
 
             text = "".join(text_parts).strip()
             if not text:
-                # Skip purely non-text content (e.g., function_call-only parts)
                 continue
 
             messages.append({"role": role, "content": text})
 
         if not messages:
-            # Fallback safety: at least send something
             messages.append({"role": "user", "content": ""})
 
         return messages
@@ -110,36 +108,22 @@ class StraicoLLM(BaseLlm):
     def _build_tools(self, llm_request: LlmRequest) -> list[Dict[str, Any]]:
         """
         Convert ADK BaseTool map to OpenAI \"tools\" list.
-
-        Uses llm_request.tools_dict (the internal ADK mapping of tool names
-        to BaseTool instances).
         """
         tools_payload: list[Dict[str, Any]] = []
-
-        # ✅ This is the correct field in Python ADK
         tools_map: Dict[str, Any] = getattr(llm_request, "tools_dict", {}) or {}
 
         if not tools_map:
-            # No tools for this request → no function calling
             return tools_payload
 
-        # DEBUG
-        #print(f"[StraicoLLM] Extracting tools from request. Found: {list(tools_map.keys())}")
-
         for tool_name, tool in tools_map.items():
-            # Each tool is a BaseTool (AgentTool, FunctionTool, etc.)
-            # Try to get the FunctionDeclaration from the tool.
             fn_decl = None
             try:
                 fn_decl = tool.declaration()
-            except Exception as e:
-                #print(f"[StraicoLLM] Error getting declaration for tool {tool_name}: {e}")
+            except Exception:
                 fn_decl = None
 
             if fn_decl is not None:
-                # fn_decl is google.genai.types.FunctionDeclaration
                 fn = fn_decl
-                # Try to get a parameters schema; fallback to a generic object.
                 params: Dict[str, Any] = {
                     "type": "object",
                     "properties": {},
@@ -147,27 +131,20 @@ class StraicoLLM(BaseLlm):
                 }
                 try:
                     if getattr(fn, "parameters", None) is not None:
-                        # parameters is usually a Schema object with model_dump()
                         params = fn.parameters.model_dump()
                         
-                        # Sanitize types to be lowercase for OpenAI (STRING -> string, OBJECT -> object)
-                        # And remove null values/empty fields to keep it clean
                         def clean_schema(node):
                             if isinstance(node, dict):
                                 clean_node = {}
-                                
-                                # 1. Handle "properties" specifically (keys are arbitrary param names)
                                 if "properties" in node and isinstance(node["properties"], dict):
                                     clean_props = {}
                                     for prop_name, prop_def in node["properties"].items():
                                         clean_props[prop_name] = clean_schema(prop_def)
                                     clean_node["properties"] = clean_props
                                 
-                                # 2. Handle "items" (recursive schema)
                                 if "items" in node and node["items"] is not None:
                                     clean_node["items"] = clean_schema(node["items"])
 
-                                # 3. Handle other standard keys
                                 allowed_keys = {"type", "required", "description", "enum", "format"}
                                 for k, v in node.items():
                                     if k in allowed_keys and v is not None:
@@ -184,33 +161,27 @@ class StraicoLLM(BaseLlm):
                         
                         params = clean_schema(params)
                         
-                        # Ensure required is a list if present
                         if "required" in params and params["required"] is None:
                             del params["required"]
                 except Exception:
                     pass
 
-                tools_payload.append(
-                    {
-                        "type": "function",
-                        "function": {
-                            "name": fn.name,
-                            "description": getattr(fn, "description", "") or "",
-                            "parameters": params,
-                        },
-                    }
-                )
+                tools_payload.append({
+                    "type": "function",
+                    "function": {
+                        "name": fn.name,
+                        "description": getattr(fn, "description", "") or "",
+                        "parameters": params,
+                    },
+                })
             else:
-                # If no declaration(), still expose a minimal tool definition.
-                tools_payload.append(
-                    {
-                        "type": "function",
-                        "function": {
-                            "name": getattr(tool, "name", tool_name),
-                            "description": getattr(tool, "description", "") or "",
-                        },
-                    }
-                )
+                tools_payload.append({
+                    "type": "function",
+                    "function": {
+                        "name": getattr(tool, "name", tool_name),
+                        "description": getattr(tool, "description", "") or "",
+                    },
+                })
 
         return tools_payload
 
@@ -219,28 +190,22 @@ class StraicoLLM(BaseLlm):
     def _build_llm_response_from_openai(self, resp_json: Dict[str, Any]) -> LlmResponse:
         """
         Convert a single OpenAI-style chat completion into an ADK LlmResponse.
-        Supports:
-        - Plain assistant text
-        - Tool calls (function calling)
         """
         choices = resp_json.get("choices", [])
         if not choices:
-            # Empty response – return an empty content
             content_obj = genai_types.Content(
                 role="assistant",
                 parts=[genai_types.Part(text="")],
             )
             return LlmResponse(content=content_obj)
 
-        message = choices[0].get("message", {})  # type: ignore[assignment]
-
+        message = choices[0].get("message", {})
         parts: list[genai_types.Part] = []
 
         # 1) Tool calls
         tool_calls = message.get("tool_calls") or []
         if tool_calls:
-            #print("[StraicoLLM] Tool calls from Straico:", tool_calls)
-
+            print(f"[StraicoLLM] Native tool calls detected: {[tc.get('function', {}).get('name') for tc in tool_calls]}")
             for tc in tool_calls:
                 fn = tc.get("function", {}) or {}
                 name = fn.get("name", "")
@@ -262,22 +227,17 @@ class StraicoLLM(BaseLlm):
         text_content = message.get("content", "")
         
         # Workaround: Check for manual JSON tool call pattern if no native tool calls
-        # Pattern: {"tool": "tool_name", "arguments": {...}}
         if not tool_calls and text_content:
             text_content = text_content.strip()
-            # Check if it contains the tool pattern
             if '"tool":' in text_content:
+                print(f"[StraicoLLM] Manual JSON tool call detected in text")
                 try:
-                    # 1. Clean markdown code blocks
                     clean_text = text_content.replace("```json", "").replace("```", "").strip()
                     
-                    # 2. Try parsing the whole cleaned string
                     try:
                         data = json.loads(clean_text)
                     except json.JSONDecodeError:
-                        # 3. If that fails, try regex (greedy match to catch nested objects)
                         import re
-                        # Greedy match from first { to last }
                         json_match = re.search(r'(\{[\s\S]*"tool":[\s\S]*\})', clean_text)
                         if json_match:
                             data = json.loads(json_match.group(1))
@@ -285,22 +245,20 @@ class StraicoLLM(BaseLlm):
                             raise ValueError("No JSON object found")
 
                     if "tool" in data and "arguments" in data:
-                            #print(f"[StraicoLLM] Detected manual JSON tool call: {data['tool']}")
-                            fc = genai_types.FunctionCall(
-                                name=data["tool"],
-                                args=data["arguments"],
-                                id="manual_call_" + os.urandom(4).hex()
-                            )
-                            parts.append(genai_types.Part(function_call=fc))
-                            # If we successfully parsed a tool call, we might want to suppress the text
-                            # or keep it if it contains other info. 
-                            # For now, if the entire content is just the JSON, suppress text.
-                            if len(text_content) < len(clean_text) + 20: # heuristic
-                                text_content = ""
+                        print(f"[StraicoLLM] Parsed manual tool call: {data['tool']}")
+                        fc = genai_types.FunctionCall(
+                            name=data["tool"],
+                            args=data["arguments"],
+                            id="manual_call_" + os.urandom(4).hex()
+                        )
+                        parts.append(genai_types.Part(function_call=fc))
+                        if len(text_content) < len(clean_text) + 20:
+                            text_content = ""
                 except Exception as e:
                     print(f"[StraicoLLM] Failed to parse manual tool call: {e}")
 
         if text_content:
+            print(f"[StraicoLLM] Text content: {text_content[:200]}...")
             parts.append(genai_types.Part(text=text_content))
 
         if not parts:
@@ -312,6 +270,7 @@ class StraicoLLM(BaseLlm):
         )
 
         return LlmResponse(content=content_obj)
+
 
     # ---- Main ADK entrypoint ----
     async def generate_content_async(  # type: ignore[override]
@@ -327,22 +286,12 @@ class StraicoLLM(BaseLlm):
         """
 
         if stream:
-            # For now we don't implement streaming with Straico in this MVP.
-            # ADK will still work fine; it just gets one response.
             print("[StraicoLLM] Streaming not implemented, falling back to single response.")
 
         model_id = llm_request.model
-
-        # 1) Messages
-        # print(f"[StraicoLLM] LlmRequest dict keys: {llm_request.__dict__.keys()}")
-        # if getattr(llm_request, "append_instructions", None):
-        #      print(f"[StraicoLLM] append_instructions: {llm_request.append_instructions}")
-        # if getattr(llm_request, "config", None):
-        #      print(f"[StraicoLLM] config: {llm_request.config}")
-        
         messages = self._build_messages(llm_request)
 
-        # 2) Config → temperature / max_tokens
+        # Config → temperature / max_tokens
         temperature: float = 1.0
         max_tokens: int = 512
 
@@ -355,7 +304,7 @@ class StraicoLLM(BaseLlm):
             if mt is not None:
                 max_tokens = mt
 
-        # 3) Tools
+        # Tools
         tools = self._build_tools(llm_request)
 
         body: Dict[str, Any] = {
@@ -367,17 +316,13 @@ class StraicoLLM(BaseLlm):
 
         if tools:
             body["tools"] = tools
-            # Force the model to use tools if available, or at least be very explicit
-            body["tool_choice"] = "auto" 
-            # Try forcing the specific tool by name to be absolutely sure
-            # body["tool_choice"] = {
-            #     "type": "function",
-            #     "function": {
-            #         "name": tools[0]["function"]["name"]
-            #     }
-            # }
-            #print(f"[StraicoLLM] Sending {len(tools)} tools to Straico: {[t['function']['name'] for t in tools]}")
-            #print(f"[StraicoLLM] Full tools payload: {json.dumps(tools, indent=2)}")
+            # Use "required" to force the model to call a tool when tools are available
+            # This prevents the model from generating text instead of calling tools
+            body["tool_choice"] = "required"
+            print(f"[StraicoLLM] Sending {len(tools)} tools to API:")
+            for tool in tools:
+                print(f"  - {tool.get('function', {}).get('name', 'unknown')}")
+
 
         url = f"{self._base_url}/chat/completions"
         headers = {
@@ -385,28 +330,67 @@ class StraicoLLM(BaseLlm):
             "Content-Type": "application/json",
         }
 
-        # DEBUG (you can comment these out later)
-        #print("[StraicoLLM] REQUEST URL:", url)
-        #print("[StraicoLLM] REQUEST BODY:", json.dumps(body, indent=2)[:2000])
+        print(f"[StraicoLLM] Calling {model_id} with {len(messages)} messages, {len(tools)} tools")
 
-        resp = requests.post(url, headers=headers, json=body)
-
-        #print("[StraicoLLM] RESPONSE STATUS:", resp.status_code)
+        # Use aiohttp for async HTTP requests with extended timeout
+        timeout = aiohttp.ClientTimeout(total=300, connect=60, sock_read=60)  # 5 min total, 1 min connect/read
+        
         try:
-            resp_json = resp.json()
-        except ValueError:
-            resp_json = None
-        #print("[StraicoLLM] RESPONSE JSON (truncated):", str(resp_json)[:2000])
-
-        if resp.status_code == 404:
-            raise RuntimeError(
-                f"Straico 404 error: model '{model_id}' may not exist or account lacks access"
+            async with aiohttp.ClientSession(timeout=timeout) as session:
+                async with session.post(url, headers=headers, json=body) as resp:
+                    print(f"[StraicoLLM] Response status: {resp.status}")
+                    
+                    if resp.status == 404:
+                        raise RuntimeError(
+                            f"Straico 404 error: model '{model_id}' may not exist or account lacks access"
+                        )
+                    
+                    if resp.status != 200:
+                        error_text = await resp.text()
+                        print(f"[StraicoLLM] Error response: {error_text}")
+                        raise RuntimeError(f"Straico API error {resp.status}: {error_text}")
+                    
+                    resp_json = await resp.json()
+                    print(f"[StraicoLLM] Received response with {len(resp_json.get('choices', []))} choices")
+                    
+                    # Debug: print the full response to see what we're getting
+                    import json as json_lib
+                    print(f"[StraicoLLM] Full response: {json_lib.dumps(resp_json, indent=2)[:1000]}...")
+                    
+        except asyncio.CancelledError:
+            print("[StraicoLLM] Request was cancelled (likely timeout or user interrupt)")
+            empty_content = genai_types.Content(
+                role="assistant",
+                parts=[genai_types.Part(text="")],
             )
-
-        resp.raise_for_status()
+            yield LlmResponse(content=empty_content)
+            return
+        except asyncio.TimeoutError:
+            print("[StraicoLLM] Request timed out")
+            empty_content = genai_types.Content(
+                role="assistant",
+                parts=[genai_types.Part(text="")],
+            )
+            yield LlmResponse(content=empty_content)
+            return
+        except aiohttp.ClientError as e:
+            print(f"[StraicoLLM] HTTP error: {e}")
+            empty_content = genai_types.Content(
+                role="assistant",
+                parts=[genai_types.Part(text="")],
+            )
+            yield LlmResponse(content=empty_content)
+            return
+        except Exception as e:
+            print(f"[StraicoLLM] Unexpected error: {type(e).__name__}: {e}")
+            empty_content = genai_types.Content(
+                role="assistant",
+                parts=[genai_types.Part(text="")],
+            )
+            yield LlmResponse(content=empty_content)
+            return
 
         if not resp_json:
-            # Yield an empty response rather than crashing
             empty_content = genai_types.Content(
                 role="assistant",
                 parts=[genai_types.Part(text="")],
@@ -416,3 +400,4 @@ class StraicoLLM(BaseLlm):
 
         llm_resp = self._build_llm_response_from_openai(resp_json)
         yield llm_resp
+

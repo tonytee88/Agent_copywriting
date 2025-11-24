@@ -62,6 +62,7 @@ class TraceManager:
         event_type = getattr(event, "event_type", None)
         
         # Infer type if missing
+        # Infer type and content
         if not event_type:
             # Check if it's a model response (has content)
             if getattr(event, "content", None):
@@ -81,13 +82,34 @@ class TraceManager:
         if content and getattr(content, "parts", None):
             texts = []
             for p in content.parts:
+                # 1. Text content
                 txt = getattr(p, "text", "")
                 if txt:
                     texts.append(txt)
-                # Also preview function calls
+                
+                # 2. Function calls (Tool Requests)
                 if getattr(p, "function_call", None):
                     fc = p.function_call
-                    texts.append(f"[FunctionCall: {fc.name}]")
+                    # Log this as a special TOOL_CALL event type for better visibility
+                    data["event_type"] = "TOOL_CALL"
+                    data["tool_name"] = fc.name
+                    # Truncate args if too long
+                    args_str = str(fc.args)
+                    if len(args_str) > 100:
+                        args_str = args_str[:100] + "..."
+                    texts.append(f"Calling tool: {fc.name}({args_str})")
+                
+                # 3. Function responses (Tool Results)
+                if getattr(p, "function_response", None):
+                    fr = p.function_response
+                    # Log this as a special TOOL_RESULT event type
+                    data["event_type"] = "TOOL_RESULT"
+                    data["tool_name"] = fr.name
+                    # Truncate result if too long
+                    resp_str = str(fr.response)
+                    if len(resp_str) > 150:
+                        resp_str = resp_str[:150] + "..."
+                    texts.append(f"Tool returned: {fr.name} -> {resp_str}")
                     
             if texts:
                 data["content_preview"] = " | ".join(texts)[:300]
@@ -128,10 +150,18 @@ class TraceManager:
             elif etype == "llm_response":
                 lines.append(f"{t} ← LLM RESPONSE ({e['agent']})")
             elif etype == "runner_event":
-                lines.append(
-                    f"{t} [EVENT] {e.get('event_type')} "
-                    f"{('→ ' + e.get('content_preview')) if e.get('content_preview') else ''}"
-                )
+                evt_type = e.get('event_type')
+                content = e.get('content_preview', '')
+                
+                if evt_type == "TOOL_CALL":
+                    lines.append(f"{t} 🛠️  TOOL CALL: {e.get('tool_name')} → {content}")
+                elif evt_type == "TOOL_RESULT":
+                    lines.append(f"{t} ✅ TOOL RESULT: {e.get('tool_name')} → {content}")
+                else:
+                    lines.append(
+                        f"{t} [EVENT] {evt_type} "
+                        f"{('→ ' + content) if content else ''}"
+                    )
 
         return "\n".join(lines)
 
