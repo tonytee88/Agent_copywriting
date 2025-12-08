@@ -1,0 +1,32 @@
+[
+  {
+    "time": 1765229369.948728,
+    "type": "agent_start",
+    "agent": "email_orchestrator"
+  },
+  {
+    "time": 1765229370.827198,
+    "type": "runner_event",
+    "event_type": "TOOL_CALL",
+    "tool_name": "brief_planner",
+    "content_preview": "Calling tool: brief_planner({'campaign_details': 'a campaign for popbrush FR, 10% on your first purchase, code promo BRUSH10 val...)"
+  },
+  {
+    "time": 1765229445.897965,
+    "type": "runner_event",
+    "event_type": "TOOL_RESULT",
+    "tool_name": "brief_planner",
+    "content_preview": "Tool returned: brief_planner -> {'result': \"Error calling Straico API: Cannot connect to host api.straico.com:443 ssl:default [Connect call failed ('172.208.64.240', 443)]\"}"
+  },
+  {
+    "time": 1765229446.8221812,
+    "type": "runner_event",
+    "event_type": "model_turn",
+    "content_preview": "I am sorry, I cannot fulfill this request. There was an error reaching the tool to create the brief. Please try again in sometime.\n"
+  },
+  {
+    "time": 1765229446.82243,
+    "type": "agent_end",
+    "agent": "email_orchestrator"
+  }
+]

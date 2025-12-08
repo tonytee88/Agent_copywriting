@@ -145,3 +145,36 @@ async def persona_selector(brief: str) -> str:
     
     print(f"[persona_selector] Selected persona ({len(result)} chars)")
     return result
+
+
+async def email_drafter(brief: str, persona: str) -> str:
+    """
+    Writes the final email draft based on the brief and persona.
+    
+    WHEN TO USE:
+    - AFTER you have BOTH a [BRIEF] and a [CHOSEN PERSONA].
+    - This is the final step to generate the actual email content.
+    
+    DO NOT USE:
+    - If you are missing the brief or the persona.
+    
+    Args:
+        brief: The full campaign brief.
+        persona: The selected persona and transformation angle.
+        
+    Returns:
+        The complete email draft.
+    """
+    # Load the drafter prompt
+    prompt_path = Path(__file__).parent.parent / "prompts" / "drafter" / "v1.txt"
+    prompt_template = prompt_path.read_text(encoding="utf-8")
+    
+    # Build the full prompt
+    full_prompt = f"{prompt_template}\n\n=== INPUTS ===\n\n[BRIEF]:\n{brief}\n\n[PERSONA]:\n{persona}"
+    
+    # Call Straico API
+    client = get_client()
+    result = await client.generate_text(full_prompt)
+    
+    print(f"[email_drafter] Generated draft ({len(result)} chars)")
+    return result

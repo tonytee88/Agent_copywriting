@@ -13,7 +13,7 @@ from google.adk.agents.llm_agent import Agent  # type: ignore
 from google import genai
 
 # Import our Straico tool functions
-from email_orchestrator.tools.straico_tool import brief_planner, persona_selector
+from email_orchestrator.tools.straico_tool import brief_planner, persona_selector, email_drafter
 
 
 def load_instruction() -> str:
@@ -37,5 +37,6 @@ root_agent = Agent(
     tools=[
         brief_planner,      # Simple async function tool
         persona_selector,   # Simple async function tool
+        email_drafter,      # Simple async function tool
     ],
 )
