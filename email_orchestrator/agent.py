@@ -13,11 +13,12 @@ from google.adk.agents.llm_agent import Agent  # type: ignore
 from google import genai
 
 # Import our Straico tool functions
-from email_orchestrator.tools.straico_tool import brief_planner, persona_selector, email_drafter
+# Import our Campaign tools
+from email_orchestrator.tools.campaign_tools import analyze_brand, generate_email_campaign
 
 
 def load_instruction() -> str:
-    prompt_path = Path(__file__).parent / "prompts" / "orchestrator" / "v5.txt"
+    prompt_path = Path(__file__).parent / "prompts" / "orchestrator" / "v6.txt"
     return prompt_path.read_text(encoding="utf-8")
 
 
@@ -35,8 +36,7 @@ root_agent = Agent(
     ),
     instruction=load_instruction(),
     tools=[
-        brief_planner,      # Simple async function tool
-        persona_selector,   # Simple async function tool
-        email_drafter,      # Simple async function tool
+        analyze_brand,
+        generate_email_campaign,
     ],
 )
