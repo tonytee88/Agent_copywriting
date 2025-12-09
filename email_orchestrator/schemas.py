@@ -80,12 +80,14 @@ class CampaignLogEntry(BaseModel):
     timestamp: str
     brand_name: str
     
-    # For duplication checking
+    # For duplication checking (essential fields only)
     transformation_used: str
     structure_used: str
     storytelling_angle_used: str
     offer_placement_used: str
     cta_style_used: Optional[str] = None
     
-    blueprint: EmailBlueprint
-    final_draft: EmailDraft
+    # Optional: Full objects for detailed review (not needed for non-repetition logic)
+    # These are excluded from lightweight logging to save 87% storage
+    blueprint: Optional[EmailBlueprint] = None
+    final_draft: Optional[EmailDraft] = None

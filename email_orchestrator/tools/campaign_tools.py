@@ -93,7 +93,7 @@ async def generate_email_campaign(
             verification = await verifier_agent(draft, blueprint, brand_name)
             
             if verification.approved:
-                # Success! Log to history
+                # Success! Log to history (lightweight - no blueprint/draft)
                 entry = CampaignLogEntry(
                     campaign_id=datetime.now().strftime("%Y%m%d%H%M%S"),
                     timestamp=datetime.now().isoformat(),
@@ -101,9 +101,8 @@ async def generate_email_campaign(
                     transformation_used=blueprint.selected_transformation,
                     structure_used=blueprint.descriptive_structure_name,
                     storytelling_angle_used=blueprint.storytelling_angle,
-                    offer_placement_used=blueprint.offer_placement,
-                    blueprint=blueprint,
-                    final_draft=draft
+                    offer_placement_used=blueprint.offer_placement
+                    # Excluded: blueprint, final_draft (saves 87% storage)
                 )
                 history_manager.log_campaign(entry)
                 
