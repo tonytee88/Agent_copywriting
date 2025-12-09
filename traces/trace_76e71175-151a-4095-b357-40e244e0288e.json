@@ -1,0 +1,46 @@
+[
+  {
+    "time": 1765303432.32453,
+    "type": "agent_start",
+    "agent": "email_orchestrator"
+  },
+  {
+    "time": 1765303433.0488079,
+    "type": "runner_event",
+    "event_type": "TOOL_CALL",
+    "tool_name": "analyze_brand",
+    "content_preview": "Calling tool: analyze_brand({'website_url': 'https://popbrush.fr/'})"
+  },
+  {
+    "time": 1765303438.0453389,
+    "type": "runner_event",
+    "event_type": "TOOL_RESULT",
+    "tool_name": "analyze_brand",
+    "content_preview": "Tool returned: analyze_brand -> {'result': \"Step 1 Complete. Brand Bio for 'PopBrush' has been saved.\\nSummary: Innovative, ergonomic detangling brushes that prevent hair breakage, w..."
+  },
+  {
+    "time": 1765303438.7433012,
+    "type": "runner_event",
+    "event_type": "TOOL_CALL",
+    "tool_name": "generate_email_campaign",
+    "content_preview": "Calling tool: generate_email_campaign({'angle': 'Best Deal of the Year', 'offer': '25% off', 'brand_name': 'PopBrush'})"
+  },
+  {
+    "time": 1765303460.167831,
+    "type": "runner_event",
+    "event_type": "TOOL_RESULT",
+    "tool_name": "generate_email_campaign",
+    "content_preview": "Tool returned: generate_email_campaign -> {'result': '{\\n  \"status\": \"APPROVED\",\\n  \"warning\": \"Verification failed, but returning draft for review.\",\\n  \"draft\": {\\n    \"subject\": \"Smooth Mor..."
+  },
+  {
+    "time": 1765303462.432511,
+    "type": "runner_event",
+    "event_type": "model_turn",
+    "content_preview": "Here's the email draft for the Boxing Day promo (25% off) for PopBrush:\n\n**Subject:** Smooth Mornings, Even Smoother Savings \u2014 25% Off!\n**Preview:** Transform your mornings with a deal this smooth.\n\n**Hero:**\nTitle: The Best Deal of the Year\nSubtitle: 25% off PopBrush products for a limited time \u2014 m"
+  },
+  {
+    "time": 1765303462.432642,
+    "type": "agent_end",
+    "agent": "email_orchestrator"
+  }
+]

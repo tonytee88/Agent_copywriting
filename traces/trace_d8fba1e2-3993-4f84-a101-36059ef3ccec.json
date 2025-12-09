@@ -1,0 +1,60 @@
+[
+  {
+    "time": 1765308391.777854,
+    "type": "agent_start",
+    "agent": "email_orchestrator"
+  },
+  {
+    "time": 1765308392.7664409,
+    "type": "runner_event",
+    "event_type": "TOOL_CALL",
+    "tool_name": "analyze_brand",
+    "content_preview": "Calling tool: analyze_brand({'website_url': 'https://popbrush.fr/'})"
+  },
+  {
+    "time": 1765308396.994685,
+    "type": "runner_event",
+    "event_type": "TOOL_RESULT",
+    "tool_name": "analyze_brand",
+    "content_preview": "Tool returned: analyze_brand -> {'result': \"Step 1 Complete. Brand Bio for 'PopBrush' has been saved.\\nSummary: Innovative detangling brushes that prevent hair breakage, reduce disco..."
+  },
+  {
+    "time": 1765308398.0874581,
+    "type": "runner_event",
+    "event_type": "TOOL_CALL",
+    "tool_name": "generate_email_campaign",
+    "content_preview": "Calling tool: generate_email_campaign({'offer': '25% off everything', 'brand_name': 'PopBrush', 'angle': 'Best Deal of the Year'})"
+  },
+  {
+    "time": 1765308423.6781912,
+    "type": "runner_event",
+    "event_type": "TOOL_RESULT",
+    "tool_name": "generate_email_campaign",
+    "content_preview": "Tool returned: generate_email_campaign -> {'result': '{\\n  \"status\": \"APPROVED\",\\n  \"warning\": \"Verification failed, but returning draft for review.\",\\n  \"draft\": {\\n    \"subject\": \"Brush Away..."
+  },
+  {
+    "time": 1765308424.525383,
+    "type": "runner_event",
+    "event_type": "TOOL_CALL",
+    "tool_name": "generate_email_campaign",
+    "content_preview": "Calling tool: generate_email_campaign({'offer': '25% off everything', 'brand_name': 'PopBrush', 'angle': 'Last Chance'})"
+  },
+  {
+    "time": 1765308434.031245,
+    "type": "runner_event",
+    "event_type": "TOOL_RESULT",
+    "tool_name": "generate_email_campaign",
+    "content_preview": "Tool returned: generate_email_campaign -> {'result': '{\\n  \"subject\": \"Last chance: 25% off for effortless mornings!\",\\n  \"preview\": \"Transform your mornings with 25% off PopBrush\u2014time is runn..."
+  },
+  {
+    "time": 1765308437.518079,
+    "type": "runner_event",
+    "event_type": "model_turn",
+    "content_preview": "Here are two email drafts for your Boxing Day promotion:\n\n**Email 1:**\n\n*   **Subject:** Brush Away the Stress \u2013 25% Off Ends Soon!\n*   **Preview:** Embrace detangling without the drama. Shop now and save!\n*   **Hero Title:** Best Deal of the Year\n*   **Hero Subtitle:** 25% off everything \u2013 elevate "
+  },
+  {
+    "time": 1765308437.518322,
+    "type": "agent_end",
+    "agent": "email_orchestrator"
+  }
+]

@@ -158,5 +158,57 @@
       "cta_product": "Shop now",
       "full_text_formatted": "\nSUBJECT: Your mornings just got smoother \u2014 with 25% off!\nPREVIEW: Effortless detangling, happier mornings \u2014 enjoy 25% off now!\n\n=== HERO ===\nTitle: Effortless mornings are here\nSubtitle: Transform your hair routine with 25% off PopBrush products.\nCTA: Shop now\n\n=== Simplify your mornings \u2728 ===\nFrom stressful mornings to effortless hair routines.\n\n\u25cf Effortlessly detangles all hair types without pain or breakage.\n\u25cf Ergonomic design for easy, comfortable use.\n\u25cf Perfect for parents, kids, and anyone who wants smooth mornings.\n\u25cf High-quality materials for healthy, shiny hair.\n\u25cf Say goodbye to frustration and hello to confidence every day.\n\n=== PRODUCT ===\nPopBrush Detangling Brush\nTravel-sized Detangling Brush\nShampoo Brush\nHaircare Accessories like Clips and Combs\nCTA: Shop now\n"
     }
+  },
+  {
+    "campaign_id": "20251209142714",
+    "timestamp": "2025-12-09T14:27:14.027957",
+    "brand_name": "PopBrush",
+    "transformation_used": "From frustrating tangles to effortless, pain-free mornings",
+    "structure_used": "The Spotlight Box",
+    "storytelling_angle_used": "Rule-Breaker Line",
+    "offer_placement_used": "Hero",
+    "cta_style_used": null,
+    "blueprint": {
+      "brand_name": "PopBrush",
+      "campaign_theme": "Last Chance",
+      "selected_transformation": "From frustrating tangles to effortless, pain-free mornings",
+      "descriptive_structure_name": "The Spotlight Box",
+      "structure_guidelines": [
+        "Use bold, urgent text to emphasize the limited-time nature of the offer.",
+        "Include a single, concise sentence that highlights the key transformation.",
+        "Make the structure visually distinct with a contrasting color background."
+      ],
+      "persona_name": "The Morning Peacemaker",
+      "persona_voice_guidelines": "Empathetic, solution-focused, and reassuring. Speak to the desire for calm mornings without hair-related battles.",
+      "storytelling_angle": "Rule-Breaker Line",
+      "offer_details": "25% off everything",
+      "offer_placement": "Hero",
+      "subject_ideas": [
+        "Last chance: 25% off for effortless mornings!",
+        "Say goodbye to tangles\u201425% off ends soon!"
+      ],
+      "preview_text_ideas": [
+        "Transform your mornings with 25% off PopBrush\u2014time is running out!",
+        "Don't miss your chance to save on pain-free mornings."
+      ],
+      "key_points_for_descriptive_block": [
+        "PopBrush helps you break free from tangles and frustration.",
+        "Enjoy serene, pain-free mornings with our innovative detangling tools.",
+        "25% off everything\u2014but only until the clock runs out!"
+      ]
+    },
+    "final_draft": {
+      "subject": "Last chance: 25% off for effortless mornings!",
+      "preview": "Transform your mornings with 25% off PopBrush\u2014time is running out!",
+      "hero_title": "Last Call for Calm Mornings",
+      "hero_subtitle": "25% off everything\u2014say goodbye to tangles before it's too late.",
+      "cta_hero": "Shop now",
+      "descriptive_block_title": "Effortless Hair Days Await \u2728",
+      "descriptive_block_subtitle": "From tangles to serenity\u2014your mornings transformed.",
+      "descriptive_block_content": "PopBrush helps you break free from tangles and frustration, bringing serenity back to your mornings. \n\n\u2022 Enjoy pain-free, effortless detangling with innovative tools designed for all hair types.\n\u2022 Save time and reduce stress every day with brushes that glide through even the toughest knots.\n\u2022 25% off everything\u2014but hurry, this offer ends soon!",
+      "product_block_content": "PopBrush Detangling Brushes\nThe innovative solution for smooth, pain-free mornings. \n\nTravel-Sized Brushes\nPerfect for on-the-go detangling, wherever life takes you.\n\nHaircare Accessories\nComplete your routine with tools designed for lasting results.",
+      "cta_product": "Shop now",
+      "full_text_formatted": "\nSUBJECT: Last chance: 25% off for effortless mornings!\nPREVIEW: Transform your mornings with 25% off PopBrush\u2014time is running out!\n\n=== HERO ===\nTitle: Last Call for Calm Mornings\nSubtitle: 25% off everything\u2014say goodbye to tangles before it's too late.\nCTA: Shop now\n\n=== Effortless Hair Days Await \u2728 ===\nFrom tangles to serenity\u2014your mornings transformed.\n\nPopBrush helps you break free from tangles and frustration, bringing serenity back to your mornings. \n\n\u2022 Enjoy pain-free, effortless detangling with innovative tools designed for all hair types.\n\u2022 Save time and reduce stress every day with brushes that glide through even the toughest knots.\n\u2022 25% off everything\u2014but hurry, this offer ends soon!\n\n=== PRODUCT ===\nPopBrush Detangling Brushes\nThe innovative solution for smooth, pain-free mornings. \n\nTravel-Sized Brushes\nPerfect for on-the-go detangling, wherever life takes you.\n\nHaircare Accessories\nComplete your routine with tools designed for lasting results.\nCTA: Shop now\n"
+    }
   }
 ]

@@ -1,17 +1,16 @@
 {
   "popbrush": {
     "brand_name": "PopBrush",
-    "industry": "Haircare and Beauty Accessories",
-    "target_audience": "Parents, children, and individuals of all ages with various hair types, particularly those seeking pain-free and efficient hair detangling.",
-    "unique_selling_proposition": "Innovative, ergonomic detangling brushes that prevent hair breakage, reduce discomfort, and are suitable for all hair types. The brushes combine boar bristles and nylon pins for effective detangling with added scalp massage benefits.",
-    "brand_voice": "Friendly, reassuring, innovative, and family-oriented.",
+    "industry": "Haircare",
+    "target_audience": "Families, parents, and individuals of all ages with various hair types, including sensitive or hard-to-manage hair.",
+    "unique_selling_proposition": "Innovative detangling brushes that prevent hair breakage, reduce discomfort, and cater to all hair types with superior quality and ergonomic design.",
+    "brand_voice": "Empathetic, family-oriented, innovative, trustworthy, practical.",
     "key_products": [
       "Detangling brushes",
-      "Compact foldable brushes",
-      "Hair accessories (e.g., elastics, clips)",
-      "Hair treatments (e.g., keratin detangler, repair care)"
+      "Travel-sized brushes",
+      "Haircare accessories"
     ],
-    "mission_statement": "To transform the hair detangling experience into a painless, enjoyable, and efficient routine for families and individuals, while ensuring high-quality, innovative solutions for all hair types."
+    "mission_statement": "To transform the haircare experience by providing innovative products that make detangling effortless, enjoyable, and stress-free for everyone, especially families and children."
   },
   "popbrush\u00ae": {
     "brand_name": "PopBrush\u00ae",

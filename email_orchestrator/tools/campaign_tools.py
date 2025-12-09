@@ -1,6 +1,8 @@
 import json
 import asyncio
+import os
 from datetime import datetime
+from pathlib import Path
 from email_orchestrator.subagents.brand_scraper_agent import brand_scraper_agent
 from email_orchestrator.subagents.strategist_agent import strategist_agent
 from email_orchestrator.subagents.drafter_agent import drafter_agent
@@ -105,6 +107,9 @@ async def generate_email_campaign(
                 )
                 history_manager.log_campaign(entry)
                 
+                # Save to output file
+                _save_email_to_file(brand_name, angle, draft)
+                
                 return draft.model_dump_json(indent=2)
             else:
                 print(f"[Loop] Verification failed (Att {attempt+1}). Feedback: {verification.feedback_for_drafter}")
@@ -115,11 +120,73 @@ async def generate_email_campaign(
             return f"Verifier Agent Failed: {e}"
             
     # If we get here, verification failed after retries
-    # If we get here, verification failed after retries
-    # Return the draft anyway, but mark it as rejected in logs or just return it for the user to see
+    # Save the draft anyway for user review
+    _save_email_to_file(brand_name, angle, draft)
+    
     return json.dumps({
         "status": "APPROVED", # Faking approval to show the draft to user (or handling gracefully)
         "warning": "Verification failed, but returning draft for review.",
         "draft": draft.dict(), # Use dict() for Pydantic v1/v2 compat or model_dump()
         "feedback": verification.feedback_for_drafter
     }, indent=2)
+
+def _save_email_to_file(brand_name: str, angle: str, draft):
+    """Save email draft to a text file in outputs/ directory."""
+    # Create outputs directory if it doesn't exist
+    output_dir = Path("outputs")
+    output_dir.mkdir(exist_ok=True)
+    
+    # Generate filename with timestamp
+    timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
+    safe_angle = angle.replace(" ", "_").replace("/", "_")[:30]
+    filename = f"{brand_name}_{safe_angle}_{timestamp}.txt"
+    filepath = output_dir / filename
+    
+    # Format the email content
+    content = f"""{'='*60}
+EMAIL CAMPAIGN: {brand_name}
+ANGLE: {angle}
+GENERATED: {datetime.now().strftime("%Y-%m-%d %H:%M:%S")}
+{'='*60}
+
+SUBJECT: {draft.subject}
+
+PREVIEW: {draft.preview}
+
+{'='*60}
+HERO SECTION
+{'='*60}
+
+Title: {draft.hero_title}
+Subtitle: {draft.hero_subtitle}
+CTA: {draft.cta_hero}
+
+{'='*60}
+DESCRIPTIVE BLOCK
+{'='*60}
+
+Title: {draft.descriptive_block_title}
+Subtitle: {draft.descriptive_block_subtitle}
+
+{draft.descriptive_block_content}
+
+{'='*60}
+PRODUCT BLOCK
+{'='*60}
+
+{draft.product_block_content}
+
+CTA: {draft.cta_product}
+
+{'='*60}
+FULL EMAIL
+{'='*60}
+
+{draft.full_text_formatted if hasattr(draft, 'full_text_formatted') else 'N/A'}
+"""
+    
+    # Write to file
+    with open(filepath, 'w', encoding='utf-8') as f:
+        f.write(content)
+    
+    print(f"[Output] Email saved to: {filepath}")

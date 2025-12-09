@@ -1,0 +1,46 @@
+[
+  {
+    "time": 1765303498.241763,
+    "type": "agent_start",
+    "agent": "email_orchestrator"
+  },
+  {
+    "time": 1765303499.139688,
+    "type": "runner_event",
+    "event_type": "TOOL_CALL",
+    "tool_name": "analyze_brand",
+    "content_preview": "Calling tool: analyze_brand({'website_url': 'https://popbrush.fr/'})"
+  },
+  {
+    "time": 1765303504.099432,
+    "type": "runner_event",
+    "event_type": "TOOL_RESULT",
+    "tool_name": "analyze_brand",
+    "content_preview": "Tool returned: analyze_brand -> {'result': \"Step 1 Complete. Brand Bio for 'PopBrush' has been saved.\\nSummary: Innovative hair detangling brushes that are anti-breakage, painless, a..."
+  },
+  {
+    "time": 1765303505.242151,
+    "type": "runner_event",
+    "event_type": "TOOL_CALL",
+    "tool_name": "generate_email_campaign",
+    "content_preview": "Calling tool: generate_email_campaign({'offer': '25% off everything', 'brand_name': 'PopBrush', 'angle': 'Best Deal of the Year'}) | Calling tool: generate_email_campaign({'brand_name': 'PopBrush', 'offer': '25% off everything', 'angle': 'Last Chance to Grab Your Favouri...)"
+  },
+  {
+    "time": 1765303531.377449,
+    "type": "runner_event",
+    "event_type": "TOOL_RESULT",
+    "tool_name": "generate_email_campaign",
+    "content_preview": "Tool returned: generate_email_campaign -> {'result': '{\\n  \"status\": \"APPROVED\",\\n  \"warning\": \"Verification failed, but returning draft for review.\",\\n  \"draft\": {\\n    \"subject\": \"Tame the T... | Tool returned: generate_email_campaign -> {'result': '{\\n  \"status\": \"APPROVED\",\\n  \"warning\": \"Verifi"
+  },
+  {
+    "time": 1765303536.6046028,
+    "type": "runner_event",
+    "event_type": "model_turn",
+    "content_preview": "Here are the two emails for the Boxing Day promotion, with 25% off everything:\n\n**Email 1:**\n\n*   **Subject:** Tame the Tangles: 25% Off Everything!\n*   **Preview:** Say goodbye to painful detangling \u2014 and hello to joyful mornings.\n*   **Hero Title:** Best Deal of the Year\n*   **Hero Subtitle:** 25%"
+  },
+  {
+    "time": 1765303536.604789,
+    "type": "agent_end",
+    "agent": "email_orchestrator"
+  }
+]
