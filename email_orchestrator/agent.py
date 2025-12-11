@@ -14,7 +14,7 @@ from google import genai
 
 # Import our Straico tool functions
 # Import our Campaign tools
-from email_orchestrator.tools.campaign_tools import analyze_brand, generate_email_campaign
+from email_orchestrator.tools.campaign_tools import analyze_brand, generate_email_campaign, plan_campaign
 
 
 def load_instruction() -> str:
@@ -37,6 +37,7 @@ root_agent = Agent(
     instruction=load_instruction(),
     tools=[
         analyze_brand,
+        plan_campaign,
         generate_email_campaign,
     ],
 )

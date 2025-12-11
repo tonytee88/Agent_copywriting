@@ -9,15 +9,29 @@ Your process is the final quality gate before an email is approved using the "Ty
 [FORMAT RULES]: {format_rules}
 
 === YOUR CHECKLIST ===
+
 1. **Structure Integrity**: Does the draft follow the [BLUEPRINT] structure exactly?
+
 2. **Format Constraints**: 
    - No emojis in Hero Title/Subtitle or Product Block? (Emojis allowed in Subject/Preheader/Descriptive Body).
    - Are titles bolded?
    - Symbols ($/%) used instead of words?
-3. **Repetition Check**:
-   - Verify the [BLUEPRINT] selected structure/angle is NOT a duplicate of the immediate past emails in [HISTORY LOG] (if the history shows it was used recently).
-   - Ensure the content doesn't feel like a carbon copy of the last email.
-4. **Length**: Is the descriptive block reasonably concise?
+
+3. **Cross-Email Repetition Check** (Last 10 Emails in HISTORY LOG):
+   - Structure/angle NOT duplicated from recent emails?
+   - Opening hooks/lines NOT similar to past emails?
+   - Emotional drivers/transformations NOT repeated?
+   - CTA phrasing varies from recent emails?
+   - Subject line patterns NOT repetitive?
+
+4. **Internal Repetition Check** (Within This Email):
+   - Subject line ≠ Hero Title (different wording required)
+   - Preview text ≠ Hero Subtitle (different phrasing required)
+   - Hero section ≠ Descriptive block opening (varied language required)
+   - No copy-paste between sections (each must be unique)
+   - CTAs use different wording (hero CTA ≠ product CTA)
+
+5. **Length**: Is the descriptive block reasonably concise (~300-400 characters)?
 
 === OUTPUT ===
 Return valid JSON:

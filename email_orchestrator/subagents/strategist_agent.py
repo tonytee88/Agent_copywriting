@@ -14,7 +14,8 @@ history_manager = HistoryManager()
 
 async def strategist_agent(
     request: CampaignRequest, 
-    brand_bio: BrandBio
+    brand_bio: BrandBio,
+    campaign_context: Any = None
 ) -> EmailBlueprint:
     """
     The Strategist Agent plans the email campaign structure and angle.
@@ -23,11 +24,16 @@ async def strategist_agent(
     Args:
         request: The user's campaign request.
         brand_bio: The brand's context.
+        campaign_context: Optional EmailSlot from campaign plan with strategic directives.
         
     Returns:
         A structured EmailBlueprint Pydantic model.
     """
     print(f"[Strategist] Planning campaign for {request.brand_name}...")
+    
+    if campaign_context:
+        print(f"[Strategist] Using campaign context: Slot #{campaign_context.slot_number}")
+        print(f"[Strategist] Directives: {campaign_context.assigned_structure}, {campaign_context.assigned_angle}, {campaign_context.assigned_persona}")
 
     # 1. Fetch Context
     # Get knowledge base text (cached)
@@ -44,13 +50,37 @@ async def strategist_agent(
     except FileNotFoundError:
         raise FileNotFoundError("Strategist prompt v1.txt not found")
     
-    # 3. Format Prompt
+    # 3. Format Prompt with campaign context if available
+    campaign_directives = ""
+    if campaign_context:
+        campaign_directives = f"""
+=== CAMPAIGN PLAN DIRECTIVES ===
+This email is part of a larger campaign plan. Follow these strategic directives:
+
+- Assigned Transformation: {campaign_context.assigned_transformation}
+- Assigned Storytelling Angle: {campaign_context.assigned_angle}
+- Assigned Structure: {campaign_context.assigned_structure}
+- Assigned Persona: {campaign_context.assigned_persona}
+- Email Purpose: {campaign_context.email_purpose}
+- Intensity Level: {campaign_context.intensity_level}
+- Theme: {campaign_context.theme}
+- Key Message: {campaign_context.key_message}
+- Connection to Previous: {campaign_context.connection_to_previous or "N/A"}
+- Connection to Next: {campaign_context.connection_to_next or "N/A"}
+
+CRITICAL: You MUST use these assigned elements in your blueprint. This ensures consistency with the overall campaign strategy.
+"""
+    
     full_prompt = prompt_template.format(
         campaign_request=request.model_dump_json(indent=2),
         brand_bio=brand_bio.model_dump_json(indent=2),
         history_log=history_summary,
         knowledge_base=kb_text
     )
+    
+    # Add campaign directives at the beginning if present
+    if campaign_directives:
+        full_prompt = campaign_directives + "\n\n" + full_prompt
     
     # 4. Call Straico API
     # Using GPT-4o or similar high-reasoning model via Straico

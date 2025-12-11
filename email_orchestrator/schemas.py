@@ -91,3 +91,63 @@ class CampaignLogEntry(BaseModel):
     # These are excluded from lightweight logging to save 87% storage
     blueprint: Optional[EmailBlueprint] = None
     final_draft: Optional[EmailDraft] = None
+
+# --- Campaign Planning Schemas ---
+
+class EmailSlot(BaseModel):
+    """A single email in the campaign plan."""
+    slot_number: int
+    send_date: Optional[str] = None  # ISO format or relative like "Day 1"
+    email_purpose: Literal["promotional", "educational", "storytelling", "nurture"]
+    intensity_level: Literal["hard_sell", "medium", "soft"]
+    
+    # Strategic directives
+    assigned_transformation: str
+    assigned_angle: str
+    assigned_persona: str
+    assigned_structure: str
+    
+    # Context
+    theme: str
+    key_message: str
+    connection_to_previous: Optional[str] = None
+    connection_to_next: Optional[str] = None
+    
+    # Offer details (if promotional)
+    offer_details: Optional[str] = None
+    offer_placement: Optional[Literal["Hero", "Story", "Product"]] = None
+
+class CampaignPlan(BaseModel):
+    """Strategic plan for a multi-email campaign."""
+    campaign_id: str
+    brand_name: str
+    campaign_name: str
+    campaign_goal: str  # e.g., "Build awareness then drive Black Friday sales"
+    
+    duration: str  # e.g., "1 month", "2 weeks"
+    total_emails: int
+    
+    # Strategic overview
+    overarching_narrative: str
+    promotional_balance: str  # e.g., "60% educational, 40% promotional"
+    
+    # Individual email slots
+    email_slots: List[EmailSlot]
+    
+    # Metadata
+    created_at: str
+    status: Literal["draft", "approved", "in_progress", "completed"] = "draft"
+
+class CampaignPlanVerification(BaseModel):
+    """Verification result for a campaign plan."""
+    approved: bool
+    score: int  # 0-10
+    
+    # Specific checks
+    variety_check: Dict[str, bool]  # e.g., {"no_repeated_transformations": True}
+    balance_check: Dict[str, bool]  # e.g., {"promotional_ratio_ok": True}
+    coherence_check: Dict[str, bool]  # e.g., {"logical_flow": True}
+    
+    critical_issues: List[str]
+    suggestions: List[str]
+    feedback_for_planner: str

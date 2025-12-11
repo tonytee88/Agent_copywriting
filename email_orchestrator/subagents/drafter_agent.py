@@ -1,6 +1,6 @@
 import json
 from pathlib import Path
-from typing import Dict, Any
+from typing import Dict, Any, Optional
 
 from email_orchestrator.tools.straico_tool import get_client
 from email_orchestrator.tools.knowledge_reader import KnowledgeReader
@@ -11,7 +11,8 @@ knowledge_reader = KnowledgeReader()
 
 async def drafter_agent(
     blueprint: EmailBlueprint, 
-    brand_bio: BrandBio
+    brand_bio: BrandBio,
+    revision_feedback: Optional[str] = None
 ) -> EmailDraft:
     """
     The Drafter Agent writes the email content based on the Strategist's blueprint.
@@ -20,11 +21,15 @@ async def drafter_agent(
     Args:
         blueprint: The architectural plan from the Strategist.
         brand_bio: The brand's context.
+        revision_feedback: Optional feedback from Verifier for revisions.
         
     Returns:
         A structured EmailDraft Pydantic model.
     """
-    print(f"[Drafter] Writing email for {blueprint.brand_name}...")
+    if revision_feedback:
+        print(f"[Drafter] Revising email for {blueprint.brand_name} based on feedback...")
+    else:
+        print(f"[Drafter] Writing email for {blueprint.brand_name}...")
 
     # 1. Fetch Context
     # Get format guidelines (Type #1)
@@ -44,7 +49,8 @@ async def drafter_agent(
     full_prompt = prompt_template.format(
         format_guide=format_guide,
         blueprint=blueprint.model_dump_json(indent=2),
-        brand_bio=brand_bio.model_dump_json(indent=2)
+        brand_bio=brand_bio.model_dump_json(indent=2),
+        revision_feedback=revision_feedback or "N/A - First draft"
     )
     
     # 4. Call Straico API

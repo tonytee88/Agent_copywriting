@@ -16,6 +16,11 @@ Adopt the Persona's voice and Brand Tone.
 === BRAND BIO ===
 {brand_bio}
 
+=== REVISION FEEDBACK ===
+{revision_feedback}
+
+**IMPORTANT**: If revision feedback is provided (not "N/A"), you MUST address ALL issues mentioned. This is a revision, not a new draft. Make only the changes requested while keeping everything else the same.
+
 === OUTPUT INSTRUCTIONS ===
 Return the email in a Valid JSON format matching this schema:
 {{
