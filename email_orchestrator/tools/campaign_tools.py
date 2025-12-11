@@ -160,10 +160,43 @@ async def generate_email_campaign(
                 )
                 history_manager.log_campaign(entry)
                 
-                # Save to output file
-                _save_email_to_file(brand_name, angle, draft)
+                # Format feedback for the user
+                final_email_json = json.dumps(verification.final_draft.model_dump(), indent=2)
                 
-                return draft.model_dump_json(indent=2)
+                # Save to local output file (Double Output Requirement)
+                _save_email_to_file(brand_name, angle, verification.final_draft)
+
+                # Auto-export to Google Docs if configured
+                docs_message = ""
+                try:
+                    import os
+                    
+                    # Check for any valid credential file
+                    creds_exist = any(os.path.exists(f) for f in ["token.json", "credentials.json", "google_credentials.json"]) or os.getenv("GOOGLE_APPLICATION_CREDENTIALS")
+                    
+                    print(f"[DEBUG] Google Export Check: creds_exist={creds_exist}, cwd={os.getcwd()}")
+                    
+                    if creds_exist:
+                        from email_orchestrator.tools.google_docs_export import export_email_to_google_docs
+                        
+                        # Use specific folder ID (User Request) or fallback to env
+                        folder_id = os.getenv('GOOGLE_DRIVE_FOLDER_ID', "1pAK5hmb2Kvn2KUOwxXVfOptvfUqDGu4Y")
+                        share_with = os.getenv('GOOGLE_DOCS_SHARE_EMAIL')
+                        
+                        print(f"[DEBUG] Attempting export to folder: {folder_id}")
+                        result = export_email_to_google_docs(
+                            email_draft=verification.final_draft.model_dump(),
+                            brand_name=brand_name,
+                            folder_id=folder_id,
+                            share_with=share_with
+                        )
+                        print(f"[DEBUG] Export result: {result.get('document_url', 'No URL')}")
+                        docs_message = f", \"google_doc\": \"{result['document_url']}\""
+                except Exception as e:
+                    print(f"[Export] Failed to export to Google Docs: {e}")
+                    docs_message = f", \"google_doc_error\": \"{str(e)}\""
+                
+                return f'{{\n  "status": "APPROVED",\n  "draft": {final_email_json}{docs_message}\n}}'
             else:
                 print(f"[Loop] Verification failed (Att {attempt+1}). Feedback: {verification.feedback_for_drafter}")
                 
@@ -183,11 +216,44 @@ async def generate_email_campaign(
     # If we get here, verification failed after retries
     # Save the draft anyway for user review
     _save_email_to_file(brand_name, angle, draft)
+
+    # Auto-export to Google Docs (Fallback Path)
+    docs_message = ""
+    try:
+        import os
+        # Check for any valid credential file
+        creds_exist = any(os.path.exists(f) for f in ["token.json", "credentials.json", "google_credentials.json"]) or os.getenv("GOOGLE_APPLICATION_CREDENTIALS")
+        
+        print(f"[DEBUG] Google Export Check (Fallback): creds_exist={creds_exist}")
+        
+        if creds_exist:
+            from email_orchestrator.tools.google_docs_export import export_email_to_google_docs
+            
+            # Use specific folder ID (User Request) or fallback to env
+            folder_id = os.getenv('GOOGLE_DRIVE_FOLDER_ID', "1pAK5hmb2Kvn2KUOwxXVfOptvfUqDGu4Y")
+            share_with = os.getenv('GOOGLE_DOCS_SHARE_EMAIL')
+            
+            print(f"[DEBUG] Attempting export to folder: {folder_id}")
+            # draft is a regular object here (Pydantic v1 usually), ensure dict compatibility
+            draft_dict = draft.dict() if hasattr(draft, 'dict') else draft.model_dump()
+            
+            result = export_email_to_google_docs(
+                email_draft=draft_dict,
+                brand_name=brand_name,
+                folder_id=folder_id,
+                share_with=share_with
+            )
+            print(f"[DEBUG] Export result: {result.get('document_url', 'No URL')}")
+            docs_message = f", \"google_doc\": \"{result['document_url']}\""
+    except Exception as e:
+        print(f"[Export] Failed to export to Google Docs (Fallback): {e}")
+        docs_message = f", \"google_doc_error\": \"{str(e)}\""
     
     return json.dumps({
         "status": "APPROVED", # Faking approval to show the draft to user (or handling gracefully)
         "warning": "Verification failed, but returning draft for review.",
         "draft": draft.dict(), # Use dict() for Pydantic v1/v2 compat or model_dump()
+        "google_doc": docs_message,
         "feedback": verification.feedback_for_drafter
     }, indent=2)
 
@@ -273,6 +339,7 @@ async def plan_campaign(
         JSON string of approved CampaignPlan or feedback if verification failed
     """
     print(f"--- [Tool] Planning Campaign for {brand_name} ---")
+    print(f"[DEBUG-TRACE] plan_campaign started for {brand_name}")
     
     # 0. Load Brand Bio
     brand_bio = brand_manager.get_bio(brand_name)
@@ -295,23 +362,55 @@ async def plan_campaign(
     except Exception as e:
         return f"Campaign Planner Agent Failed: {e}"
     
+    print(f"[DEBUG-TRACE] Plan generated. ID: {plan.campaign_id}. Starting verification loop...")
+
     # 2. Verifier with retry loop
     max_retries = 2
     for attempt in range(max_retries):
         try:
+            print(f"[DEBUG-TRACE] Calling verifier agent...")
             verification = await campaign_plan_verifier_agent(plan, brand_bio)
+            print(f"[DEBUG-TRACE] Verifier returned. Approved={verification.approved}. Type={type(verification)}")
             
+            print(f"[DEBUG] Verification Result: type={type(verification)}, approved={verification.approved}, score={verification.score}")
+
             if verification.approved:
+                print(f"[DEBUG-TRACE] Saving plan {plan.campaign_id}...")
                 # Success! Save the plan
                 campaign_plan_manager.save_plan(plan)
                 campaign_plan_manager.update_plan_status(plan.campaign_id, "approved")
+                
+                # Auto-export to Google Sheets if configured
+                sheets_message = ""
+                try:
+                    import os
+                    # Check for any valid credential file
+                    creds_exist = any(os.path.exists(f) for f in ["token.json", "credentials.json", "google_credentials.json"])
+                    
+                    print(f"[DEBUG] Plan Export Check: creds_exist={creds_exist}")
+                    
+                    if creds_exist:
+                        from email_orchestrator.tools.google_sheets_export import export_campaign_to_sheets
+                        
+                        # Use specific folder ID (User Request) or fallback to env
+                        folder_id = os.getenv('GOOGLE_DRIVE_FOLDER_ID', "1pAK5hmb2Kvn2KUOwxXVfOptvfUqDGu4Y")
+                        share_with = os.getenv('GOOGLE_DOCS_SHARE_EMAIL')
+                        
+                        print(f"[DEBUG] Attempting plan export to folder: {folder_id}")
+                        result = export_campaign_to_sheets(plan, folder_id, share_with)
+                        print(f"[DEBUG] Plan export result: {result.get('spreadsheet_url', 'No URL')}")
+                        sheets_message = f"\n✓ Exported to Google Sheets: {result['spreadsheet_url']}"
+                except Exception as e:
+                    print(f"[DEBUG] Plan export failed: {e}")
+                    sheets_message = f"\n⚠ Google Sheets export failed: {e}"
                 
                 return (
                     f"✓ Campaign Plan Approved!\n\n"
                     f"Campaign: {plan.campaign_name}\n"
                     f"ID: {plan.campaign_id}\n"
                     f"Emails: {plan.total_emails}\n"
-                    f"Balance: {plan.promotional_balance}\n\n"
+                    f"Balance: {plan.promotional_balance}\n"
+                    f"{sheets_message}\n\n"
                     f"NEXT STEP: Use `generate_email_campaign` with campaign_plan_id='{plan.campaign_id}' "
                     f"to create emails following this plan.\n\n"
                     f"Full Plan:\n{plan.model_dump_json(indent=2)}"
@@ -335,6 +434,9 @@ async def plan_campaign(
                     # Loop continues to verify the revised plan
                     
         except Exception as e:
+            print(f"[DEBUG-TRACE] plan_campaign CRASHED: {e}")
+            import traceback
+            traceback.print_exc()
             return f"Campaign Plan Verifier Failed: {e}"
     
     # If we get here, verification failed after retries

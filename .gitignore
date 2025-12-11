@@ -32,3 +32,5 @@ outputs/archive/
 # Keep these in Git (small, essential)
 !email_history_log.json
 !brand_bio_db.json
+google_credentials.json
+*.json

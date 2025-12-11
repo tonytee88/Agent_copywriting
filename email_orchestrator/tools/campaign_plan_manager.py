@@ -64,6 +64,9 @@ class CampaignPlanManager:
             
             try:
                 created = datetime.fromisoformat(created_str.replace('Z', '+00:00'))
+                # comparison fix: ensure both are naive
+                if created.tzinfo is not None:
+                    created = created.replace(tzinfo=None)
             except:
                 created = now  # If can't parse, treat as recent
             
@@ -138,6 +141,11 @@ class CampaignPlanManager:
             and p.get("status") != "archived"  # Exclude archived
         ]
         return sorted(brand_plans, key=lambda x: x.created_at, reverse=True)
+
+    def list_all_plans(self) -> List[CampaignPlan]:
+        """List all available campaign plans."""
+        plans = self._load_all()
+        return [CampaignPlan(**p) for p in plans]
     
     def update_plan_status(self, campaign_id: str, new_status: str) -> bool:
         """Update the status of a campaign plan."""
