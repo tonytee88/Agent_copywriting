@@ -32,29 +32,28 @@ class EmailBlueprint(BaseModel):
     campaign_theme: str
     
     # Step 2: Transformation
-    transformation_id: str = Field(description="Catalog ID from transformations.json")
+    selected_transformation: str = Field(description="The core emotional driver (Have/Feel/AvgDay/Status)")
     
     # Step 3: Structure
-    structure_id: str = Field(description="Catalog ID from structures.json")
-    structure_execution_map: Dict[str, str] = Field(description="Specific goals for each block (Hero, Descriptive, Product)")
+    descriptive_structure_name: str = Field(description="Name of the structure from the PDF (e.g. Emoji Checklist)")
+    structure_guidelines: List[str] = Field(description="Specific formatting rules for this structure")
     
     # Step 4: Persona
-    persona_id: str = Field(description="Catalog ID from personas.json")
+    persona_name: str
+    persona_voice_guidelines: str
     
     # Step 5: Storytelling
-    angle_id: str = Field(description="Catalog ID from angles.json")
+    storytelling_angle: str = Field(description="The narrative hook (e.g. Confession line)")
     
-    # Step 6: Offer & CTAs
+    # Step 6: Offer
     offer_details: str
-    offer_placement: Literal["Hero", "Story", "Product", "Descriptive"] = "Hero"
-    cta_style_id: str = Field(description="Catalog ID from cta_styles.json")
+    offer_placement: Literal["Hero", "Story", "Product"] = "Hero"
     
     # Step 7: Content Outline (High level)
     subject_ideas: List[str]
     preview_text_ideas: List[str]
     
     key_points_for_descriptive_block: List[str]
-    copy_constraints: List[str] = Field(default_factory=list)
 
 # --- Output & Logging ---
 
@@ -81,13 +80,12 @@ class CampaignLogEntry(BaseModel):
     timestamp: str
     brand_name: str
     
-    # ID-based tracking for non-repetition logic
-    transformation_id: str
-    structure_id: str
-    angle_id: str
-    cta_style_id: Optional[str] = None
-    
+    # For duplication checking (essential fields only)
+    transformation_used: str
+    structure_used: str
+    storytelling_angle_used: str
     offer_placement_used: str
+    cta_style_used: Optional[str] = None
     
     # Optional: Full objects for detailed review (not needed for non-repetition logic)
     # These are excluded from lightweight logging to save 87% storage
@@ -103,12 +101,11 @@ class EmailSlot(BaseModel):
     email_purpose: Literal["promotional", "educational", "storytelling", "nurture"]
     intensity_level: Literal["hard_sell", "medium", "soft"]
     
-    # Strategic directives (Catalog IDs)
-    transformation_id: str
-    angle_id: str
-    persona_id: str
-    structure_id: str
-    cta_style_id: Optional[str] = None
+    # Strategic directives
+    assigned_transformation: str
+    assigned_angle: str
+    assigned_persona: str
+    assigned_structure: str
     
     # Context
     theme: str
@@ -141,63 +138,16 @@ class CampaignPlan(BaseModel):
     created_at: str
     status: Literal["draft", "approved", "in_progress", "completed"] = "draft"
 
-# --- Verification Schemas ---
-
-class Issue(BaseModel):
-    """A specific quality issue detected by QA."""
-    type: Literal["repetition", "history_repetition", "balance", "coherence", "completeness", "formatting", "quality", "compliance", "other"]
-    severity: Literal["P1", "P2", "P3"] # P1 = Blocker, P2 = Major, P3 = Minor
-    scope: Literal["campaign", "email", "history"]
-    email_slot: Optional[int] = None
-    field: str
-    problem: str
-    rationale: str
-
-class PlanVariationSuggestion(BaseModel):
-    """Alternative IDs suggested by Plan QA."""
-    email_slot: int
-    suggested_transformations: List[str] # IDs
-    suggested_angles: List[str] # IDs
-    suggested_structures: List[str] # IDs
-    notes: Optional[str] = None
-
 class CampaignPlanVerification(BaseModel):
     """Verification result for a campaign plan."""
     approved: bool
     score: int  # 0-10
     
-    # Specific checks (Legacy + New)
-    variety_check: Dict[str, bool]
-    balance_check: Dict[str, bool]
-    coherence_check: Dict[str, bool]
+    # Specific checks
+    variety_check: Dict[str, bool]  # e.g., {"no_repeated_transformations": True}
+    balance_check: Dict[str, bool]  # e.g., {"promotional_ratio_ok": True}
+    coherence_check: Dict[str, bool]  # e.g., {"logical_flow": True}
     
-    critical_issues: List[str] # Keeping for backward compat briefly
-    
-    # New Judge+Repair Fields
-    issues: List[Issue] = Field(default_factory=list)
-    per_email_suggestions: List[PlanVariationSuggestion] = Field(default_factory=list)
-    campaign_level_suggestions: List[str] = Field(default_factory=list)
-    
-    feedback_for_planner: str
-
-class DraftReplacementOptions(BaseModel):
-    """Ready-to-use replacement copy for Email QA."""
-    subject_alternatives: List[str] = Field(default_factory=list)
-    preview_alternatives: List[str] = Field(default_factory=list)
-    hero_title_alternatives: List[str] = Field(default_factory=list)
-    hero_subtitle_alternatives: List[str] = Field(default_factory=list)
-    hero_cta_alternatives: List[str] = Field(default_factory=list)
-    product_cta_alternatives: List[str] = Field(default_factory=list)
-    descriptive_block_rewrite_hint: Optional[str] = None
-
-class EmailVerification(BaseModel):
-    """Verification result for a single email draft."""
-    approved: bool
-    score: int
     critical_issues: List[str]
-    
-    # New Judge+Repair Fields
-    issues: List[Issue] = Field(default_factory=list)
-    replacement_options: Optional[DraftReplacementOptions] = None
-    
-    feedback_for_drafter: str
+    suggestions: List[str]
+    feedback_for_planner: str

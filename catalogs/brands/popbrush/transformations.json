@@ -1,0 +1,110 @@
+[
+    {
+        "id": "TRANS_MORNING_RUSH",
+        "from_state": "Chaos, screaming kids, late for school",
+        "to_state": "Calm, 5-minute routine, out the door smiling",
+        "emotional_driver": "control",
+        "best_for_purposes": [
+            "storytelling",
+            "promo"
+        ]
+    },
+    {
+        "id": "TRANS_DAMAGE_RECOVERY",
+        "from_state": "Brittle, breaking, straw-like hair",
+        "to_state": "Soft, shiny, resilient strands",
+        "emotional_driver": "confidence",
+        "best_for_purposes": [
+            "educational",
+            "soft"
+        ]
+    },
+    {
+        "id": "TRANS_PAIN_TO_PLEASURE",
+        "from_state": "Dreading the brush, tears, 'ouch'",
+        "to_state": "Soothing massage, 'mommy brush my hair'",
+        "emotional_driver": "relief",
+        "best_for_purposes": [
+            "promo",
+            "storytelling"
+        ]
+    },
+    {
+        "id": "TRANS_OILY_ROOTS",
+        "from_state": "Greasy roots, washing hair daily",
+        "to_state": "Balanced scalp, washing 2x a week",
+        "emotional_driver": "freedom",
+        "best_for_purposes": [
+            "educational",
+            "medium"
+        ]
+    },
+    {
+        "id": "TRANS_FRIZZ_CONTROL",
+        "from_state": "Lion's mane, static, uncontrollable frizz",
+        "to_state": "Sleek, smooth, polished look",
+        "emotional_driver": "confidence",
+        "best_for_purposes": [
+            "promo",
+            "soft"
+        ]
+    },
+    {
+        "id": "TRANS_UNDEFINED_CURLS",
+        "from_state": "Undefined, messy puffball",
+        "to_state": "Bouncy, defined, happy curls",
+        "emotional_driver": "pride",
+        "best_for_purposes": [
+            "educational"
+        ]
+    },
+    {
+        "id": "TRANS_BEDHEAD_SHAME",
+        "from_state": "Waking up looking like a disaster",
+        "to_state": "Waking up ready to conquer the day",
+        "emotional_driver": "aspiration",
+        "best_for_purposes": [
+            "storytelling"
+        ]
+    },
+    {
+        "id": "TRANS_WASTED_MONEY",
+        "from_state": "Drawer full of brushes that don't work",
+        "to_state": "The one brush you'll keep forever",
+        "emotional_driver": "smart_choice",
+        "best_for_purposes": [
+            "hard_sell",
+            "rational"
+        ]
+    },
+    {
+        "id": "TRANS_GIFTING_HERO",
+        "from_state": "Stressed about finding the perfect gift",
+        "to_state": "Hero of Christmas morning",
+        "emotional_driver": "status",
+        "best_for_purposes": [
+            "seasonal",
+            "promo"
+        ]
+    },
+    {
+        "id": "TRANS_SALON_AT_HOME",
+        "from_state": "Expensive blowouts required for good hair",
+        "to_state": "Achieving the look at home for free",
+        "emotional_driver": "independence",
+        "best_for_purposes": [
+            "educational",
+            "hard_sell"
+        ]
+    },
+    {
+        "id": "TRANS_POSTPARTUM_HAIR",
+        "from_state": "Shedding, thinning, feeling unlike yourself",
+        "to_state": "Regaining volume and confidence",
+        "emotional_driver": "hope",
+        "best_for_purposes": [
+            "nurture",
+            "storytelling"
+        ]
+    }
+]

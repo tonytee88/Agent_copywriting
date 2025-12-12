@@ -108,9 +108,9 @@ class HistoryManager:
         """
         recent = self.get_recent_campaigns(brand_name, limit)
         return {
-            "transformations": [c.transformation_used for c in recent],
-            "structures": [c.structure_used for c in recent],
-            "storytelling_angles": [c.storytelling_angle_used for c in recent],
+            "transformations": [c.transformation_id for c in recent],
+            "structures": [c.structure_id for c in recent],
+            "storytelling_angles": [c.angle_id for c in recent],
             "offer_placements": [c.offer_placement_used for c in recent],
         }
     

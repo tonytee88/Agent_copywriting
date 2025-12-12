@@ -1,0 +1,226 @@
+[
+    {
+        "id": "STRUCT_SPOTLIGHT_BOX",
+        "name": "The Spotlight Box",
+        "description": "Visual focus on a single product/benefit.",
+        "layout_rules": [
+            "Hero with large image",
+            "Descriptive block focused on ONE key benefit",
+            "Product block"
+        ],
+        "required_blocks": [
+            "hero",
+            "descriptive",
+            "product"
+        ],
+        "allowed_intensities": [
+            "medium",
+            "hard_sell"
+        ],
+        "tags": [
+            "promo",
+            "product_focus"
+        ]
+    },
+    {
+        "id": "STRUCT_PROBLEM_SOLUTION",
+        "name": "Problem/Solution Outline",
+        "description": "Classic persistent pain point into relief.",
+        "layout_rules": [
+            "Hero defines the Problem",
+            "Descriptive introduces Solution",
+            "Product offers the Tool"
+        ],
+        "required_blocks": [
+            "hero",
+            "descriptive",
+            "product"
+        ],
+        "allowed_intensities": [
+            "medium",
+            "soft"
+        ],
+        "tags": [
+            "educational",
+            "conversion"
+        ]
+    },
+    {
+        "id": "STRUCT_COMPARISON_CHART",
+        "name": "The Comparison Chart",
+        "description": "Us vs Them visual or text contrast.",
+        "layout_rules": [
+            "Hero sets up the choice",
+            "Descriptive lists Pros/Cons",
+            "Product is the winner"
+        ],
+        "required_blocks": [
+            "hero",
+            "descriptive",
+            "product"
+        ],
+        "allowed_intensities": [
+            "hard_sell",
+            "medium"
+        ],
+        "tags": [
+            "educational",
+            "promo"
+        ]
+    },
+    {
+        "id": "STRUCT_SOCIAL_PROOF_STACK",
+        "name": "Social Proof Stack",
+        "description": "Heavy use of reviews and testimonials.",
+        "layout_rules": [
+            "Hero quote",
+            "Descriptive details usage count/rating",
+            "Product block with stars"
+        ],
+        "required_blocks": [
+            "hero",
+            "descriptive",
+            "product"
+        ],
+        "allowed_intensities": [
+            "soft",
+            "medium"
+        ],
+        "tags": [
+            "trust",
+            "nurture"
+        ]
+    },
+    {
+        "id": "STRUCT_STORY_BRIDGE",
+        "name": "Story Bridge",
+        "description": "Narrative that bridges a gap.",
+        "layout_rules": [
+            "Hero hook",
+            "Descriptive tells the story",
+            "Product is the happy ending"
+        ],
+        "required_blocks": [
+            "hero",
+            "descriptive",
+            "product"
+        ],
+        "allowed_intensities": [
+            "soft",
+            "nurture"
+        ],
+        "tags": [
+            "storytelling"
+        ]
+    },
+    {
+        "id": "STRUCT_FAQ_BUSTERS",
+        "name": "FAQ Busters",
+        "description": "Overcoming objections directly.",
+        "layout_rules": [
+            "Hero question",
+            "Descriptive answers 3 key Qs",
+            "Product call to action"
+        ],
+        "required_blocks": [
+            "hero",
+            "descriptive",
+            "product"
+        ],
+        "allowed_intensities": [
+            "educational",
+            "medium"
+        ],
+        "tags": [
+            "objection_handling"
+        ]
+    },
+    {
+        "id": "STRUCT_MYTH_VS_FACT",
+        "name": "Myth vs Fact",
+        "description": "Correcting misconceptions.",
+        "layout_rules": [
+            "Hero states the Myth",
+            "Descriptive reveals Fact",
+            "Product aligns with Fact"
+        ],
+        "required_blocks": [
+            "hero",
+            "descriptive",
+            "product"
+        ],
+        "allowed_intensities": [
+            "educational"
+        ],
+        "tags": [
+            "education"
+        ]
+    },
+    {
+        "id": "STRUCT_VIP_INVITE",
+        "name": "VIP Invite",
+        "description": "Exclusive feeling offer.",
+        "layout_rules": [
+            "Hero official invite",
+            "Descriptive explains benefits",
+            "Product is the ticket"
+        ],
+        "required_blocks": [
+            "hero",
+            "descriptive",
+            "product"
+        ],
+        "allowed_intensities": [
+            "hard_sell"
+        ],
+        "tags": [
+            "promo",
+            "retention"
+        ]
+    },
+    {
+        "id": "STRUCT_FOUNDER_NOTE",
+        "name": "Founder's Note",
+        "description": "Personal message from leadership.",
+        "layout_rules": [
+            "Hero portrait/sig",
+            "Descriptive personal story",
+            "Product soft mention"
+        ],
+        "required_blocks": [
+            "hero",
+            "descriptive",
+            "product"
+        ],
+        "allowed_intensities": [
+            "soft",
+            "nurture"
+        ],
+        "tags": [
+            "brand_building"
+        ]
+    },
+    {
+        "id": "STRUCT_LISTICLE",
+        "name": "The Listicle",
+        "description": "3-5 reasons or tips.",
+        "layout_rules": [
+            "Hero headline",
+            "Descriptive numbered list",
+            "Product is the #1 tip"
+        ],
+        "required_blocks": [
+            "hero",
+            "descriptive",
+            "product"
+        ],
+        "allowed_intensities": [
+            "educational",
+            "medium"
+        ],
+        "tags": [
+            "education",
+            "skimmable"
+        ]
+    }
+]

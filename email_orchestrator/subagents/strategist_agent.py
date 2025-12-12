@@ -4,12 +4,11 @@ from typing import Dict, Any, List
 import traceback
 
 from email_orchestrator.tools.straico_tool import get_client
-from email_orchestrator.tools.knowledge_reader import KnowledgeReader
 from email_orchestrator.tools.history_manager import HistoryManager, CampaignLogEntry
+from email_orchestrator.tools.catalog_manager import get_catalog_manager
 from email_orchestrator.schemas import CampaignRequest, BrandBio, EmailBlueprint
 
 # Initialize tools
-knowledge_reader = KnowledgeReader()
 history_manager = HistoryManager()
 
 async def strategist_agent(
@@ -18,99 +17,84 @@ async def strategist_agent(
     campaign_context: Any = None
 ) -> EmailBlueprint:
     """
-    The Strategist Agent plans the email campaign structure and angle.
-    It reads the Knowledge Base (PDFs) and History Log to make informed decisions.
-    
-    Args:
-        request: The user's campaign request.
-        brand_bio: The brand's context.
-        campaign_context: Optional EmailSlot from campaign plan with strategic directives.
-        
-    Returns:
-        A structured EmailBlueprint Pydantic model.
+    The Strategist Agent plans the email campaign structure and angle using Catalog IDs.
     """
     print(f"[Strategist] Planning campaign for {request.brand_name}...")
     
-    if campaign_context:
-        print(f"[Strategist] Using campaign context: Slot #{campaign_context.slot_number}")
-        print(f"[Strategist] Directives: {campaign_context.assigned_structure}, {campaign_context.assigned_angle}, {campaign_context.assigned_persona}")
+    # 1. Load Catalogs
+    cm = get_catalog_manager()
+    catalogs_data = {
+        "structures": cm.get_global_catalog("structures"),
+        "angles": cm.get_global_catalog("angles"),
+        "cta_styles": cm.get_global_catalog("cta_styles"),
+        "personas": cm.get_brand_catalog(request.brand_name, "personas"),
+        "transformations": cm.get_brand_catalog(request.brand_name, "transformations")
+    }
+    catalogs_str = json.dumps(catalogs_data, indent=2)
 
-    # 1. Fetch Context
-    # Get knowledge base text (cached)
-    kb_text = knowledge_reader.get_all_context()
-    
-    # Get recent history for this brand
+    # 2. Get recent history for this brand
     recent_history = history_manager.get_recent_campaigns(request.brand_name, limit=10)
     history_summary = _format_history_for_prompt(recent_history)
     
-    # 2. Load Prompt
+    # 3. Load Prompt
     prompt_path = Path(__file__).parent.parent / "prompts" / "strategist" / "v1.txt"
     try:
         prompt_template = prompt_path.read_text(encoding="utf-8")
     except FileNotFoundError:
         raise FileNotFoundError("Strategist prompt v1.txt not found")
     
-    # 3. Format Prompt with campaign context if available
+    # 4. Format Directives (if coming from Planner)
     campaign_directives = ""
+    start_str = ""
     if campaign_context:
         campaign_directives = f"""
-=== CAMPAIGN PLAN DIRECTIVES ===
-This email is part of a larger campaign plan. Follow these strategic directives:
+=== ASSIGNED DIRECTIVES (FROM PLANNER) ===
+You MUST use these specific Catalog IDs assigned by the Campaign Planner:
+- Transformation ID: {campaign_context.transformation_id}
+- Angle ID: {campaign_context.angle_id}
+- Structure ID: {campaign_context.structure_id}
+- Persona ID: {campaign_context.persona_id}
+- CTA Style ID: {campaign_context.cta_style_id or "Decide based on intensity"}
 
-- Assigned Transformation: {campaign_context.assigned_transformation}
-- Assigned Storytelling Angle: {campaign_context.assigned_angle}
-- Assigned Structure: {campaign_context.assigned_structure}
-- Assigned Persona: {campaign_context.assigned_persona}
-- Email Purpose: {campaign_context.email_purpose}
-- Intensity Level: {campaign_context.intensity_level}
+Context:
 - Theme: {campaign_context.theme}
 - Key Message: {campaign_context.key_message}
-- Connection to Previous: {campaign_context.connection_to_previous or "N/A"}
-- Connection to Next: {campaign_context.connection_to_next or "N/A"}
-
-CRITICAL: You MUST use these assigned elements in your blueprint. This ensures consistency with the overall campaign strategy.
+- Purpose: {campaign_context.email_purpose}
+- Intensity: {campaign_context.intensity_level}
 """
     
     full_prompt = prompt_template.format(
         campaign_request=request.model_dump_json(indent=2),
         brand_bio=brand_bio.model_dump_json(indent=2),
         history_log=history_summary,
-        knowledge_base=kb_text
+        catalogs=catalogs_str,
+        campaign_directives=campaign_directives
     )
     
-    # Add campaign directives at the beginning if present
-    if campaign_directives:
-        full_prompt = campaign_directives + "\n\n" + full_prompt
-    
-    # 4. Call Straico API
-    # Using GPT-4o or similar high-reasoning model via Straico
+    # 5. Call Straico API
     client = get_client()
-    # Note: Using a model capable of handling large context (PDFs)
     model = "openai/gpt-4o-2024-11-20" 
     
-    print(f"[Strategist] Sending prompt to Straico (approx {len(full_prompt)} chars)...")
+    print(f"[Strategist] Sending prompt to Straico...")
     result_json_str = await client.generate_text(full_prompt, model=model)
     
-    # 5. Parse & Validate
+    # 6. Parse & Validate
     try:
-        # Improve JSON cleaning logic
         cleaned_json = _clean_json_string(result_json_str)
         data = json.loads(cleaned_json)
         
-        # Ensure it matches schema
+        # Ensure brand_name is set
+        if "brand_name" not in data:
+            data["brand_name"] = request.brand_name
+            
         blueprint = EmailBlueprint(**data)
         
-        print(f"[Strategist] Blueprint created: {blueprint.descriptive_structure_name} / {blueprint.storytelling_angle}")
+        print(f"[Strategist] Blueprint created. Structure: {blueprint.structure_id}")
         return blueprint
         
     except Exception as e:
         print(f"[Strategist] EXCEPTION: {e}")
-        print(f"[Strategist] TRACEBACK: {traceback.format_exc()}")
-        print(f"[Strategist] RAW JSON STRING: {result_json_str}")
-        try:
-            print(f"[Strategist] PARSED DATA: {json.loads(_clean_json_string(result_json_str))}")
-        except:
-            pass
+        print(f"[Strategist] RAW JSON: {result_json_str}")
         raise e
 
 def _format_history_for_prompt(history: List[CampaignLogEntry]) -> str:
@@ -122,9 +106,9 @@ def _format_history_for_prompt(history: List[CampaignLogEntry]) -> str:
     for i, entry in enumerate(history):
         line = (
             f"Email #{i+1} ({entry.timestamp}): "
-            f"Transformation='{entry.transformation_used}', "
-            f"Structure='{entry.structure_used}', "
-            f"Angle='{entry.storytelling_angle_used}'"
+            f"Trans={entry.transformation_id}, "
+            f"Struct={entry.structure_id}, "
+            f"Angle={entry.angle_id}"
         )
         summary_lines.append(line)
         
@@ -133,19 +117,13 @@ def _format_history_for_prompt(history: List[CampaignLogEntry]) -> str:
 def _clean_json_string(raw_text: str) -> str:
     """aggressive json cleanup"""
     text = raw_text.strip()
-    
-    # Remove markdown code blocks
     if "```json" in text:
         text = text.split("```json")[1].split("```")[0]
     elif "```" in text:
         text = text.split("```")[1].split("```")[0]
-        
     text = text.strip()
-    
-    # Sometimes models output text before the JSON object
     if "{" in text:
         start = text.find("{")
         end = text.rfind("}") + 1
-        text = text[start:end]
-        
+        return text[start:end]
     return text

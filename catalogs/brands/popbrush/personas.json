@@ -1,0 +1,95 @@
+[
+    {
+        "id": "PERS_BUSY_MOM",
+        "name": "The Busy Mom",
+        "voice_guidelines": "Empathetic, efficient, slightly chaotic but loving. Uses 'quick win' language.",
+        "key_beliefs": [
+            "I have no time for myself",
+            "My kids come first",
+            "I want to look good but it's hard"
+        ],
+        "triggers": [
+            "Morning rush",
+            "Tangled screams",
+            "Late for school"
+        ],
+        "do_not_say": [
+            "Luxury spa day",
+            "Spend hours styling"
+        ]
+    },
+    {
+        "id": "PERS_HAIR_HEALTH_ENTHUSIAST",
+        "name": "The Hair Health Obsessive",
+        "voice_guidelines": "Knowledgeable, scientific, focused on ingredients and care.",
+        "key_beliefs": [
+            "Damage is the enemy",
+            "Long term health > short term style",
+            "Natural bristles vary"
+        ],
+        "triggers": [
+            "Split ends",
+            "Breakage",
+            "Heat damage"
+        ],
+        "do_not_say": [
+            "Just rip through it",
+            "Cheap plastic"
+        ]
+    },
+    {
+        "id": "PERS_SKEPTIC",
+        "name": "The Burned Skeptic",
+        "voice_guidelines": "Direct, no-nonsense, needs proof. 'I've tried everything'.",
+        "key_beliefs": [
+            "Most hair products are scams",
+            "My hair is uniquely difficult",
+            "I need a guarantee"
+        ],
+        "triggers": [
+            "Another useless gadget",
+            "Wasted money"
+        ],
+        "do_not_say": [
+            "It's magic",
+            "Instant miracle (without proof)"
+        ]
+    },
+    {
+        "id": "PERS_GIFT_GIVER",
+        "name": "The Thoughtful Gifter",
+        "voice_guidelines": "Generous, organized, wants to be the hero of the holiday.",
+        "key_beliefs": [
+            "I want unique gifts",
+            "I hate clutter/useless gifts",
+            "Presentation matters"
+        ],
+        "triggers": [
+            "Holiday deadline",
+            "Hard to buy for person"
+        ],
+        "do_not_say": [
+            "Buy this cheap thing",
+            "It's just a brush"
+        ]
+    },
+    {
+        "id": "PERS_TENDER_HEADED",
+        "name": "The Tender-Headed Struggle",
+        "voice_guidelines": "Gentle, reassuring, emphasizes comfort and pain-free.",
+        "key_beliefs": [
+            "Brushing hurts",
+            "I avoid brushing my hair",
+            "Sensitivity is real"
+        ],
+        "triggers": [
+            "Ouch",
+            "Tears",
+            "Avoiding the mirror"
+        ],
+        "do_not_say": [
+            "No pain no gain",
+            "Tough it out"
+        ]
+    }
+]

@@ -1,0 +1,18 @@
+[
+  {
+    "time": 1765561450.3593569,
+    "type": "agent_start",
+    "agent": "email_orchestrator"
+  },
+  {
+    "time": 1765561452.62448,
+    "type": "runner_event",
+    "event_type": "model_turn",
+    "content_preview": "Okay, I understand that there's an error in the `campaign_planner_agent.py` file, specifically on line 256. This seems to be related to how the agent formats history for the prompt. However, I don't have access to the file system or the ability to directly debug the code.\n\nMy role is to orchestrate "
+  },
+  {
+    "time": 1765561452.624574,
+    "type": "agent_end",
+    "agent": "email_orchestrator"
+  }
+]

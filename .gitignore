@@ -1,36 +1,16 @@
-# Python
-__pycache__/
-*.py[cod]
-*$py.class
-*.so
-.Python
-env/
-venv/
-*.egg-info/
-dist/
-build/
+# Secrets
+token.json
+credentials.json
+google_credentials.json
 
-# IDE
-.vscode/
-.idea/
-*.swp
-*.swo
+# Logs and History
+email_history_log.json
+campaign_plans.json
 
 # Environment
 .env
-*.log
+__pycache__/
+*.pyc
 
-# Data Management - Keep repository clean
-# Traces - debugging only, not needed in Git
-traces/
-
-# Outputs - archive old files locally
-outputs/*.txt
-!outputs/README.md
-outputs/archive/
-
-# Keep these in Git (small, essential)
-!email_history_log.json
-!brand_bio_db.json
-google_credentials.json
-*.json
+# OS
+.DS_Store

@@ -4,6 +4,7 @@ from typing import List
 
 from email_orchestrator.tools.straico_tool import get_client
 from email_orchestrator.tools.history_manager import HistoryManager, CampaignLogEntry
+from email_orchestrator.tools.catalog_manager import get_catalog_manager
 from email_orchestrator.schemas import BrandBio, CampaignPlan, CampaignPlanVerification
 
 # Initialize tools
@@ -14,23 +15,22 @@ async def campaign_plan_verifier_agent(
     brand_bio: BrandBio
 ) -> CampaignPlanVerification:
     """
-    Verifies campaign plan quality and strategic coherence.
-    
-    Checks:
-    - Variety: No transformation/angle/structure used more than once
-    - Balance: Promotional ratio matches target
-    - Coherence: Logical progression and connections
-    - Momentum: Educational content supports promotional goals
-    
-    Args:
-        plan: The campaign plan to verify
-        brand_bio: Brand context
-    
-    Returns:
-        CampaignPlanVerification with approval status and feedback
+    Verifies campaign plan quality using 'Judge + Repair' logic.
+    Provides structured feedback and ID replacements.
     """
     print(f"[Campaign Plan Verifier] Verifying plan: {plan.campaign_name}...")
     
+    # 0. Load Catalogs (to validate IDs and suggest repairs)
+    cm = get_catalog_manager()
+    catalogs_data = {
+        "structures": cm.get_global_catalog("structures"),
+        "angles": cm.get_global_catalog("angles"),
+        "cta_styles": cm.get_global_catalog("cta_styles"),
+        "personas": cm.get_brand_catalog(plan.brand_name, "personas"),
+        "transformations": cm.get_brand_catalog(plan.brand_name, "transformations")
+    }
+    catalogs_str = json.dumps(catalogs_data, indent=2)
+
     # 1. Fetch History
     recent_history = history_manager.get_recent_campaigns(plan.brand_name, limit=20)
     history_summary = _format_history_for_verifier(recent_history)
@@ -46,7 +46,8 @@ async def campaign_plan_verifier_agent(
     full_prompt = prompt_template.format(
         campaign_plan=plan.model_dump_json(indent=2),
         brand_bio=brand_bio.model_dump_json(indent=2),
-        history_log=history_summary
+        history_log=history_summary,
+        catalogs=catalogs_str
     )
     
     # 4. Call Straico API
@@ -65,7 +66,10 @@ async def campaign_plan_verifier_agent(
         if result.approved:
             print(f"[Campaign Plan Verifier] APPROVED (Score: {result.score}/10)")
         else:
-            print(f"[Campaign Plan Verifier] REJECTED. Issues: {result.critical_issues}")
+            issue_count = len(result.issues)
+            print(f"[Campaign Plan Verifier] REJECTED. {issue_count} issues found.")
+            for issue in result.issues:
+                print(f" - [{issue.severity}] {issue.problem}")
             
         return result
         
@@ -77,24 +81,11 @@ async def campaign_plan_verifier_agent(
         return CampaignPlanVerification(
             approved=False,
             score=0,
-            variety_check={
-                "no_repeated_transformations": False,
-                "no_repeated_angles": False,
-                "no_repeated_structures": False,
-                "no_recent_history_conflicts": False
-            },
-            balance_check={
-                "promotional_ratio_ok": False,
-                "no_excessive_consecutive_hard_sells": False,
-                "educational_placement_strategic": False
-            },
-            coherence_check={
-                "logical_flow": False,
-                "smooth_transitions": False,
-                "momentum_builds": False,
-                "educational_supports_promotional": False
-            },
+            variety_check={},
+            balance_check={},
+            coherence_check={},
             critical_issues=[f"System Exception: {e}"],
+            issues=[],
             suggestions=[],
             feedback_for_planner="System error in verification. Please try again."
         )
@@ -108,9 +99,9 @@ def _format_history_for_verifier(history: List[CampaignLogEntry]) -> str:
     for i, entry in enumerate(history):
         line = (
             f"Email #{i+1} ({entry.timestamp[:10]}): "
-            f"Transformation='{entry.transformation_used}', "
-            f"Structure='{entry.structure_used}', "
-            f"Angle='{entry.storytelling_angle_used}'"
+            f"Transformation='{entry.transformation_id}', "
+            f"Structure='{entry.structure_id}', "
+            f"Angle='{entry.angle_id}'"
         )
         summary_lines.append(line)
     
@@ -119,17 +110,13 @@ def _format_history_for_verifier(history: List[CampaignLogEntry]) -> str:
 def _clean_json_string(raw_text: str) -> str:
     """Aggressive JSON cleanup"""
     text = raw_text.strip()
-    
     if "```json" in text:
         text = text.split("```json")[1].split("```")[0]
     elif "```" in text:
         text = text.split("```")[1].split("```")[0]
-    
     text = text.strip()
-    
     if "{" in text:
         start = text.find("{")
         end = text.rfind("}") + 1
-        text = text[start:end]
-    
+        return text[start:end]
     return text

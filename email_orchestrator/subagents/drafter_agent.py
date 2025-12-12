@@ -17,14 +17,6 @@ async def drafter_agent(
     """
     The Drafter Agent writes the email content based on the Strategist's blueprint.
     It strictly follows the 'Type #1' format guide.
-    
-    Args:
-        blueprint: The architectural plan from the Strategist.
-        brand_bio: The brand's context.
-        revision_feedback: Optional feedback from Verifier for revisions.
-        
-    Returns:
-        A structured EmailDraft Pydantic model.
     """
     if revision_feedback:
         print(f"[Drafter] Revising email for {blueprint.brand_name} based on feedback...")
@@ -32,7 +24,6 @@ async def drafter_agent(
         print(f"[Drafter] Writing email for {blueprint.brand_name}...")
 
     # 1. Fetch Context
-    # Get format guidelines (Type #1)
     format_guide = knowledge_reader.get_document_content("Email instructions type #1.pdf")
     if not format_guide:
         print("[Drafter] Warning: 'Email instructions type #1.pdf' not found. Using minimal fallback.")
@@ -55,25 +46,17 @@ async def drafter_agent(
     
     # 4. Call Straico API
     client = get_client()
-    # Using GPT-4o for high quality writing
     model = "openai/gpt-4o-2024-11-20" 
     
-    print(f"[Drafter] Sending prompt to Straico (approx {len(full_prompt)} chars)...")
+    print(f"[Drafter] Sending prompt to Straico...")
     result_json_str = await client.generate_text(full_prompt, model=model)
     
     # 5. Parse & Validate
     try:
-        # Clean markdown
-        result_json_str = result_json_str.strip()
-        if result_json_str.startswith("```json"):
-            result_json_str = result_json_str.replace("```json", "", 1)
-        if result_json_str.endswith("```"):
-            result_json_str = result_json_str.rstrip("`")
-            
-        data = json.loads(result_json_str)
+        cleaned_json = _clean_json_string(result_json_str)
+        data = json.loads(cleaned_json)
         
         # Helper to construct full formatted text for email preview
-        # We construct it here to ensure consistency
         full_text = _construct_full_email_text(data)
         data["full_text_formatted"] = full_text
         
@@ -86,6 +69,20 @@ async def drafter_agent(
         print(f"[Drafter] Error parsing JSON: {e}")
         print(f"[Drafter] Raw output: {result_json_str[:500]}...")
         raise e
+
+def _clean_json_string(raw_text: str) -> str:
+    """Aggressive JSON cleanup"""
+    text = raw_text.strip()
+    if "```json" in text:
+        text = text.split("```json")[1].split("```")[0]
+    elif "```" in text:
+        text = text.split("```")[1].split("```")[0]
+    text = text.strip()
+    if "{" in text:
+        start = text.find("{")
+        end = text.rfind("}") + 1
+        return text[start:end]
+    return text
 
 def _construct_full_email_text(data: Dict[str, Any]) -> str:
     """Helper to assemble the email parts into a readable string."""

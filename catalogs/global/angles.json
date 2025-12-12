@@ -1,0 +1,133 @@
+[
+    {
+        "id": "ANGLE_CONFESSION",
+        "name": "The Confession",
+        "description": "Vulnerable opening admitting a fault or secret.",
+        "angle_pattern": "I used to think X, but I was wrong...",
+        "best_for_purposes": [
+            "storytelling",
+            "nurture"
+        ],
+        "tags": [
+            "emotional",
+            "vulnerable"
+        ]
+    },
+    {
+        "id": "ANGLE_CONTRARIAN",
+        "name": "The Contrarian",
+        "description": "Going against common industry advice.",
+        "angle_pattern": "Why everyone is wrong about [Topic].",
+        "best_for_purposes": [
+            "educational",
+            "promo"
+        ],
+        "tags": [
+            "attention_grabbing"
+        ]
+    },
+    {
+        "id": "ANGLE_US_VS_THEM",
+        "name": "Us vs Them",
+        "description": "Creating a clear enemy or bad alternative.",
+        "angle_pattern": "Stop doing [Old Way]. Start doing [New Way].",
+        "best_for_purposes": [
+            "educational",
+            "promo"
+        ],
+        "tags": [
+            "comparison"
+        ]
+    },
+    {
+        "id": "ANGLE_SNEAK_PEEK",
+        "name": "The Sneak Peek",
+        "description": "Behind the scenes or early access.",
+        "angle_pattern": "What we've been working on in secret...",
+        "best_for_purposes": [
+            "promo",
+            "nurture"
+        ],
+        "tags": [
+            "exclusive"
+        ]
+    },
+    {
+        "id": "ANGLE_URGENCY_SCARE",
+        "name": "Urgency (Scarcity)",
+        "description": "Fear of missing out (FOMO).",
+        "angle_pattern": "The one thing you're ignoring that costs you.",
+        "best_for_purposes": [
+            "hard_sell"
+        ],
+        "tags": [
+            "conversion",
+            "high_intensity"
+        ]
+    },
+    {
+        "id": "ANGLE_PURE_VALUE",
+        "name": "Pure Value / Tips",
+        "description": "Helpful advice with zero fluff.",
+        "angle_pattern": "3 steps to [Benefit] (No purchase needed).",
+        "best_for_purposes": [
+            "educational",
+            "soft"
+        ],
+        "tags": [
+            "trust_building"
+        ]
+    },
+    {
+        "id": "ANGLE_ORIGIN_STORY",
+        "name": "Origin Story",
+        "description": "How it all began.",
+        "angle_pattern": "It started with a simple idea...",
+        "best_for_purposes": [
+            "nurture",
+            "storytelling"
+        ],
+        "tags": [
+            "brand"
+        ]
+    },
+    {
+        "id": "ANGLE_DATA_BACKED",
+        "name": "Data-Backed",
+        "description": "Using numbers to prove a point.",
+        "angle_pattern": "94% of people fail at X because...",
+        "best_for_purposes": [
+            "educational",
+            "promo"
+        ],
+        "tags": [
+            "logical"
+        ]
+    },
+    {
+        "id": "ANGLE_CELEBRATION",
+        "name": "Celebration / Milestone",
+        "description": "Sharing a win with the community.",
+        "angle_pattern": "We just hit a huge milestone!",
+        "best_for_purposes": [
+            "nurture",
+            "soft"
+        ],
+        "tags": [
+            "community"
+        ]
+    },
+    {
+        "id": "ANGLE_Q_AND_A",
+        "name": "Direct Q&A",
+        "description": "Answering a specific reader question.",
+        "angle_pattern": "'How do I...' - A question I get asked daily.",
+        "best_for_purposes": [
+            "educational",
+            "medium"
+        ],
+        "tags": [
+            "helpful"
+        ]
+    }
+]

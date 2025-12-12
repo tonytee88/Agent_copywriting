@@ -1,0 +1,109 @@
+[
+    {
+        "id": "CTA_SHOP_NOW",
+        "name": "Direct Shop",
+        "description": "Standard direct purchase.",
+        "guidelines": [
+            "Shop Now",
+            "Buy Now",
+            "Get Yours"
+        ],
+        "tags": [
+            "hard_sell"
+        ]
+    },
+    {
+        "id": "CTA_DISCOVER",
+        "name": "Discover / Explore",
+        "description": "Softer invitation to browse.",
+        "guidelines": [
+            "Discover the Collection",
+            "Explore Now",
+            "See What's New"
+        ],
+        "tags": [
+            "medium"
+        ]
+    },
+    {
+        "id": "CTA_LEARN",
+        "name": "Educational / Learn",
+        "description": "Invitation to read or learn more.",
+        "guidelines": [
+            "Learn More",
+            "Read the Guide",
+            "See How It Works"
+        ],
+        "tags": [
+            "soft",
+            "educational"
+        ]
+    },
+    {
+        "id": "CTA_CLAIM_OFFER",
+        "name": "Claim Offer",
+        "description": "High urgency offer claiming.",
+        "guidelines": [
+            "Claim My 20% Off",
+            "Get My Gift",
+            "Redeem Now"
+        ],
+        "tags": [
+            "hard_sell",
+            "promo"
+        ]
+    },
+    {
+        "id": "CTA_JOIN",
+        "name": "Join Community",
+        "description": "Membership or social join.",
+        "guidelines": [
+            "Join the Club",
+            "Become a Member",
+            "Sign Up Free"
+        ],
+        "tags": [
+            "nurture"
+        ]
+    },
+    {
+        "id": "CTA_BENEFIT_DRIVEN",
+        "name": "Benefit Driven",
+        "description": "CTA focuses on the result.",
+        "guidelines": [
+            "Start Sleeping Better",
+            "Fix My Hair",
+            "Boost My Energy"
+        ],
+        "tags": [
+            "conversion",
+            "psychological"
+        ]
+    },
+    {
+        "id": "CTA_TRY_RISK_FREE",
+        "name": "Risk Reversal",
+        "description": "Emphasizes guarantee.",
+        "guidelines": [
+            "Try Risk-Free",
+            "30-Day Trial",
+            "Money-Back Guarantee"
+        ],
+        "tags": [
+            "high_trust"
+        ]
+    },
+    {
+        "id": "CTA_LIMITED",
+        "name": "Scarcity / Limited",
+        "description": "Emphasizes low stock.",
+        "guidelines": [
+            "Shop Before It's Gone",
+            "Only 5 Left",
+            "Last Chance"
+        ],
+        "tags": [
+            "urgency"
+        ]
+    }
+]

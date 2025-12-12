@@ -58,6 +58,15 @@ class StraicoAPIClient:
                     message = choices[0].get("message", {})
                     content = message.get("content", "")
                     
+                    # Track usage
+                    usage = resp_json.get("usage", {})
+                    prompt_tokens = usage.get("prompt_tokens", 0)
+                    completion_tokens = usage.get("completion_tokens", 0)
+                    
+                    if prompt_tokens > 0:
+                        from email_orchestrator.tools.token_tracker import get_token_tracker
+                        get_token_tracker().log_usage("StraicoAPI", prompt_tokens, completion_tokens)
+                    
                     return content
                     
         except Exception as e:
