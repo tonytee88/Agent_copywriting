@@ -1,0 +1,46 @@
+[
+  {
+    "time": 1765816842.929282,
+    "type": "agent_start",
+    "agent": "email_orchestrator"
+  },
+  {
+    "time": 1765816854.492598,
+    "type": "runner_event",
+    "event_type": "TOOL_CALL",
+    "tool_name": "plan_campaign",
+    "content_preview": "Calling tool: analyze_brand({'brand_name': 'PopBrush', 'website_url': 'https://popbrush.fr'}) | Calling tool: plan_campaign({'total_emails': 3, 'duration': '1 week', 'brand_name': 'PopBrush', 'campaign_goal': \"January 2026 C...)"
+  },
+  {
+    "time": 1765816903.245147,
+    "type": "runner_event",
+    "event_type": "TOOL_RESULT",
+    "tool_name": "plan_campaign",
+    "content_preview": "Tool returned: analyze_brand -> {'result': '{\"brand_name\":\"PopBrush\",\"industry\":\"Haircare\",\"target_audience\":\"Families, parents with children, individuals with all hair types looking... | Tool returned: plan_campaign -> {'result': 'Campaign Plan Created! ID: 20251213070000. Status: approved'}"
+  },
+  {
+    "time": 1765816915.9758348,
+    "type": "runner_event",
+    "event_type": "TOOL_CALL",
+    "tool_name": "generate_email_campaign",
+    "content_preview": "Calling tool: generate_email_campaign({'campaign_id': '20251213070000'})"
+  },
+  {
+    "time": 1765817018.831933,
+    "type": "runner_event",
+    "event_type": "TOOL_RESULT",
+    "tool_name": "generate_email_campaign",
+    "content_preview": "Tool returned: generate_email_campaign -> {'result': '[\\n  {\\n    \"slot\": 1,\\n    \"subject\": \"From Tangles to Timeless Style\",\\n    \"status\": \"completed\"\\n  },\\n  {\\n    \"slot\": 2,\\n    \"subje..."
+  },
+  {
+    "time": 1765817042.307748,
+    "type": "runner_event",
+    "event_type": "model_turn",
+    "content_preview": "Here is the campaign plan and the 3 email drafts for **PopBrush**, scheduled for January 2026.\n\n### **Campaign Strategy**\n*   **Goal**: Engage with dating-related content to build trust, then convert with a high-impact 40% OFF Flash Sale.\n*   **Schedule**:\n    *   **Email 1 (Warm-up)**: \"How to look"
+  },
+  {
+    "time": 1765817042.308799,
+    "type": "agent_end",
+    "agent": "email_orchestrator"
+  }
+]

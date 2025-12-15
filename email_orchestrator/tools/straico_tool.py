@@ -10,6 +10,8 @@ from pathlib import Path
 
 # Environment variables are loaded by the main orchestrator; no need to load .env here
 
+from email_orchestrator.config import STRAICO_MODEL
+
 
 class StraicoAPIClient:
     """Simple client for making Straico API requests"""
@@ -20,7 +22,7 @@ class StraicoAPIClient:
             raise ValueError("STRAICO_API_KEY not set in environment")
         self.base_url = "https://api.straico.com/v2"
     
-    async def generate_text(self, prompt: str, model: str = "openai/gpt-4o-2024-11-20") -> str:
+    async def generate_text(self, prompt: str, model: str = STRAICO_MODEL) -> str:
         """
         Make a simple text generation request to Straico API.
         No tool calling, just text in/text out.

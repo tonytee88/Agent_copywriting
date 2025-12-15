@@ -18,9 +18,11 @@ from googleapiclient.discovery import build
 from googleapiclient.errors import HttpError
 
 # Scopes required
+# Scopes required
 SCOPES = [
-    'https://www.googleapis.com/auth/documents',
-    'https://www.googleapis.com/auth/drive.file'
+    'https://www.googleapis.com/auth/drive',
+    'https://www.googleapis.com/auth/spreadsheets',
+    'https://www.googleapis.com/auth/documents'
 ]
 
 # Credentials file path (can be overridden by env var)

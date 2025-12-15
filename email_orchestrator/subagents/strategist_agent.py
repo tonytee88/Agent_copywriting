@@ -7,6 +7,7 @@ from email_orchestrator.tools.straico_tool import get_client
 from email_orchestrator.tools.history_manager import HistoryManager, CampaignLogEntry
 from email_orchestrator.tools.catalog_manager import get_catalog_manager
 from email_orchestrator.schemas import CampaignRequest, BrandBio, EmailBlueprint
+from email_orchestrator.config import STRAICO_MODEL
 
 # Initialize tools
 history_manager = HistoryManager()
@@ -21,19 +22,15 @@ async def strategist_agent(
     """
     print(f"[Strategist] Planning campaign for {request.brand_name}...")
     
-    # 1. Load Catalogs
+    # 1. Load Catalogs (Structures Only - others are free text directives)
     cm = get_catalog_manager()
     catalogs_data = {
         "structures": cm.get_global_catalog("structures"),
-        "angles": cm.get_global_catalog("angles"),
-        "cta_styles": cm.get_global_catalog("cta_styles"),
-        "personas": cm.get_brand_catalog(request.brand_name, "personas"),
-        "transformations": cm.get_brand_catalog(request.brand_name, "transformations")
     }
     catalogs_str = json.dumps(catalogs_data, indent=2)
 
     # 2. Get recent history for this brand
-    recent_history = history_manager.get_recent_campaigns(request.brand_name, limit=10)
+    recent_history = history_manager.get_recent_campaigns(request.brand_name, limit=5)
     history_summary = _format_history_for_prompt(recent_history)
     
     # 3. Load Prompt
@@ -47,14 +44,16 @@ async def strategist_agent(
     campaign_directives = ""
     start_str = ""
     if campaign_context:
+        # Accessing description fields from EmailSlot
+        cta = campaign_context.cta_description or "Decide based on intensity"
         campaign_directives = f"""
 === ASSIGNED DIRECTIVES (FROM PLANNER) ===
-You MUST use these specific Catalog IDs assigned by the Campaign Planner:
-- Transformation ID: {campaign_context.transformation_id}
-- Angle ID: {campaign_context.angle_id}
+You MUST use these specific Creative Directives assigned by the Campaign Planner:
+- Transformation Arc: {campaign_context.transformation_description}
+- Angle/Hook: {campaign_context.angle_description}
 - Structure ID: {campaign_context.structure_id}
-- Persona ID: {campaign_context.persona_id}
-- CTA Style ID: {campaign_context.cta_style_id or "Decide based on intensity"}
+- Persona Voice: {campaign_context.persona_description}
+- CTA Style: {cta}
 
 Context:
 - Theme: {campaign_context.theme}
@@ -73,7 +72,7 @@ Context:
     
     # 5. Call Straico API
     client = get_client()
-    model = "openai/gpt-4o-2024-11-20" 
+    model = STRAICO_MODEL 
     
     print(f"[Strategist] Sending prompt to Straico...")
     result_json_str = await client.generate_text(full_prompt, model=model)
@@ -104,11 +103,15 @@ def _format_history_for_prompt(history: List[CampaignLogEntry]) -> str:
         
     summary_lines = []
     for i, entry in enumerate(history):
+        # Handle graceful fallback if fields missing in old logs
+        trans = getattr(entry, 'transformation_description', None) or getattr(entry, 'transformation_id', 'Unknown')
+        angle = getattr(entry, 'angle_description', None) or getattr(entry, 'angle_id', 'Unknown')
+        
         line = (
             f"Email #{i+1} ({entry.timestamp}): "
-            f"Trans={entry.transformation_id}, "
-            f"Struct={entry.structure_id}, "
-            f"Angle={entry.angle_id}"
+            f"Trans='{trans}', "
+            f"Struct='{entry.structure_id}', "
+            f"Angle='{angle}'"
         )
         summary_lines.append(line)
         

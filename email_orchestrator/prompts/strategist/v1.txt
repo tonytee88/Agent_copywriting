@@ -16,53 +16,42 @@ Output a Valid JSON `EmailBlueprint` that defines the strategy.
 ## DECISION LOGIC
    
 **PROMOTIONAL FOCUS**: If the email purpose is "promotional" (check Directives), the **OFFER** is the main hero. The story must SUPPORT the offer, not overshadow it. The CTA must be "Click to Buy" or "Claim Offer".
+1. [CAMPAIGN REQUEST]: Original user intent.
+2. [BRAND BIO]: Brand context.
+3. [HISTORY LOG]: Recent emails.
+4. [CATALOG (STRUCTURES)]: Valid Structure IDs.
+5. [ASSIGNED DIRECTIVES]: The specific strategy you MUST execute.
 
-1. **Check Directives**: If `[ASSIGNED DIRECTIVES]` provided specific IDs, you **MUST** use them.
-   - If not provided, you must select the best fit from `[CATALOGS]`.
+## YOUR WORKFLOW
 
-2. **Select Transformation (`transformation_id`)**:
-   - Choose the customer journey arc that matches the goal.
-   - **CRITICAL**: Do NOT select IDs found in [HISTORY LOG] unless explicitly assigned by directives.
+1. **Analyze Directives**: Read the assigned Transformation, Angle, Persona, and CTA descriptions.
+2. **Analyze Structure**: Look up the assigned `structure_id` in the [CATALOG] to understand the layout.
+3. **Flesh out the Blueprint**:
+   - create `structural_execution_map`: specific goals for each block based on the structure and directives.
+   - create `subject_ideas` and `preview_text_ideas` that align with the Angle.
+   - define `key_points_for_descriptive_block` based on the Transformation.
 
-3. **Select Structure (`structure_id`)**:
-   - Choose the visual layout framework.
-   - **EXECUTION MAP**: You must also define `structure_execution_map` mapping the abstract blocks ("hero", "descriptive", "product") to specific content goals for this email.
-     - Example: `{{"hero": "Show problem visualization", "descriptive": "List 3 misconceptions", "product": "Introduce brush as solution"}}`
+## OUTPUT FORMAT
 
-4. **Select Persona (`persona_id`)**:
-   - Choose the voice/tone ID.
-
-5. **Select Angle (`angle_id`)**:
-   - Choose the narrative hook ID.
-
-6. **Select CTA Style (`cta_style_id`)**:
-   - Choose the button text pattern.
-
-## OUTPUT SCHEMA
-
-Return ONLY valid JSON:
+Return a JSON object:
 ```json
 {{
   "brand_name": "Brand Name",
-  "campaign_theme": "Overall theme",
-  
-  "transformation_id": "TRANS_ID",
-  "structure_id": "STRUCT_ID",
+  "campaign_theme": "Theme",
+  "transformation_description": "Use the directive verbatim or refined",
+  "structure_id": "STRUCT_ID_FROM_DIRECTIVE",
   "structure_execution_map": {{
-    "Hero": "Goal for hero section...",
-    "Descriptive": "Goal for body section...",
-    "Product": "Goal for product section..."
+      "Hero": "Goal for hero...",
+      "Descriptive": "Goal for descriptive...",
+      "Product": "Goal for product..."
   }},
-  "persona_id": "PERS_ID",
-  "angle_id": "ANGLE_ID",
-  "cta_style_id": "CTA_ID",
-
-  "offer_details": "Offer string",
-  "offer_placement": "Hero", // MUST BE ONE OF: "Hero", "Story", "Product" 
-  
+  "persona_description": "Use the directive verbatim or refined",
+  "angle_description": "Use the directive verbatim or refined",
+  "offer_details": "Offer details",
+  "offer_placement": "Hero",
+  "cta_description": "Use the directive verbatim or refined",
   "subject_ideas": ["Subject 1", "Subject 2"],
   "preview_text_ideas": ["Preview 1", "Preview 2"],
-  
   "key_points_for_descriptive_block": ["Point 1", "Point 2"],
   "copy_constraints": ["Constraint 1", "Constraint 2"]
 }}

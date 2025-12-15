@@ -6,6 +6,7 @@ from email_orchestrator.tools.straico_tool import get_client
 from email_orchestrator.tools.history_manager import HistoryManager, CampaignLogEntry
 from email_orchestrator.tools.catalog_manager import get_catalog_manager
 from email_orchestrator.schemas import BrandBio, CampaignPlan, CampaignPlanVerification
+from email_orchestrator.config import STRAICO_MODEL
 
 # Initialize tools
 history_manager = HistoryManager()
@@ -20,19 +21,15 @@ async def campaign_plan_verifier_agent(
     """
     print(f"[Campaign Plan Verifier] Verifying plan: {plan.campaign_name}...")
     
-    # 0. Load Catalogs (to validate IDs and suggest repairs)
+    # 0. Load Catalogs (Structures Only)
     cm = get_catalog_manager()
     catalogs_data = {
         "structures": cm.get_global_catalog("structures"),
-        "angles": cm.get_global_catalog("angles"),
-        "cta_styles": cm.get_global_catalog("cta_styles"),
-        "personas": cm.get_brand_catalog(plan.brand_name, "personas"),
-        "transformations": cm.get_brand_catalog(plan.brand_name, "transformations")
     }
     catalogs_str = json.dumps(catalogs_data, indent=2)
 
     # 1. Fetch History
-    recent_history = history_manager.get_recent_campaigns(plan.brand_name, limit=20)
+    recent_history = history_manager.get_recent_campaigns(plan.brand_name, limit=3)
     history_summary = _format_history_for_verifier(recent_history)
     
     # 2. Load Prompt
@@ -52,7 +49,7 @@ async def campaign_plan_verifier_agent(
     
     # 4. Call Straico API
     client = get_client()
-    model = "openai/gpt-4o-2024-11-20"
+    model = STRAICO_MODEL
     
     print(f"[Campaign Plan Verifier] Sending prompt to Straico...")
     result_json_str = await client.generate_text(full_prompt, model=model)
@@ -71,11 +68,29 @@ async def campaign_plan_verifier_agent(
             for issue in result.issues:
                 print(f" - [{issue.severity}] {issue.problem}")
             
+            print(f"\n[Campaign Plan Verifier] Feedback for Planner: {result.feedback_for_planner}")
+            
+            if result.campaign_level_suggestions:
+                print(f"[Campaign Plan Verifier] Campaign Level Suggestions:")
+                for sug in result.campaign_level_suggestions:
+                    print(f" - {sug}")
+
+            if result.per_email_suggestions:
+                print(f"[Campaign Plan Verifier] Per-Email Suggestions:")
+                for sug in result.per_email_suggestions:
+                    print(f" - Slot {sug.email_slot}: {sug.notes or 'Variations suggested'}")
+                    if sug.suggested_transformations:
+                        print(f"   * Transformations: {sug.suggested_transformations}")
+                    if sug.suggested_angles:
+                        print(f"   * Angles: {sug.suggested_angles}")
+                    if sug.suggested_structures:
+                        print(f"   * Structures: {sug.suggested_structures}")
+
         return result
         
     except Exception as e:
         print(f"[Campaign Plan Verifier] EXCEPTION: {e}")
-        print(f"[Campaign Plan Verifier] RAW OUTPUT: {result_json_str[:500]}...")
+        print(f"[Campaign Plan Verifier] RAW OUTPUT: {result_json_str}")
         
         # Return a failed verification
         return CampaignPlanVerification(
@@ -91,17 +106,28 @@ async def campaign_plan_verifier_agent(
         )
 
 def _format_history_for_verifier(history: List[CampaignLogEntry]) -> str:
-    """Format history for verification prompt."""
+    """Format history for verification prompt (Descriptions)."""
     if not history:
         return "No history."
     
     summary_lines = []
     for i, entry in enumerate(history):
+        # Handle mixed history (IDs vs Descriptions) gracefully knowing schemas.py has description fields now
+        # Accessing raw dict might be safer if objects were loaded from old JSON, 
+        # but Pydantic load would have mapped them if aliases were set.
+        # Since I just replaced fields, old history might break loading if fields are missing.
+        # Assuming history manager handles loading or returns defaults.
+        # Ideally, we map: transformation_id (old) -> transformation_description (new)
+        
+        trans = getattr(entry, 'transformation_description', None) or getattr(entry, 'transformation_id', 'Unknown')
+        angle = getattr(entry, 'angle_description', None) or getattr(entry, 'angle_id', 'Unknown')
+        struct = entry.structure_id
+        
         line = (
             f"Email #{i+1} ({entry.timestamp[:10]}): "
-            f"Transformation='{entry.transformation_id}', "
-            f"Structure='{entry.structure_id}', "
-            f"Angle='{entry.angle_id}'"
+            f"Trans='{trans}', "
+            f"Struct='{struct}', "
+            f"Angle='{angle}'"
         )
         summary_lines.append(line)
     

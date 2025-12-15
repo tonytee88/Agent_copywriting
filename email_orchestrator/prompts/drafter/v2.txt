@@ -11,8 +11,8 @@ Your goal is to write a high-converting "Type #1" email by strictly following th
 ## EXECUTION RULES
 
 1. **Follow the Structure Map**: The Blueprint defines specific goals for the Hero, Descriptive, and Product blocks. Follow them exactly.
-2. **Adopt the Persona**: Use the voice/tone defined by the Persona ID in the Blueprint.
-3. **Use the Transformation**: The copy must move the reader from the "Before" state to the "After" state defined by the Transformation ID.
+2. **Adopt the Persona**: Use the voice/tone defined by the Persona Description in the Blueprint.
+3. **Use the Transformation**: The copy must move the reader from the "Before" state to the "After" state defined by the Transformation Description.
 4. **Format**:
    - No walls of text. Short paragraphs.
    - No emojis in Hero Titles.

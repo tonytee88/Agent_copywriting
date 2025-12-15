@@ -13,6 +13,7 @@ from email_orchestrator.schemas import BrandBio, CampaignPlan
 from email_orchestrator.tools.timing_calculator import calculate_send_schedule, parse_duration_to_start_date
 from email_orchestrator.tools.history_manager import HistoryManager
 from email_orchestrator.tools.catalog_manager import get_catalog_manager
+from email_orchestrator.config import ADK_MODEL
 
 # Initialize history manager
 history_manager = HistoryManager()
@@ -24,7 +25,7 @@ def load_campaign_planner_instruction() -> str:
 
 # Create the Campaign Planner ADK Agent (No tools needed with Catalog Injection)
 campaign_planner_adk_agent = Agent(
-    model="gemini-2.0-flash-exp",
+    model=ADK_MODEL,
     name="campaign_planner",
     description="Strategic multi-email campaign planner using Catalog Injection",
     instruction=load_campaign_planner_instruction(),
@@ -44,14 +45,10 @@ async def campaign_planner_agent(
     """
     print(f"[Campaign Planner] Planning {total_emails}-email campaign for {brand_name}...")
     
-    # 0. Load Catalogs
+    # 0. Load Catalogs (Structures Only)
     cm = get_catalog_manager()
     catalogs_data = {
         "structures": cm.get_global_catalog("structures"),
-        "angles": cm.get_global_catalog("angles"),
-        "cta_styles": cm.get_global_catalog("cta_styles"),
-        "personas": cm.get_brand_catalog(brand_name, "personas"),
-        "transformations": cm.get_brand_catalog(brand_name, "transformations")
     }
     catalogs_str = json.dumps(catalogs_data, indent=2)
     
@@ -61,8 +58,9 @@ async def campaign_planner_agent(
     schedule_str = json.dumps(send_schedule, indent=2)
     
     # 2. Get historic campaigns
-    recent_history = history_manager.get_recent_campaigns(brand_name, limit=20)
+    recent_history = history_manager.get_recent_campaigns(brand_name, limit=5)
     history_summary = _format_history_for_prompt(recent_history)
+    print(f"[Campaign Planner] Recent history summary:\n{history_summary}")
     
     # 3. Prepare prompt variables
     promotional_percentage = int(promotional_ratio * 100)
@@ -84,17 +82,18 @@ Send Schedule (pre-calculated):
 Brand Bio:
 {brand_bio.model_dump_json(indent=2)}
 
-=== CATALOGS (AVAILABLE IDs) ===
+=== CATALOG (STRUCTURES ONLY) ===
 {catalogs_str}
-================================
+=================================
 
-Historic Campaigns (AVOID REPEATING THESE IDs):
+Historic Campaigns (AVOID REPEATING THESE CONCEPTS):
 {history_summary}
 
 Requirements:
-1. Select valid IDs from the [CATALOGS] for every strategic field.
-2. Ensure variety (no repeated IDs within this campaign).
-3. Ensure logical flow and balance.
+1. Generate CREATIVE, BRAND-SPECIFIC descriptions for Angle, Persona, Transformation, and CTA (Free Text).
+2. Select a valid STRUCTURE ID from the [CATALOG] for every email.
+3. Ensure variety (avoid semantic repetition).
+4. Ensure logical flow and balance.
 """
     
     # 5. Call the ADK agent
@@ -151,14 +150,10 @@ async def revise_campaign_plan(
     """
     print(f"[Campaign Planner Revision] Revising plan based on feedback...")
     
-    # Re-load catalogs for revision context
+    # Re-load catalogs for revision context (Structures Only)
     cm = get_catalog_manager()
     catalogs_data = {
         "structures": cm.get_global_catalog("structures"),
-        "angles": cm.get_global_catalog("angles"),
-        "cta_styles": cm.get_global_catalog("cta_styles"),
-        "personas": cm.get_brand_catalog(original_plan.brand_name, "personas"),
-        "transformations": cm.get_brand_catalog(original_plan.brand_name, "transformations")
     }
     catalogs_str = json.dumps(catalogs_data, indent=2)
     
@@ -168,9 +163,9 @@ I need you to revise the following campaign plan based on verification feedback.
 ORIGINAL PLAN:
 {original_plan.model_dump_json(indent=2)}
 
-=== CATALOGS (VALID IDs) ===
+=== CATALOG (STRUCTURES ONLY) ===
 {catalogs_str}
-============================
+=================================
 
 VERIFICATION FEEDBACK:
 - Score: {verification_feedback.score}/10
@@ -179,7 +174,7 @@ VERIFICATION FEEDBACK:
 CRITICAL ISSUES:
 {chr(10).join(f"- {issue.problem}" for issue in verification_feedback.issues)}
 
-SUGGESTED REPAIRS (USE THESE IDs!):
+SUGGESTED REPAIRS:
 {json.dumps([s.model_dump() for s in verification_feedback.per_email_suggestions], indent=2)}
 
 DETAILED FEEDBACK:
@@ -187,8 +182,11 @@ DETAILED FEEDBACK:
 
 REVISION RULES:
 1. Fix ALL critical issues.
-2. If specific IDs were suggested in 'per_email_suggestions', YOU MUST USE THEM.
-3. Return ONLY valid JSON matching the CampaignPlan schema.
+2. If suggestions are provided, incorporate them creatively.
+3. Ensure STRUCTURE_ID is always valid from the catalog.
+4. Return ONLY valid JSON matching the CampaignPlan schema.
+5. Allowed intensity_level: "hard_sell", "medium", "soft".
+6. Allowed email_purpose: "promotional", "educational", "storytelling", "nurture", "conversion".
 """
     
     try:
@@ -245,17 +243,24 @@ def _clean_json_string(raw_text: str) -> str:
     return text
 
 def _format_history_for_prompt(history) -> str:
-    """Format history for campaign planner prompt."""
+    """Format history for campaign planner prompt (Descriptions)."""
     if not history:
         return "No previous emails found."
     
     summary_lines = []
     for i, entry in enumerate(history):
+        # Extract Persona from blueprint if available (now description)
+        persona = "N/A"
+        if entry.blueprint and hasattr(entry.blueprint, 'persona_description'):
+            persona = entry.blueprint.persona_description
+            
         line = (
             f"Email #{i+1} ({entry.timestamp[:10]}): "
-            f"Trans={entry.transformation_id}, "
-            f"Struct={entry.structure_id}, "
-            f"Angle={entry.angle_id}"
+            f"Trans='{entry.transformation_description}', "
+            f"Struct='{entry.structure_id}', "
+            f"Angle='{entry.angle_description}', "
+            f"CTA='{entry.cta_description or 'N/A'}', "
+            f"Persona='{persona}'"
         )
         summary_lines.append(line)
     

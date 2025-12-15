@@ -1,6 +1,8 @@
 from pathlib import Path
 from google.adk.agents.llm_agent import Agent  # type: ignore
 
+from email_orchestrator.config import STRAICO_MODEL
+
 def load_instruction() -> str:
     prompt_path = Path(__file__).parent.parent / "prompts" / "persona" / "v1.txt"
     return prompt_path.read_text(encoding="utf-8")
@@ -8,7 +10,7 @@ def load_instruction() -> str:
 def _get_llm():
     """Lazy load LLM to avoid import-time API key errors"""
     from email_orchestrator.tools.straico_llm import StraicoLLM
-    return StraicoLLM(model="openai/gpt-4o-2024-11-20")
+    return StraicoLLM(model=STRAICO_MODEL)
 
 persona_agent = Agent(
     model=_get_llm(),

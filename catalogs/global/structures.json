@@ -1,17 +1,141 @@
 [
     {
-        "id": "STRUCT_SPOTLIGHT_BOX",
-        "name": "The Spotlight Box",
-        "description": "Visual focus on a single product/benefit.",
+        "id": "STRUCT_NARRATIVE_PARAGRAPH",
+        "name": "The Narrative Paragraph",
+        "description": "A short, emotionally driven storytelling block that sets a mood or explains the deeper 'why' behind a product or collection.",
+        "primary_focus": "Emotion & Storytelling",
+        "best_for": [
+            "brand_affinity",
+            "emotional_connection",
+            "lifestyle_emails"
+        ],
         "layout_rules": [
-            "Hero with large image",
-            "Descriptive block focused on ONE key benefit",
-            "Product block"
+            "One short paragraph (2–4 lines)",
+            "Focus on benefits and feelings, not features",
+            "Tone should be evocative and fluid",
+            "Works best paired with a strong hero banner for visual continuity"
         ],
         "required_blocks": [
             "hero",
-            "descriptive",
-            "product"
+            "descriptive"
+        ],
+        "allowed_intensities": [
+            "soft",
+            "medium"
+        ],
+        "tags": [
+            "storytelling",
+            "brand_affinity",
+            "emotional"
+        ]
+    },
+    {
+        "id": "STRUCT_EMOJI_CHECKLIST",
+        "name": "The Emoji Checklist",
+        "description": "A fast-scanning checklist structure using emojis to highlight key benefits or features.",
+        "primary_focus": "Quick Scannability",
+        "best_for": [
+            "high_intent",
+            "busy_readers",
+            "feature_highlights"
+        ],
+        "layout_rules": [
+            "Use 3–5 bullets",
+            "Each bullet starts with an emoji and strong verb/adjective",
+            "One-line benefits for maximum readability"
+        ],
+        "required_blocks": [
+            "hero",
+            "descriptive"
+        ],
+        "allowed_intensities": [
+            "medium",
+            "hard_sell"
+        ],
+        "tags": [
+            "benefits",
+            "scan_friendly",
+            "conversion"
+        ]
+    },
+    {
+        "id": "STRUCT_5050_SPLIT",
+        "name": "The 50/50 Split (Z-Pattern)",
+        "description": "A balanced image + text layout (Z-pattern) used to tell deeper product or lifestyle stories.",
+        "primary_focus": "Balanced Storytelling",
+        "best_for": [
+            "lifestyle",
+            "origins",
+            "deeper_explanation"
+        ],
+        "layout_rules": [
+            "Short headline + 2–3 lines of body text",
+            "Place image on alternating sides for Z-pattern flow",
+            "Image must be strong enough to carry half the narrative weight"
+        ],
+        "required_blocks": [
+            "hero",
+            "descriptive"
+        ],
+        "allowed_intensities": [
+            "soft",
+            "medium"
+        ],
+        "tags": [
+            "lifestyle",
+            "storytelling",
+            "visual_balance"
+        ]
+    },
+    {
+        "id": "STRUCT_MEDIA_LEFT_OFFSET",
+        "name": "The 'Media Left' Offset",
+        "description": "Text-driven layout with a small supporting image — ideal for deep explanation of key features.",
+        "primary_focus": "Text-Driven Feature Highlight",
+        "best_for": [
+            "ingredients",
+            "materials",
+            "technical_features",
+            "USP_explanations"
+        ],
+        "layout_rules": [
+            "Strong bold headline",
+            "Short explanatory paragraph",
+            "Small thumbnail/macro image placed left or right"
+        ],
+        "required_blocks": [
+            "hero",
+            "descriptive"
+        ],
+        "allowed_intensities": [
+            "soft",
+            "medium"
+        ],
+        "tags": [
+            "feature_focus",
+            "educational",
+            "details"
+        ]
+    },
+    {
+        "id": "STRUCT_SPOTLIGHT_BOX",
+        "name": "The Spotlight Box",
+        "description": "A visually distinct box used to highlight critical announcements, special notes, or limited-time messages.",
+        "primary_focus": "Interrupting Pattern & Attention",
+        "best_for": [
+            "announcements",
+            "limited_time_offer",
+            "editor_notes"
+        ],
+        "layout_rules": [
+            "Short, urgent or authoritative text",
+            "Centered text recommended",
+            "Use contrast-color background",
+            "Bold key phrase or CTA inside"
+        ],
+        "required_blocks": [
+            "hero",
+            "descriptive"
         ],
         "allowed_intensities": [
             "medium",
@@ -19,68 +143,118 @@
         ],
         "tags": [
             "promo",
-            "product_focus"
+            "attention_grabber",
+            "announcement"
         ]
     },
     {
-        "id": "STRUCT_PROBLEM_SOLUTION",
-        "name": "Problem/Solution Outline",
-        "description": "Classic persistent pain point into relief.",
+        "id": "STRUCT_STAT_ATTACK",
+        "name": "The 'Stat Attack' Block",
+        "description": "A numbers-first structure designed to persuade with data and credibility.",
+        "primary_focus": "Rational Persuasion & Credibility",
+        "best_for": [
+            "efficacy_claims",
+            "trust_building",
+            "performance_metrics"
+        ],
         "layout_rules": [
-            "Hero defines the Problem",
-            "Descriptive introduces Solution",
-            "Product offers the Tool"
+            "Huge bold number as primary visual",
+            "2-line max explanatory caption",
+            "Minimalist background to make stats pop"
         ],
         "required_blocks": [
             "hero",
-            "descriptive",
-            "product"
+            "descriptive"
         ],
         "allowed_intensities": [
             "medium",
-            "soft"
+            "hard_sell"
         ],
         "tags": [
-            "educational",
-            "conversion"
+            "credibility",
+            "data",
+            "trust"
         ]
     },
     {
-        "id": "STRUCT_COMPARISON_CHART",
-        "name": "The Comparison Chart",
-        "description": "Us vs Them visual or text contrast.",
+        "id": "STRUCT_STEP_BY_STEP",
+        "name": "The Step-by-Step Process",
+        "description": "Simple vertical or horizontal steps explaining how something works.",
+        "primary_focus": "Clarity & Reducing Friction",
+        "best_for": [
+            "how_it_works",
+            "tutorials",
+            "onboarding",
+            "subscriptions"
+        ],
         "layout_rules": [
-            "Hero sets up the choice",
-            "Descriptive lists Pros/Cons",
-            "Product is the winner"
+            "Short action-oriented captions per step",
+            "Simple icons or numbered visuals",
+            "Keep each step extremely concise"
         ],
         "required_blocks": [
             "hero",
-            "descriptive",
-            "product"
+            "descriptive"
         ],
         "allowed_intensities": [
-            "hard_sell",
+            "soft",
             "medium"
         ],
         "tags": [
-            "educational",
-            "promo"
+            "tutorial",
+            "clarity",
+            "process"
         ]
     },
     {
-        "id": "STRUCT_SOCIAL_PROOF_STACK",
-        "name": "Social Proof Stack",
-        "description": "Heavy use of reviews and testimonials.",
+        "id": "STRUCT_MINI_GRID",
+        "name": "The Mini-Grid Showcase",
+        "description": "Small grid of items for fast visual variety (colors, styles, bundles, accessories).",
+        "primary_focus": "Presenting Variety Quickly",
+        "best_for": [
+            "colorways",
+            "options",
+            "flavors",
+            "related_items"
+        ],
         "layout_rules": [
-            "Hero quote",
-            "Descriptive details usage count/rating",
-            "Product block with stars"
+            "Short headline above grid",
+            "Uniform small thumbnails",
+            "1–2 word labels under each item"
         ],
         "required_blocks": [
             "hero",
-            "descriptive",
-            "product"
+            "descriptive"
+        ],
+        "allowed_intensities": [
+            "medium",
+            "hard_sell"
+        ],
+        "tags": [
+            "product_variety",
+            "browse",
+            "upsell"
+        ]
+    },
+    {
+        "id": "STRUCT_SOCIAL_PROOF_QUOTE",
+        "name": "The Social Proof Quote",
+        "description": "A testimonial-driven block that builds trust through a real customer voice.",
+        "primary_focus": "Trust & Validation",
+        "best_for": [
+            "hesitant_buyers",
+            "new_customers",
+            "trial_conversion"
+        ],
+        "layout_rules": [
+            "2–3 line max quote",
+            "Attribution required ('— Name, Verified Buyer')",
+            "Stylized quotation mark typography",
+            "Optional small avatar"
+        ],
+        "required_blocks": [
+            "hero",
+            "descriptive"
         ],
         "allowed_intensities": [
             "soft",
@@ -88,139 +262,38 @@
         ],
         "tags": [
             "trust",
-            "nurture"
+            "testimonial",
+            "validation"
         ]
     },
     {
-        "id": "STRUCT_STORY_BRIDGE",
-        "name": "Story Bridge",
-        "description": "Narrative that bridges a gap.",
+        "id": "STRUCT_GIF_PREVIEW",
+        "name": "The GIF Preview Block",
+        "description": "Animation-driven structure to demonstrate transformation or product usage.",
+        "primary_focus": "Motion & Demonstration",
+        "best_for": [
+            "before_after",
+            "product_in_action",
+            "mechanism_demo"
+        ],
         "layout_rules": [
-            "Hero hook",
-            "Descriptive tells the story",
-            "Product is the happy ending"
+            "GIF or static image with play icon",
+            "Compelling first frame",
+            "Short one-line caption explaining what the GIF shows",
+            "Keep file size small"
         ],
         "required_blocks": [
             "hero",
-            "descriptive",
-            "product"
+            "descriptive"
         ],
         "allowed_intensities": [
-            "soft",
-            "nurture"
-        ],
-        "tags": [
-            "storytelling"
-        ]
-    },
-    {
-        "id": "STRUCT_FAQ_BUSTERS",
-        "name": "FAQ Busters",
-        "description": "Overcoming objections directly.",
-        "layout_rules": [
-            "Hero question",
-            "Descriptive answers 3 key Qs",
-            "Product call to action"
-        ],
-        "required_blocks": [
-            "hero",
-            "descriptive",
-            "product"
-        ],
-        "allowed_intensities": [
-            "educational",
-            "medium"
-        ],
-        "tags": [
-            "objection_handling"
-        ]
-    },
-    {
-        "id": "STRUCT_MYTH_VS_FACT",
-        "name": "Myth vs Fact",
-        "description": "Correcting misconceptions.",
-        "layout_rules": [
-            "Hero states the Myth",
-            "Descriptive reveals Fact",
-            "Product aligns with Fact"
-        ],
-        "required_blocks": [
-            "hero",
-            "descriptive",
-            "product"
-        ],
-        "allowed_intensities": [
-            "educational"
-        ],
-        "tags": [
-            "education"
-        ]
-    },
-    {
-        "id": "STRUCT_VIP_INVITE",
-        "name": "VIP Invite",
-        "description": "Exclusive feeling offer.",
-        "layout_rules": [
-            "Hero official invite",
-            "Descriptive explains benefits",
-            "Product is the ticket"
-        ],
-        "required_blocks": [
-            "hero",
-            "descriptive",
-            "product"
-        ],
-        "allowed_intensities": [
+            "medium",
             "hard_sell"
         ],
         "tags": [
-            "promo",
-            "retention"
-        ]
-    },
-    {
-        "id": "STRUCT_FOUNDER_NOTE",
-        "name": "Founder's Note",
-        "description": "Personal message from leadership.",
-        "layout_rules": [
-            "Hero portrait/sig",
-            "Descriptive personal story",
-            "Product soft mention"
-        ],
-        "required_blocks": [
-            "hero",
-            "descriptive",
-            "product"
-        ],
-        "allowed_intensities": [
-            "soft",
-            "nurture"
-        ],
-        "tags": [
-            "brand_building"
-        ]
-    },
-    {
-        "id": "STRUCT_LISTICLE",
-        "name": "The Listicle",
-        "description": "3-5 reasons or tips.",
-        "layout_rules": [
-            "Hero headline",
-            "Descriptive numbered list",
-            "Product is the #1 tip"
-        ],
-        "required_blocks": [
-            "hero",
-            "descriptive",
-            "product"
-        ],
-        "allowed_intensities": [
-            "educational",
-            "medium"
-        ],
-        "tags": [
-            "education",
-            "skimmable"
+            "motion",
+            "demo",
+            "dynamic"
         ]
     }
 ]

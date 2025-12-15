@@ -54,6 +54,8 @@ class StraicoLLM(BaseLlm):
             "openai/gpt-4o",
             "openai/gpt-4o-2024-08-06",
             "openai/gpt-4-turbo-2024-04-09",
+            "openai/gpt-5-chat",
+            "anthropic/claude-3-5-sonnet-20240620",
             "amazon/nova-micro-v1",
         ]
 

@@ -5,6 +5,7 @@ from typing import Dict, Any, Optional
 from email_orchestrator.tools.straico_tool import get_client
 from email_orchestrator.tools.knowledge_reader import KnowledgeReader
 from email_orchestrator.schemas import EmailBlueprint, BrandBio, EmailDraft
+from email_orchestrator.config import STRAICO_MODEL
 
 # Initialize tools
 knowledge_reader = KnowledgeReader()
@@ -46,7 +47,7 @@ async def drafter_agent(
     
     # 4. Call Straico API
     client = get_client()
-    model = "openai/gpt-4o-2024-11-20" 
+    model = STRAICO_MODEL 
     
     print(f"[Drafter] Sending prompt to Straico...")
     result_json_str = await client.generate_text(full_prompt, model=model)

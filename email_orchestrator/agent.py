@@ -15,6 +15,7 @@ from google import genai
 # Import our Straico tool functions
 # Import our Campaign tools
 from email_orchestrator.tools.campaign_tools import analyze_brand, generate_email_campaign, plan_campaign
+from email_orchestrator.config import ADK_MODEL
 
 
 def load_instruction() -> str:
@@ -28,7 +29,7 @@ def load_instruction() -> str:
 
 # Create orchestrator with Gemini model
 root_agent = Agent(
-    model="gemini-2.0-flash",  # Valid model from list
+    model=ADK_MODEL,  # Valid model from list
     name="email_orchestrator",
     description=(
         "An orchestrator agent that plans and writes e-commerce marketing emails "

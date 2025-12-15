@@ -1,0 +1,60 @@
+[
+  {
+    "time": 1765816025.5653381,
+    "type": "agent_start",
+    "agent": "email_orchestrator"
+  },
+  {
+    "time": 1765816031.0864792,
+    "type": "runner_event",
+    "event_type": "TOOL_CALL",
+    "tool_name": "analyze_brand",
+    "content_preview": "Calling tool: analyze_brand({'brand_name': 'PopBrush', 'website_url': 'https://popbrush.fr'})"
+  },
+  {
+    "time": 1765816031.0877151,
+    "type": "runner_event",
+    "event_type": "TOOL_RESULT",
+    "tool_name": "analyze_brand",
+    "content_preview": "Tool returned: analyze_brand -> {'result': '{\"brand_name\":\"PopBrush\",\"industry\":\"Haircare\",\"target_audience\":\"Families, parents with children, individuals with all hair types looking..."
+  },
+  {
+    "time": 1765816035.3473191,
+    "type": "runner_event",
+    "event_type": "TOOL_CALL",
+    "tool_name": "plan_campaign",
+    "content_preview": "Calling tool: plan_campaign({'duration': '1 week', 'campaign_goal': 'January 2026 sequence: 1 educational email on dating advice...)"
+  },
+  {
+    "time": 1765816093.804505,
+    "type": "runner_event",
+    "event_type": "TOOL_RESULT",
+    "tool_name": "plan_campaign",
+    "content_preview": "Tool returned: plan_campaign -> {'result': 'Campaign Plan Created! ID: 20251213070000. Status: approved'}"
+  },
+  {
+    "time": 1765816098.718687,
+    "type": "runner_event",
+    "event_type": "TOOL_CALL",
+    "tool_name": "generate_email_campaign",
+    "content_preview": "Calling tool: generate_email_campaign({'campaign_id': '20251213070000'})"
+  },
+  {
+    "time": 1765816231.619585,
+    "type": "runner_event",
+    "event_type": "TOOL_RESULT",
+    "tool_name": "generate_email_campaign",
+    "content_preview": "Tool returned: generate_email_campaign -> {'result': '[\\n  {\\n    \"slot\": 1,\\n    \"subject\": \"Your Smooth Hair Confidence Plan for Tonight\",\\n    \"status\": \"completed\"\\n  },\\n  {\\n    \"slot\": ..."
+  },
+  {
+    "time": 1765816243.1923819,
+    "type": "runner_event",
+    "event_type": "model_turn",
+    "content_preview": "I have successfully planned and generated your 3-email campaign for January 2026.\n\nThe campaign follows a logical flow: starting with value (dating advice) to build engagement, followed by a strong 40% OFF promotional push for the weekend.\n\n**Campaign ID:** `20251213070000`\n**Location:** Google Driv"
+  },
+  {
+    "time": 1765816243.192745,
+    "type": "agent_end",
+    "agent": "email_orchestrator"
+  }
+]

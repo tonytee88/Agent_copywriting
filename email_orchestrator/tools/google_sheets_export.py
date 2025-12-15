@@ -16,10 +16,11 @@ from google.oauth2.credentials import Credentials
 from google.auth.transport.requests import Request
 
 # Scopes required
+# Scopes required
 SCOPES = [
+    'https://www.googleapis.com/auth/drive',
     'https://www.googleapis.com/auth/spreadsheets',
-    'https://www.googleapis.com/auth/drive.file',
-    'https://www.googleapis.com/auth/drive'
+    'https://www.googleapis.com/auth/documents'
 ]
 
 DEFAULT_CREDENTIALS_PATH = Path(__file__).parent.parent.parent / "google_credentials.json"
@@ -143,10 +144,10 @@ class GoogleSheetsExporter:
                 s_get('theme'),
                 s_get('email_purpose'),
                 s_get('intensity_level'),
-                s_get('transformation_id'),
-                s_get('angle_id'),
+                s_get('transformation_description'),
+                s_get('angle_description'),
                 s_get('structure_id'),
-                s_get('persona_id'),
+                s_get('persona_description'),
                 s_get('key_message'),
                 s_get('offer_details'),
                 s_get('offer_placement')

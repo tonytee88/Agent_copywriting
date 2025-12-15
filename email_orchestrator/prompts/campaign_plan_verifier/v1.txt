@@ -3,33 +3,35 @@ Your mission is to perform a rigorous "Judge + Repair" quality check on the prop
 
 ## INPUTS
 
-1. [CAMPAIGN PLAN]: The proposed ID-based plan.
-2. [CATALOGS]: The reference IDs (Structures, Angles, etc.).
-3. [HISTORY LOG]: Recent IDs (to check for forbidden repetition).
+1. [CAMPAIGN PLAN]: The proposed plan (Free-text strategy + Strict Structures).
+2. [CATALOG (STRUCTURES ONLY)]: Valid Structure IDs.
+3. [HISTORY LOG]: Recent concepts.
 4. [BRAND BIO]: Context.
 
 ## MISSION
 
 Output a Valid JSON `CampaignPlanVerification` object.
-If the plan has issues, you MUST provide explicit REPAIR OPTIONS (alternative IDs) so the Planner can fix it immediately.
+If the plan has issues, you MUST provide explicit REPAIR OPTIONS so the Planner can fix it immediately.
 
 ## VERIFICATION CHECKLIST
 
-1. **ID Validity**: Are all `*_id` fields valid IDs found in [CATALOGS]?
+1. **Structure ID Validity (Strict)**: 
+   - Is `structure_id` a valid ID found in [CATALOG]?
    - If NO: Mark as P1 Issue, suggest valid ID.
 
-2. **Variety (Strict)**: 
-   - No `transformation_id` should appear twice in the plan.
-   - No `angle_id` should appear twice in the plan.
-   - No `structure_id` should appear twice in the plan.
-   - If ID repeated: Mark as P2 Issue, suggest unused ID.
+2. **Semantic Variety (Creative)**: 
+   - **Transformation**: Are the descriptions distinct across emails? (Avoid repeating the same journey).
+   - **Angle**: Are the hooks distinct?
+   - **Structure**: No `structure_id` should appear twice (Strict).
+   - If Semantic Repetition found: Mark as P2 Issue, suggest a different angle/transformation.
 
-3. **History Repetition**:
-   - Compare IDs to [HISTORY LOG]. 
-   - If ID matched recent usage: Mark as P2 Issue.
+3. **History Repetition (Semantic)**:
+   - Compare descriptions to [HISTORY LOG]. 
+   - If a concept is semantically too similar to a recent one (e.g., rephrased but same idea): Mark as P2 Issue.
 
 4. **Balance & Logic**:
    - Verify promotional ratio matches the goal.
+   - **IMPORTANT**: If the `promotional_balance` requested by the User matches the plan, it is correct. Trust the User.
    - Verify logical progression.
 
 ## OUTPUT SCHEMA
@@ -50,7 +52,7 @@ Return ONLY valid JSON:
       "severity": "P1|P2|P3",
       "scope": "email|campaign",
       "email_slot": 1,
-      "field": "transformation_id",
+      "field": "transformation_description",
       "problem": "Explained problem",
       "rationale": "Why this is bad"
     }}
@@ -59,15 +61,14 @@ Return ONLY valid JSON:
   "per_email_suggestions": [
      {{
        "email_slot": 1,
-       "suggested_transformations": ["TRANS_ID_1", "TRANS_ID_2"],
-       "suggested_angles": ["ANGLE_ID_1"],
+       "suggested_transformations": ["Description of alternative transformation"],
+       "suggested_angles": ["Description of alternative angle"],
        "suggested_structures": ["STRUCT_ID_1"],
        "notes": "Use these to fix the repetition"
      }}
   ],
   
   "campaign_level_suggestions": ["Suggestion 1", "Suggestion 2"],
-  "critical_issues": ["Summary of P1 issues"],
   "feedback_for_planner": "Detailed feedback"
 }}
 ```
@@ -80,7 +81,7 @@ Return ONLY valid JSON:
 === CAMPAIGN PLAN ===
 {campaign_plan}
 
-=== CATALOGS ===
+=== CATALOG (STRUCTURES ONLY) ===
 {catalogs}
 
 === HISTORY LOG ===

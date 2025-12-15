@@ -6,6 +6,7 @@ from email_orchestrator.tools.straico_tool import get_client
 from email_orchestrator.tools.knowledge_reader import KnowledgeReader
 from email_orchestrator.tools.history_manager import HistoryManager, CampaignLogEntry
 from email_orchestrator.schemas import EmailBlueprint, EmailDraft, EmailVerification
+from email_orchestrator.config import STRAICO_MODEL
 
 # Initialize tools
 knowledge_reader = KnowledgeReader()
@@ -23,7 +24,7 @@ async def verifier_agent(
     print(f"[Verifier] Q/A Checking email for {brand_name}...")
 
     # 1. Fetch Context
-    recent_history = history_manager.get_recent_campaigns(brand_name, limit=10)
+    recent_history = history_manager.get_recent_campaigns(brand_name, limit=3)
     history_summary = _format_history_for_verifier(recent_history)
     
     format_rules = knowledge_reader.get_document_content("Email instructions type #1.pdf")
@@ -47,7 +48,7 @@ async def verifier_agent(
     
     # 4. Call Straico API
     client = get_client()
-    model = "openai/gpt-4o-2024-11-20"
+    model = STRAICO_MODEL
     
     print(f"[Verifier] Sending prompt to Straico...")
     result_json_str = await client.generate_text(full_prompt, model=model)
@@ -62,7 +63,29 @@ async def verifier_agent(
             print(f"[Verifier] APPROVED (Score: {result.score}/10)")
         else:
             print(f"[Verifier] REJECTED. Issues: {len(result.issues)}")
+            for issue in result.issues:
+                print(f" - [{issue.severity}] {issue.problem} ({issue.field})")
             
+            print(f"\n[Verifier] Feedback: {result.feedback_for_drafter}")
+            
+            if result.replacement_options:
+                ro = result.replacement_options
+                print(f"[Verifier] Replacement Options Suggest:")
+                if ro.subject_alternatives:
+                    print(f" - Subject Lines: {ro.subject_alternatives}")
+                if ro.preview_alternatives:
+                    print(f" - Preview Text: {ro.preview_alternatives}")
+                if ro.hero_title_alternatives:
+                    print(f" - Hero Titles: {ro.hero_title_alternatives}")
+                if ro.hero_subtitle_alternatives:
+                    print(f" - Hero Subtitles: {ro.hero_subtitle_alternatives}")
+                if ro.hero_cta_alternatives:
+                    print(f" - Hero CTAs: {ro.hero_cta_alternatives}")
+                if ro.product_cta_alternatives:
+                    print(f" - Product CTAs: {ro.product_cta_alternatives}")
+                if ro.descriptive_block_rewrite_hint:
+                    print(f" - Rewrite Hint: {ro.descriptive_block_rewrite_hint}")
+
         return result
         
     except Exception as e:
