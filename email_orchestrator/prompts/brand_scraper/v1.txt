@@ -7,7 +7,7 @@ Please extract or infer the following details:
 3. Target Audience: Who are they selling to? (Demographics, psychographics).
 4. Unique Selling Proposition (USP): What makes them different?
 5. Brand Voice/Tone: Adjectives describing their communication style (e.g., playful, scientific, luxury).
-6. Key Products: The main items they sell.
+6. Key Products: List as many specific product names as found (up to 15). Do not use generic categories if specific names are available.
 7. Mission Statement: Their underlying purpose, if visible.
 
 If any information is completely missing, infer it from the context if possible, or mark as "Not explicitly stated".
@@ -19,7 +19,7 @@ Output the result as a Valid JSON object matching this schema:
   "target_audience": "string",
   "unique_selling_proposition": "string",
   "brand_voice": "string",
-  "key_products": ["string", "string"],
+  "key_products": ["Product A", "Product B", "Product C (up to 15)"],
   "mission_statement": "string"
 }
 

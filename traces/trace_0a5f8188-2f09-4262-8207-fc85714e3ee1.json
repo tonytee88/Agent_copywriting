@@ -1,0 +1,18 @@
+[
+  {
+    "time": 1765822780.774862,
+    "type": "agent_start",
+    "agent": "email_orchestrator"
+  },
+  {
+    "time": 1765822781.557698,
+    "type": "runner_event",
+    "event_type": "model_turn",
+    "content_preview": "Thanks! What is the main goal for this campaign, and how many emails would you like to send?"
+  },
+  {
+    "time": 1765822781.5579698,
+    "type": "agent_end",
+    "agent": "email_orchestrator"
+  }
+]

@@ -1,0 +1,18 @@
+[
+  {
+    "time": 1765822860.921979,
+    "type": "agent_start",
+    "agent": "email_orchestrator"
+  },
+  {
+    "time": 1765822861.77088,
+    "type": "runner_event",
+    "event_type": "model_turn",
+    "content_preview": "Please tell me more about what you'd like to continue with. Are you referring to a previous campaign or a specific task? \n"
+  },
+  {
+    "time": 1765822861.771214,
+    "type": "agent_end",
+    "agent": "email_orchestrator"
+  }
+]

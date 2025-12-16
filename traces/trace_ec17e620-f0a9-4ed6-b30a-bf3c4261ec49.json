@@ -1,0 +1,32 @@
+[
+  {
+    "time": 1765822867.926167,
+    "type": "agent_start",
+    "agent": "email_orchestrator"
+  },
+  {
+    "time": 1765822868.846195,
+    "type": "runner_event",
+    "event_type": "TOOL_CALL",
+    "tool_name": "analyze_brand",
+    "content_preview": "Calling tool: analyze_brand({'website_url': 'popbrush.fr'})"
+  },
+  {
+    "time": 1765822868.847483,
+    "type": "runner_event",
+    "event_type": "TOOL_RESULT",
+    "tool_name": "analyze_brand",
+    "content_preview": "Tool returned: analyze_brand -> {'error': 'Invoking `analyze_brand()` failed as the following mandatory input parameters are not present:\\nbrand_name\\nYou could retry calling this to..."
+  },
+  {
+    "time": 1765822869.606255,
+    "type": "runner_event",
+    "event_type": "model_turn",
+    "content_preview": "I need the brand name to analyze the brand. Can you please provide it?"
+  },
+  {
+    "time": 1765822869.606496,
+    "type": "agent_end",
+    "agent": "email_orchestrator"
+  }
+]

@@ -60,7 +60,7 @@ async def campaign_planner_agent(
     # 2. Get historic campaigns
     recent_history = history_manager.get_recent_campaigns(brand_name, limit=5)
     history_summary = _format_history_for_prompt(recent_history)
-    print(f"[Campaign Planner] Recent history summary:\n{history_summary}")
+    #print(f"[Campaign Planner] Recent history summary:\n{history_summary}")
     
     # 3. Prepare prompt variables
     promotional_percentage = int(promotional_ratio * 100)
@@ -187,6 +187,8 @@ REVISION RULES:
 4. Return ONLY valid JSON matching the CampaignPlan schema.
 5. Allowed intensity_level: "hard_sell", "medium", "soft".
 6. Allowed email_purpose: "promotional", "educational", "storytelling", "nurture", "conversion".
+7. CRITICAL: Maintain exactly {original_plan.total_emails} emails (from original plan). Do NOT add or remove slots.
+8. CRITICAL: Ensure every email slot has a valid `structure_id` field.
 """
     
     try:

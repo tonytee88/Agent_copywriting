@@ -1,0 +1,31 @@
+[
+  {
+    "time": 1765822789.4793699,
+    "type": "agent_start",
+    "agent": "email_orchestrator"
+  },
+  {
+    "time": 1765822790.261747,
+    "type": "runner_event",
+    "event_type": "TOOL_CALL",
+    "tool_name": "analyze_brand",
+    "content_preview": "Calling tool: analyze_brand({'website_url': 'https://popbrush.fr', 'brand_name': 'PopBrush'})"
+  },
+  {
+    "time": 1765822790.264239,
+    "type": "runner_event",
+    "event_type": "TOOL_RESULT",
+    "tool_name": "analyze_brand",
+    "content_preview": "Tool returned: analyze_brand -> {'result': '{\"brand_name\":\"PopBrush\",\"industry\":\"Haircare\",\"target_audience\":\"Families, parents with children, individuals with all hair types looking..."
+  },
+  {
+    "time": 1765822790.7170591,
+    "type": "runner_event",
+    "event_type": "model_turn"
+  },
+  {
+    "time": 1765822790.7173371,
+    "type": "agent_end",
+    "agent": "email_orchestrator"
+  }
+]

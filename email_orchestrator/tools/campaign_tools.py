@@ -162,7 +162,7 @@ async def generate_email_campaign(
                 final_draft = draft
                 break
             else:
-                print(f"[Email #{slot.slot_number}] REJECTED (Attempt {attempt+1}). Issues: {len(verification.issues)}")
+                print(f"[Email #{slot.slot_number}] QA DETECTED ISSUES. OPTIMIZING DRAFT (Attempt {attempt+1}). Issues: {len(verification.issues)}")
                 
                 if attempt < max_draft_retries - 1:
                     feedback_lines = []
@@ -207,7 +207,9 @@ async def generate_email_campaign(
             doc_result = export_email_to_google_docs(
                 email_draft=final_draft.dict(),
                 brand_name=plan.brand_name,
-                folder_id=drive_folder_id # Use the passed folder ID
+                folder_id=drive_folder_id, # Use the passed folder ID
+                structure_name=blueprint.structure_id,
+                language=plan.language
             )
             print(f"[Export] Email #{slot.slot_number} exported to: {doc_result['document_url']} (Folder: {drive_folder_id})")
         except Exception as e:

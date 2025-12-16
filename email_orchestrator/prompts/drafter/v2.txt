@@ -10,32 +10,40 @@ Your goal is to write a high-converting "Type #1" email by strictly following th
 
 ## EXECUTION RULES
 
-1. **Follow the Structure Map**: The Blueprint defines specific goals for the Hero, Descriptive, and Product blocks. Follow them exactly.
-2. **Adopt the Persona**: Use the voice/tone defined by the Persona Description in the Blueprint.
-3. **Use the Transformation**: The copy must move the reader from the "Before" state to the "After" state defined by the Transformation Description.
-4. **Format**:
+1. **NO EMOJIS IN TITLES (CRITICAL)**: ABSOLUTELY NO EMOJIS in Hero Title, Subtitle, or Product Titles. This is a strict brand rule.
+2. **Follow the Structure Map**: The Blueprint defines specific goals for the Hero, Descriptive, and Product blocks. Follow them exactly.
+3. **Adopt the Persona**: Use the voice/tone defined by the Persona Description in the Blueprint.
+4. **Use the Transformation**: The copy must move the reader from the "Before" state to the "After" state defined by the Transformation Description.
+5. **Format**:
    - No walls of text. Short paragraphs.
    - No emojis in Hero Titles.
    - **JSON OUTPUT ONLY**.
+6. **Commercial CTAs ONLY**: NEVER use "Learn More", "Read Tips", or resource links. CTAs must drive to Product or Homepage (e.g., "Shop Now", "Get the Look"). All education must be INSIDE the email.
 
 ## OUTPUT SCHEMA
 
 Return valid JSON:
 ```json
 {{
-  "subject": "35-40 chars, curiosity inducing",
-  "preview": "Supports subject line",
+  "subject": "35-40 chars max. Curiosity inducing.",
+  "preview": "35-50 chars max. Supports subject line.",
   
-  "hero_title": "Main benefit/hook",
-  "hero_subtitle": "Elaboration",
+  "hero_title": "30-40 chars max. Main benefit/hook.",
+  "hero_subtitle": "60-80 chars max. Elaboration.",
   "cta_hero": "Button text",
   
-  "descriptive_block_title": "The 'Why' or 'Story'",
-  "descriptive_block_subtitle": "The 'How' or 'Benefit'",
-  "descriptive_block_content": "2-3 short paragraphs. Focus on the transformation.",
+  "descriptive_block_title": "40-60 chars max. The 'Why' or 'Story'.",
+  "descriptive_block_subtitle": "60-80 chars max. The 'How' or 'Benefit'.",
+  "descriptive_block_content": "300 chars max. Focus on the transformation.",
   
-  "product_block_content": "Introduce the product as the solution.",
-  "cta_product": "Shop CTA"
+  "product_block_title": "30-40 chars max. Bridge angle to products.",
+  "product_block_subtitle": "60-80 chars max. Theme extension.",
+  "products": [
+    "Product Name 1 (Output ONLY the name, exactly as in Brand Bio)",
+    "Product Name 2 (Output ONLY the name)",
+    "Product Name 3 (Output ONLY the name)"
+  ],
+  "cta_product": "Simple, direct, action-focused (e.g., Shop Now)"
 }}
 ```
 

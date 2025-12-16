@@ -87,7 +87,12 @@ class EmailDraft(BaseModel):
     descriptive_block_subtitle: str
     descriptive_block_content: str # The main body
     
-    product_block_content: str
+    # Reworked Product Block
+    product_block_title: str = Field(default="Shop the Collection")
+    product_block_subtitle: str = Field(default="Our top picks for you")
+    products: List[str] = Field(default_factory=list, description="List of 3 specific products with brief benefits")
+    product_block_content: Optional[str] = None # Legacy/Fallback
+    
     cta_product: str
     
     full_text_formatted: str # The full email string for easy reading
@@ -173,6 +178,7 @@ class CampaignPlan(BaseModel):
     # Metadata
     created_at: str
     status: Literal["draft", "approved", "in_progress", "completed"] = "draft"
+    language: str = "English"
 
 # --- Verification Schemas ---
 

@@ -1,14 +1,33 @@
 import json
+from typing import Optional
 from email_orchestrator.subagents.brand_scraper_agent import brand_scraper_agent
 from email_orchestrator.tools.brand_bio_manager import BrandBioManager
 
-async def analyze_brand(brand_name: str, website_url: str = None) -> str:
+async def analyze_brand(brand_name: Optional[str] = None, website_url: Optional[str] = None) -> str:
     """
     Analyzes a brand to produce a BrandBio JSON.
-    First checks the local DB. If missing, attempts to scrape (if URL provided).
-    If no URL and no DB entry, returns a valid but generic/placeholder JSON.
+    
+    Args:
+        brand_name: Name of the brand (e.g., "PopBrush"). If omitted, inferred from URL.
+        website_url: URL of the brand (e.g., "https://popbrush.fr").
     """
     manager = BrandBioManager()
+    
+    # 0. Infer brand_name if missing
+    if not brand_name and website_url:
+        # Simple heuristic: domain name
+        from urllib.parse import urlparse
+        if "://" not in website_url:
+            website_url = "https://" + website_url
+        domain = urlparse(website_url).netloc
+        # split by dot, take first part (e.g. popbrush.fr -> popbrush)
+        # remove www.
+        domain = domain.replace("www.", "")
+        brand_name = domain.split('.')[0].capitalize()
+        print(f"[BrandTool] Inferred brand name '{brand_name}' from URL")
+        
+    if not brand_name:
+         return json.dumps({"error": "Invoking `analyze_brand` failed: `brand_name` is required if no URL is provided."})
     
     # 1. Check Cache
     cached_bio = manager.get_bio(brand_name)

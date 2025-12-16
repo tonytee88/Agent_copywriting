@@ -21,6 +21,10 @@ Your goal is to ensure the draft is perfect, compliant, and non-repetitive.
 4. **Copy Quality**:
    - Compelling hooks?
    - Clear benefits?
+5. **Commercial CTA Limit**:
+   - Verify CTAs are NOT "Learn More", "Read Tips", or "See Resources".
+   - CTAs MUST be "Shop Now", "Get Yours", etc.
+   - Fail if any link points to non-commercial content.
 
 ## OUTPUT SCHEMA
 

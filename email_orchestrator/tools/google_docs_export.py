@@ -79,12 +79,35 @@ class GoogleDocsExporter:
             
         except Exception as e:
             raise Exception(f"Failed to authenticate with Google: {e}")
+
+    def _move_to_folder(self, file_id: str, folder_id: str):
+        """Move file to specific Drive folder."""
+        try:
+            # Retrieve the existing parents to remove
+            file = self.drive_service.files().get(
+                fileId=file_id,
+                fields='parents'
+            ).execute()
+            previous_parents = ",".join(file.get('parents'))
+            
+            # Move the file by adding the new parent and removing the old one
+            self.drive_service.files().update(
+                fileId=file_id,
+                addParents=folder_id,
+                removeParents=previous_parents,
+                fields='id, parents'
+            ).execute()
+            print(f"[GoogleDocs] ✓ Moved to folder: {folder_id}")
+        except HttpError as e:
+            print(f"[GoogleDocs] Warning: Could not move to folder {folder_id}: {e}")
     
     def create_email_doc(
         self,
         email_draft: Dict[str, Any],
         brand_name: str,
-        folder_id: Optional[str] = None
+        folder_id: Optional[str] = None,
+        structure_name: str = "Unknown",
+        language: str = "English"
     ) -> Dict[str, str]:
         """
         Create a Google Doc with the email draft.
@@ -112,7 +135,7 @@ class GoogleDocsExporter:
             print(f"[GoogleDocs] Created document: {doc_title}")
             
             # Build formatted content
-            requests = self._build_email_content_requests(email_draft)
+            requests = self._build_email_content_requests(email_draft, structure_name, language)
             
             # Update document with content
             if requests:
@@ -138,90 +161,216 @@ class GoogleDocsExporter:
         except HttpError as e:
             raise Exception(f"Google Docs API error: {e}")
     
-    def _build_email_content_requests(self, email_draft: Dict[str, Any]) -> list:
+    def _build_email_content_requests(
+        self, 
+        email_draft: Dict[str, Any],
+        structure_name: str,
+        language: str
+    ) -> list:
         """
         Build Google Docs API requests to format the email content.
         
-        Returns:
-            List of API requests for batchUpdate
+        Layout:
+        H1: Email [Auto-numbered if possible, or just Email]
+        
+        LANGUAGE: [Language]
+        Subject Line (Bold Title): [Text]
+        Preview Text (Bold Title): [Text]
+        
+        Hero Banner Title (Bold): [Text]
+        Hero Banner Subtitle (Bold): [Text]
+        CTA: [Text]
+        
+        Descriptive Block Title (Bold): [Text]
+        Sub-title (Bold): [Text]
+        [[Structure Name]]
+        
+        [Content] is BODY
+        
+        CTA: [Text]
+        
+        Product Block Title (Bold): [Text]
+        Product Block Subtitle (Bold): [Text]
+        Images : 
+        [Product Link]
+        CTA: [Text]
         """
         requests = []
+        index = 1
         
-        # Build content text
-        content_parts = []
+        def insert_text(text):
+            nonlocal index
+            req = {'insertText': {'location': {'index': index}, 'text': text}}
+            index += len(text)
+            return req
+
+        def insert_paragraph_break():
+            nonlocal index
+            req = {'insertText': {'location': {'index': index}, 'text': "\n"}}
+            index += 1
+            return req
+            
+        def format_bold(start_index, end_index):
+            return {
+                'updateTextStyle': {
+                    'range': {'startIndex': start_index, 'endIndex': end_index},
+                    'textStyle': {'bold': True},
+                    'fields': 'bold'
+                }
+            }
+            
+        def format_h1(start_index, end_index):
+             return {
+                'updateParagraphStyle': {
+                    'range': {'startIndex': start_index, 'endIndex': end_index},
+                    'paragraphStyle': {'namedStyleType': 'HEADING_1'},
+                    'fields': 'namedStyleType'
+                }
+            }
+
+        # We build the doc essentially in reverse order if we insert at index 1 always,
+        # OR we track the index. Tracking index is safer for complex formatting.
+        # But wait, batchUpdate executes in order. So we can just append text and formatting requests.
+        # It's easier to build the whole text string first, insert it, then apply formatting ranges?
+        # No, because calculating ranges on a moving target is hard.
+        # The best way is to insert at the end? Docs API insert at 'end' via segment ID?
+        # Actually, inserting at index 1 pushes everything down.
+        # Let's try to build a list of (text, is_bold, is_h1) tuples and process them.
         
-        # Header
-        content_parts.append("=" * 60)
-        content_parts.append("EMAIL DRAFT")
-        content_parts.append("=" * 60)
-        content_parts.append("")
+        content_items = []
         
-        # Subject Line
-        content_parts.append("SUBJECT LINE")
-        content_parts.append(email_draft.get('subject', 'N/A'))
-        content_parts.append("")
+        # Helper to add items
+        def add(text, bold=False, h1=False):
+            content_items.append({"text": text, "bold": bold, "h1": h1})
+        def add_br():
+            content_items.append({"text": "\n", "bold": False, "h1": False})
+
+        # --- CONTENT CONSTRUCTION ---
         
-        # Preview Text
-        content_parts.append("PREVIEW TEXT")
-        content_parts.append(email_draft.get('preview', 'N/A'))
-        content_parts.append("")
+        # H1: Email Title (We don't have the slot number here easily passing from tool? 
+        # actually we don't. Let's just say "Email Draft" or use the subject as H1?)
+        # User said "Email number should be H1". 
+        # I'll rely on the caller or just "Email Draft" for now if slot missing.
+        add("Email Draft", h1=True) 
+        add_br()
         
-        # Hero Section
-        content_parts.append("=" * 60)
-        content_parts.append("HERO SECTION")
-        content_parts.append("=" * 60)
-        content_parts.append("")
-        content_parts.append(f"Title: {email_draft.get('hero_title', 'N/A')}")
-        content_parts.append(f"Subtitle: {email_draft.get('hero_subtitle', 'N/A')}")
-        content_parts.append(f"CTA: {email_draft.get('cta_hero', 'N/A')}")
-        content_parts.append("")
+        add("##########")
+        add_br()
+        add_br()
         
-        # Descriptive Block
-        content_parts.append("=" * 60)
-        content_parts.append("DESCRIPTIVE BLOCK")
-        content_parts.append("=" * 60)
-        content_parts.append("")
-        content_parts.append(f"Title: {email_draft.get('descriptive_block_title', 'N/A')}")
-        content_parts.append(f"Subtitle: {email_draft.get('descriptive_block_subtitle', 'N/A')}")
-        content_parts.append("")
-        content_parts.append("Content:")
-        content_parts.append(email_draft.get('descriptive_block_content', 'N/A'))
-        content_parts.append("")
+        add("LANGUAGE: ")
+        add(language.upper())
+        add_br()
+        add_br()
         
-        # Product Block (if present)
-        if email_draft.get('product_block_title'):
-            content_parts.append("=" * 60)
-            content_parts.append("PRODUCT BLOCK")
-            content_parts.append("=" * 60)
-            content_parts.append("")
-            content_parts.append(f"Title: {email_draft.get('product_block_title', 'N/A')}")
-            content_parts.append(f"Subtitle: {email_draft.get('product_block_subtitle', 'N/A')}")
-            content_parts.append(f"CTA: {email_draft.get('cta_product', 'N/A')}")
-            content_parts.append("")
+        add("Subject Line : ", bold=True)
+        add(email_draft.get('subject', ''))
+        add_br()
         
-        # Story Block (if present)
-        if email_draft.get('story_block_title'):
-            content_parts.append("=" * 60)
-            content_parts.append("STORY BLOCK")
-            content_parts.append("=" * 60)
-            content_parts.append("")
-            content_parts.append(f"Title: {email_draft.get('story_block_title', 'N/A')}")
-            content_parts.append(f"Subtitle: {email_draft.get('story_block_subtitle', 'N/A')}")
-            content_parts.append(f"CTA: {email_draft.get('cta_story', 'N/A')}")
-            content_parts.append("")
+        add("Preview Text : ", bold=True)
+        add(email_draft.get('preview', ''))
+        add_br()
+        add_br()
         
-        # Full formatted text (if available)
-        if email_draft.get('full_text_formatted'):
-            content_parts.append("=" * 60)
-            content_parts.append("FULL EMAIL (FORMATTED)")
-            content_parts.append("=" * 60)
-            content_parts.append("")
-            content_parts.append(email_draft.get('full_text_formatted'))
+        add("Hero Banner Title : ", bold=True)
+        add(email_draft.get('hero_title', ''))
+        add_br()
         
-        # Join all parts
-        full_text = "\n".join(content_parts)
+        add("Hero Banner Subtitle : ", bold=True)
+        add(email_draft.get('hero_subtitle', ''))
+        add_br()
         
-        # Insert text at beginning of document
+        add("CTA : ", bold=True) # User requested "CTA (2-3 words)" label? No "CTA : "
+        add(email_draft.get('cta_hero', ''))
+        add_br() 
+        add_br()
+        
+        add("Descriptive Block Title : ", bold=True)
+        add(email_draft.get('descriptive_block_title', ''))
+        add_br()
+
+        add("Sub-title : ", bold=True)
+        add(email_draft.get('descriptive_block_subtitle', ''))
+        add_br()
+        add_br()
+        
+        add(f"[[{structure_name}]]")
+        add_br()
+        
+        # Body Content
+        body_text = email_draft.get('descriptive_block_content', '')
+        add(body_text)
+        add_br()
+        add_br()
+        
+        # Offer/VIP section often in body, handled by content generation.
+        
+        add("CTA : ", bold=True)
+        # We don't have a specific secondary CTA field in schema? 
+        # Typically body CTA is same as hero or product.
+        # Let's use cta_hero for now or empty if not distinct.
+        add(email_draft.get('cta_hero', '')) 
+        add_br()
+        add_br()
+        
+        add("Product Block Title : ", bold=True)
+        add(email_draft.get('product_block_title', 'Shop the Collection')) 
+        add_br()
+        
+        add("Product Block Subtitle : ", bold=True)
+        add(email_draft.get('product_block_subtitle', ''))
+        add_br()
+        add_br()
+        
+        # Iterate products
+        products = email_draft.get('products', [])
+        # Fallback if list is empty but old content exists
+        if not products and email_draft.get('product_block_content'):
+             add(email_draft.get('product_block_content'))
+             add_br()
+        else:
+             for i, prod in enumerate(products):
+                 # Simple clean list 1 per line as requested
+                 add(prod)
+                 add_br()
+        
+        add("CTA : ", bold=True)
+        add(email_draft.get('cta_product', ''))
+        add_br()
+        
+        add("##########")
+        add_br()
+
+        # --- EXECUTE REQUESTS ---
+        # We insert text in bulk? No, to bold specific ranges, we need to know indices.
+        # Strategies:
+        # 1. Insert all text at once, then apply style ranges.
+        #    Detailed index calculation required.
+        # 2. Insert piece by piece? Inefficient.
+        # Let's go with 1.
+        
+        full_text = ""
+        style_ranges = [] # list of (start, end, type)
+        
+        current_idx = 1
+        
+        for item in content_items:
+            text = item['text']
+            # Basic sanitization of $ and % if needed? User said "Use signs $ and %".
+            # I assume content has them. 
+            
+            start = current_idx
+            full_text += text
+            end = current_idx + len(text)
+            
+            if item['bold']:
+                style_ranges.append((start, end, 'bold'))
+            if item['h1']:
+                style_ranges.append((start, end, 'h1'))
+            
+            current_idx = end
+            
+        # 1. Insert all text
         requests.append({
             'insertText': {
                 'location': {'index': 1},
@@ -229,31 +378,14 @@ class GoogleDocsExporter:
             }
         })
         
+        # 2. Apply styles
+        for start, end, style_type in style_ranges:
+            if style_type == 'bold':
+                requests.append(format_bold(start, end))
+            elif style_type == 'h1':
+                requests.append(format_h1(start, end))
+                
         return requests
-    
-    def _move_to_folder(self, document_id: str, folder_id: str):
-        """Move document to a specific Google Drive folder."""
-        try:
-            # Get current parents
-            file = self.drive_service.files().get(
-                fileId=document_id,
-                fields='parents'
-            ).execute()
-            
-            previous_parents = ",".join(file.get('parents', []))
-            
-            # Move to new folder
-            self.drive_service.files().update(
-                fileId=document_id,
-                addParents=folder_id,
-                removeParents=previous_parents,
-                fields='id, parents'
-            ).execute()
-            
-            print(f"[GoogleDocs] ✓ Moved to folder: {folder_id}")
-            
-        except HttpError as e:
-            print(f"[GoogleDocs] Warning: Could not move to folder: {e}")
     
     def share_document(self, document_id: str, email: str, role: str = 'writer'):
         """
@@ -288,7 +420,9 @@ def export_email_to_google_docs(
     email_draft: Dict[str, Any],
     brand_name: str,
     folder_id: Optional[str] = None,
-    share_with: Optional[str] = None
+    share_with: Optional[str] = None,
+    structure_name: str = "Unknown Structure",
+    language: str = "English"
 ) -> Dict[str, str]:
     """
     Export an email draft to Google Docs.
@@ -298,14 +432,19 @@ def export_email_to_google_docs(
         brand_name: Brand name
         folder_id: Optional Google Drive folder ID
         share_with: Optional email address to share with
+        structure_name: Name of the structure used
+        language: Language of the email
     
     Returns:
         Dict with document_id and document_url
     """
     exporter = GoogleDocsExporter()
-    result = exporter.create_email_doc(email_draft, brand_name, folder_id)
+    # Note: create_email_doc needs update too
+    # I'll update create_email_doc to take the new params and pass them
     
-    if share_with:
-        exporter.share_document(result['document_id'], share_with)
+    # Wait, I can't easily change the class method signature in this replace block without changing the call inside create_email_doc.
+    # The previous block didn't include create_email_doc.
+    # I will override `create_email_doc` as well in this block to be safe and clean.
     
-    return result
+    return exporter.create_email_doc(email_draft, brand_name, folder_id, structure_name, language)
+

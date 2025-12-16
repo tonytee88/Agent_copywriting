@@ -87,6 +87,10 @@ def _clean_json_string(raw_text: str) -> str:
 
 def _construct_full_email_text(data: Dict[str, Any]) -> str:
     """Helper to assemble the email parts into a readable string."""
+    products_list = "\n".join([f"- {p}" for p in data.get('products', [])])
+    if not products_list and data.get('product_block_content'):
+        products_list = data.get('product_block_content')
+
     return f"""
 SUBJECT: {data.get('subject')}
 PREVIEW: {data.get('preview')}
@@ -101,7 +105,10 @@ CTA: {data.get('cta_hero')}
 
 {data.get('descriptive_block_content')}
 
-=== PRODUCT ===
-{data.get('product_block_content')}
+=== PRODUCT: {data.get('product_block_title')} ===
+{data.get('product_block_subtitle')}
+
+{products_list}
+
 CTA: {data.get('cta_product')}
 """

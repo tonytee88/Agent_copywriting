@@ -1,0 +1,45 @@
+[
+  {
+    "time": 1765822757.123452,
+    "type": "agent_start",
+    "agent": "email_orchestrator"
+  },
+  {
+    "time": 1765822757.87295,
+    "type": "runner_event",
+    "event_type": "TOOL_CALL",
+    "tool_name": "analyze_brand",
+    "content_preview": "Calling tool: analyze_brand({'website_url': 'popbrush.fr'})"
+  },
+  {
+    "time": 1765822757.874123,
+    "type": "runner_event",
+    "event_type": "TOOL_RESULT",
+    "tool_name": "analyze_brand",
+    "content_preview": "Tool returned: analyze_brand -> {'error': 'Invoking `analyze_brand()` failed as the following mandatory input parameters are not present:\\nbrand_name\\nYou could retry calling this to..."
+  },
+  {
+    "time": 1765822758.6388018,
+    "type": "runner_event",
+    "event_type": "TOOL_CALL",
+    "tool_name": "analyze_brand",
+    "content_preview": "Calling tool: analyze_brand({'website_url': 'popbrush.fr', 'brand_name': 'PopBrush'})"
+  },
+  {
+    "time": 1765822758.641595,
+    "type": "runner_event",
+    "event_type": "TOOL_RESULT",
+    "tool_name": "analyze_brand",
+    "content_preview": "Tool returned: analyze_brand -> {'result': '{\"brand_name\":\"PopBrush\",\"industry\":\"Haircare\",\"target_audience\":\"Families, parents with children, individuals with all hair types looking..."
+  },
+  {
+    "time": 1765822759.6182919,
+    "type": "runner_event",
+    "event_type": "unknown_event"
+  },
+  {
+    "time": 1765822759.618562,
+    "type": "agent_end",
+    "agent": "email_orchestrator"
+  }
+]
