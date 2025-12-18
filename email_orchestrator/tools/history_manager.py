@@ -42,13 +42,13 @@ class HistoryManager:
         Auto-cleanup to prevent unbounded growth.
         
         Strategy:
-        1. Keep last MAX_ENTRIES_PER_BRAND per brand
+        1. Keep last MAX_ENTRIES_PER_BRAND per brand_id
         2. If still over TOTAL_MAX_ENTRIES, keep newest across all brands
         """
-        # Group by brand
+        # Group by brand_id (fallback to name if ID missing for legacy)
         by_brand = {}
         for entry in history:
-            brand = entry.get("brand_name", "unknown")
+            brand = entry.get("brand_id") or entry.get("brand_name", "unknown")
             if brand not in by_brand:
                 by_brand[brand] = []
             by_brand[brand].append(entry)
@@ -72,7 +72,9 @@ class HistoryManager:
     def log_campaign(self, entry: CampaignLogEntry):
         """Append a new campaign entry to the log with auto-cleanup."""
         history = self._load_history()
-        # Convert Pydantic model to dict
+        
+        # Ensure brand_id is present if possible (not strictly required here as it comes from schema)
+        
         history.append(entry.model_dump())
         
         # Auto-cleanup
@@ -80,26 +82,34 @@ class HistoryManager:
         
         self._save_history(history)
 
-    def get_recent_campaigns(self, brand_name: str, limit: int = 10) -> List[CampaignLogEntry]:
+    def get_recent_campaigns(self, brand_identifier: str, limit: int = 10) -> List[CampaignLogEntry]:
         """
         Retrieve the most recent N campaigns for a specific brand.
-        Returns them as Pydantic models.
+        
+        Args:
+            brand_identifier: Either brand_id (preferred) or brand_name (legacy).
         """
         all_history = self._load_history()
+        brand_identifier = brand_identifier.lower()
         
-        # Filter by brand
-        brand_history = [
-            item for item in all_history 
-            if item.get("brand_name", "").lower() == brand_name.lower()
-        ]
+        # Filter logic:
+        # A match occurs if:
+        # 1. entry.brand_id == identifier
+        # 2. OR (entry.brand_id is None AND entry.brand_name == identifier)
         
-        # Sort by timestamp (assuming ISO format strings), newest last
-        # But we want recent ones, so let's take the slice from the end.
-        # Assuming append-only, the last ones are the newest.
+        brand_history = []
+        for item in all_history:
+            item_id = item.get("brand_id")
+            item_name = item.get("brand_name", "").lower()
+            
+            if item_id and item_id.lower() == brand_identifier:
+                brand_history.append(item)
+            elif not item_id and item_name == brand_identifier:
+                # Weak match for legacy data
+                brand_history.append(item)
         
         recent_dicts = brand_history[-limit:]
         
-        # Convert back to Pydantic models
         return [CampaignLogEntry(**item) for item in recent_dicts]
 
     def get_usage_summary(self, brand_name: str, limit: int = 10) -> Dict[str, List[str]]:

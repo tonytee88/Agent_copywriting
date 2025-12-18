@@ -5,6 +5,8 @@ from pydantic import BaseModel, Field, model_validator
 
 class BrandBio(BaseModel):
     """Structured brand information used for context."""
+    brand_id: Optional[str] = None # Unique ID (e.g. popbrush.fr)
+    website_url: Optional[str] = None
     brand_name: str
     industry: str
     target_audience: str
@@ -101,6 +103,7 @@ class CampaignLogEntry(BaseModel):
     """Record of a sent campaign for history tracking."""
     campaign_id: str
     timestamp: str
+    brand_id: Optional[str] = None # Added for multi-brand isolation
     brand_name: str
     
     # ID-based tracking for non-repetition logic (Updated to descriptions for free-text)
@@ -161,6 +164,7 @@ class EmailSlot(BaseModel):
 class CampaignPlan(BaseModel):
     """Strategic plan for a multi-email campaign."""
     campaign_id: str
+    brand_id: Optional[str] = None # Added for multi-brand isolation
     brand_name: str
     campaign_name: str
     campaign_goal: str  # e.g., "Build awareness then drive Black Friday sales"

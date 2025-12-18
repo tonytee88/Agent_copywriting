@@ -29,31 +29,53 @@ async def analyze_brand(brand_name: Optional[str] = None, website_url: Optional[
     if not brand_name:
          return json.dumps({"error": "Invoking `analyze_brand` failed: `brand_name` is required if no URL is provided."})
     
-    # 1. Check Cache
-    cached_bio = manager.get_bio(brand_name)
-    if cached_bio:
-        print(f"[BrandTool] Found cached bio for {brand_name}")
-        return cached_bio.model_dump_json()
+    # 1. Try URL-based ID Lookup First
+    if website_url:
+        # We can use the manager's helper (need to instantiate first)
+        temp_id = manager._generate_brand_id(website_url)
+        cached_bio = manager.get_bio(temp_id)
+        if cached_bio:
+            print(f"[BrandTool] Found cached bio for {brand_name or temp_id} (ID: {temp_id})")
+            return cached_bio.model_dump_json()
+
+    # 2. Try Name-based Lookup
+    if brand_name:
+        cached_bio = manager.get_bio(brand_name)
+        if cached_bio:
+             print(f"[BrandTool] Found cached bio for {brand_name}")
+             return cached_bio.model_dump_json()
     
-    # 2. Scrape if URL provided
+    # 3. Scrape if URL provided
     if website_url:
         print(f"[BrandTool] Scraping {website_url}...")
         bio_json = await brand_scraper_agent(website_url)
         # Cache it
         try:
             from email_orchestrator.schemas import BrandBio
-            bio_obj = BrandBio(**json.loads(bio_json))
-            # Ensure name matches requested
-            bio_obj.brand_name = brand_name
+            bio_data = json.loads(bio_json)
+            
+            # Ensure ID and URL are set
+            bio_data["website_url"] = website_url
+            if "brand_id" not in bio_data:
+                 bio_data["brand_id"] = manager._generate_brand_id(website_url)
+            
+            bio_obj = BrandBio(**bio_data)
+            # Ensure name matches requested if provided
+            if brand_name:
+                bio_obj.brand_name = brand_name
+            
             manager.save_bio(bio_obj)
             return bio_obj.model_dump_json()
-        except:
+        except Exception as e:
+            print(f"[BrandTool] Error processing scrape result: {e}")
             return bio_json
             
-    # 3. Fallback / Mock for "PopBrush" (Test convenience)
-    if brand_name.lower() == "popbrush":
+    # 4. Fallback / Mock for "PopBrush" (Test convenience)
+    if brand_name and brand_name.lower() == "popbrush":
         print("[BrandTool] Using Hardcoded Fallback for PopBrush")
         mock_bio = {
+            "brand_id": "popbrush.fr",
+            "website_url": "https://popbrush.fr",
             "brand_name": "PopBrush",
             "industry": "Beauty & Hair Care",
             "target_audience": "Moms with daughters, women with sensitive scalps.",

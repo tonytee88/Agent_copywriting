@@ -615,5 +615,38 @@
     "created_at": "2025-12-18T17:03:09.643228Z",
     "status": "draft",
     "language": "English"
+  },
+  {
+    "campaign_id": "20240424141000",
+    "brand_id": null,
+    "brand_name": "Ohydration",
+    "campaign_name": "Winter Hydration Tips",
+    "campaign_goal": "Educate on 5 tips to stay hydrated in winter",
+    "duration": "1 day",
+    "total_emails": 1,
+    "overarching_narrative": "Equipping customers with actionable tips to combat winter dehydration using Ohydration as a convenient and flavorful solution.",
+    "promotional_balance": "60% educational, 40% promotional",
+    "email_slots": [
+      {
+        "slot_number": 1,
+        "send_date": "2025-12-18",
+        "email_purpose": "educational",
+        "intensity_level": "medium",
+        "transformation_description": "Transforming the focus from basic hydration tips to the emotional well-being and cozy comfort that comes with proper hydration during the chilly winter months.",
+        "structure_id": "STRUCT_NARRATIVE_PARAGRAPH",
+        "angle_description": "Highlighting the contrast between winter lethargy and the vibrant vitality gained through consistent hydration, painting a picture of a joyful, energized winter experience.",
+        "persona_description": "A warm, relatable wellness advocate sharing personal anecdotes and practical advice on staying hydrated, emphasizing the emotional uplift and cozy feeling Ohydration brings during winter.",
+        "cta_description": "Invite customers to embrace winter wellness by exploring Ohydration's comforting flavors and discovering convenient ways to maintain hydration, promoting a special 'Winter Wellness Bundle'.",
+        "theme": "Winter Hydration & Well-being",
+        "key_message": "Embrace warmth and vitality this winter with Ohydration's delicious flavors, transforming winter blues into a season of cozy well-being.",
+        "connection_to_previous": null,
+        "connection_to_next": null,
+        "offer_details": "Winter Wellness Bundle: 1 \u00d6\u2122 Reusable Bottle and 3 boxes of winter-themed powders",
+        "offer_placement": "Product"
+      }
+    ],
+    "created_at": "2025-12-18T17:34:40.411276Z",
+    "status": "draft",
+    "language": "English"
   }
 ]

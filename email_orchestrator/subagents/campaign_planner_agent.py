@@ -58,7 +58,9 @@ async def campaign_planner_agent(
     schedule_str = json.dumps(send_schedule, indent=2)
     
     # 2. Get historic campaigns
-    recent_history = history_manager.get_recent_campaigns(brand_name, limit=5)
+    # Use brand_id for isolation if available
+    history_identifier = brand_bio.brand_id if getattr(brand_bio, 'brand_id', None) else brand_name
+    recent_history = history_manager.get_recent_campaigns(history_identifier, limit=5)
     history_summary = _format_history_for_prompt(recent_history)
     #print(f"[Campaign Planner] Recent history summary:\n{history_summary}")
     

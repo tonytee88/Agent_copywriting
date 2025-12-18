@@ -31,24 +31,58 @@ class BrandBioManager:
         with open(self.db_file, 'w') as f:
             json.dump(db, f, indent=2)
 
+    def _generate_brand_id(self, website_url: str) -> str:
+        """Generates a consistent ID from the URL (e.g. 'popbrush.fr')."""
+        if not website_url:
+            return "unknown_brand"
+        try:
+            from urllib.parse import urlparse
+            if "://" not in website_url:
+                website_url = "https://" + website_url
+            domain = urlparse(website_url).netloc
+            return domain.replace("www.", "").lower()
+        except:
+            return "unknown_brand"
+
     def save_bio(self, bio: BrandBio):
-        """Saves a BrandBio, keyed by the normalized brand name."""
+        """Saves a BrandBio, keyed by brand_id (domain) if available, else normalized name."""
         db = self._load_db()
-        key = bio.brand_name.strip().lower()
+        
+        # 1. Determine Key (ID > Name)
+        if bio.website_url:
+            key = self._generate_brand_id(bio.website_url)
+            bio.brand_id = key # Ensure ID is set on object
+        else:
+            # Fallback for legacy/no-url
+            key = bio.brand_name.strip().lower()
+            if not bio.brand_id:
+                bio.brand_id = key
+
         db[key] = bio.model_dump()
         self._save_db(db)
-        print(f"[BrandBioManager] Saved bio for '{bio.brand_name}'")
+        print(f"[BrandBioManager] Saved bio for '{bio.brand_name}' (ID: {key})")
 
-    def get_bio(self, brand_name: str) -> Optional[BrandBio]:
-        """Retrieves a BrandBio by name (case-insensitive)."""
+    def get_bio(self, identifier: str) -> Optional[BrandBio]:
+        """
+        Retrieves a BrandBio by identifier.
+        1. Checks if identifier is a direct key (ID).
+        2. Scans for brand_name match (case-insensitive).
+        """
         db = self._load_db()
-        key = brand_name.strip().lower()
-        data = db.get(key)
-        if data:
-            return BrandBio(**data)
+        identifier = identifier.strip().lower()
+        
+        # 1. Direct Lookup (ID match)
+        if identifier in db:
+            return BrandBio(**db[identifier])
+            
+        # 2. Name Lookup (Scan)
+        for data in db.values():
+            if data.get("brand_name", "").lower() == identifier:
+                return BrandBio(**data)
+                
         return None
 
     def list_brands(self) -> List[str]:
         """Returns list of all brand names in DB."""
         db = self._load_db()
-        return [data["brand_name"] for data in db.values()]
+        return [data.get("brand_name", "Unknown") for data in db.values()]

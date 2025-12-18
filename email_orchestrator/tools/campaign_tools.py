@@ -56,6 +56,10 @@ async def plan_campaign(
         promotional_ratio=promotional_ratio
     )
     
+    # Ensure brand_id is set (Critical for Multi-Brand Isolation)
+    if not plan.brand_id and brand_bio.brand_id:
+        plan.brand_id = brand_bio.brand_id
+    
     # 3. Verification Loop (Judge + Repair)
     max_retries = 3
     is_approved = False
@@ -185,6 +189,7 @@ async def generate_email_campaign(
         log_entry = CampaignLogEntry(
             campaign_id=campaign_id,
             timestamp=datetime.now().isoformat(),
+            brand_id=plan.brand_id, # Added for multi-brand isolation
             brand_name=plan.brand_name,
             transformation_id=blueprint.transformation_id,
             structure_id=blueprint.structure_id,
