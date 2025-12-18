@@ -40,9 +40,9 @@ class CatalogManager:
                 if path.exists():
                     try:
                         self.global_catalogs[cat_type] = json.loads(path.read_text(encoding="utf-8"))
-                        print(f"[CatalogManager] Loaded global/{cat_type}: {len(self.global_catalogs[cat_type])} items")
+                        #print(f"[CatalogManager] Loaded global/{cat_type}: {len(self.global_catalogs[cat_type])} items")
                     except Exception as e:
-                        print(f"[CatalogManager] Error loading global/{cat_type}: {e}")
+                        #print(f"[CatalogManager] Error loading global/{cat_type}: {e}")
                         self.global_catalogs[cat_type] = []
         
         # Load Brands
@@ -58,9 +58,9 @@ class CatalogManager:
                         if path.exists():
                             try:
                                 self.brand_catalogs[brand_slug][cat_type] = json.loads(path.read_text(encoding="utf-8"))
-                                print(f"[CatalogManager] Loaded brands/{brand_slug}/{cat_type}: {len(self.brand_catalogs[brand_slug][cat_type])} items")
+                                #print(f"[CatalogManager] Loaded brands/{brand_slug}/{cat_type}: {len(self.brand_catalogs[brand_slug][cat_type])} items")
                             except Exception as e:
-                                print(f"[CatalogManager] Error loading brands/{brand_slug}/{cat_type}: {e}")
+                                #print(f"[CatalogManager] Error loading brands/{brand_slug}/{cat_type}: {e}")
                                 self.brand_catalogs[brand_slug][cat_type] = []
 
     def get_global_catalog(self, cat_type: str) -> List[Dict]:

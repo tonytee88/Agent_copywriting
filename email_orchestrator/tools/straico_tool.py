@@ -5,6 +5,8 @@ These are used by the Gemini orchestrator as regular function tools.
 
 import os
 import aiohttp
+import asyncio
+import random
 import json
 from pathlib import Path
 
@@ -25,7 +27,7 @@ class StraicoAPIClient:
     async def generate_text(self, prompt: str, model: str = STRAICO_MODEL) -> str:
         """
         Make a simple text generation request to Straico API.
-        No tool calling, just text in/text out.
+        Includes retry logic for server errors (502, 503, 504).
         """
         url = f"{self.base_url}/chat/completions"
         headers = {
@@ -42,38 +44,74 @@ class StraicoAPIClient:
         }
         
         timeout = aiohttp.ClientTimeout(total=120)
+        max_retries = 5
+        base_delay = 2
         
-        try:
-            async with aiohttp.ClientSession(timeout=timeout) as session:
-                async with session.post(url, headers=headers, json=body) as resp:
-                    if resp.status != 200:
-                        error_text = await resp.text()
-                        raise RuntimeError(f"Straico API error {resp.status}: {error_text}")
+        for attempt in range(max_retries):
+            try:
+                async with aiohttp.ClientSession(timeout=timeout) as session:
+                    async with session.post(url, headers=headers, json=body) as resp:
+                        
+                        # 1. Handle Success
+                        if resp.status == 200:
+                            resp_json = await resp.json()
+                            
+                            # Extract text
+                            choices = resp_json.get("choices", [])
+                            if not choices:
+                                return ""
+                            
+                            message = choices[0].get("message", {})
+                            content = message.get("content", "")
+                            
+                            # Track usage
+                            usage = resp_json.get("usage", {})
+                            prompt_tokens = usage.get("prompt_tokens", 0)
+                            completion_tokens = usage.get("completion_tokens", 0)
+                            
+                            if prompt_tokens > 0:
+                                from email_orchestrator.tools.token_tracker import get_token_tracker
+                                get_token_tracker().log_usage("StraicoAPI", prompt_tokens, completion_tokens)
+                            
+                            return content
+
+                        # 2. Handle Retryable Server Errors
+                        elif resp.status in [502, 503, 504]:
+                            error_text = await resp.text()
+                            print(f"[StraicoAPI] Server Error {resp.status} on attempt {attempt+1}/{max_retries}. Retrying...")
+                            
+                            if attempt < max_retries - 1:
+                                # Exponential backoff + jitter
+                                delay = (base_delay * (2 ** attempt)) + (random.random() * 1.0)
+                                print(f"[StraicoAPI] Waiting {delay:.2f}s...")
+                                await asyncio.sleep(delay)
+                                continue
+                            else:
+                                raise RuntimeError(f"Straico API failed after {max_retries} retries. Last code: {resp.status}. Error: {error_text}")
+
+                        # 3. Handle Non-Retryable Client Errors (400, 401, etc.)
+                        else:
+                            error_text = await resp.text()
+                            raise RuntimeError(f"Straico API Client Error {resp.status}: {error_text}")
+                            
+            except aiohttp.ClientError as e:
+                # Network level errors (connection refused, etc.) are also retryable
+                print(f"[StraicoAPI] Network Error on attempt {attempt+1}/{max_retries}: {e}")
+                if attempt < max_retries - 1:
+                    delay = (base_delay * (2 ** attempt)) + (random.random() * 1.0)
+                    print(f"[StraicoAPI] Waiting {delay:.2f}s...")
+                    await asyncio.sleep(delay)
+                    continue
+                else:
+                    print(f"[StraicoAPIClient] Final Network Error: {e}")
+                    raise e
                     
-                    resp_json = await resp.json()
-                    
-                    # Extract text from response
-                    choices = resp_json.get("choices", [])
-                    if not choices:
-                        return ""
-                    
-                    message = choices[0].get("message", {})
-                    content = message.get("content", "")
-                    
-                    # Track usage
-                    usage = resp_json.get("usage", {})
-                    prompt_tokens = usage.get("prompt_tokens", 0)
-                    completion_tokens = usage.get("completion_tokens", 0)
-                    
-                    if prompt_tokens > 0:
-                        from email_orchestrator.tools.token_tracker import get_token_tracker
-                        get_token_tracker().log_usage("StraicoAPI", prompt_tokens, completion_tokens)
-                    
-                    return content
-                    
-        except Exception as e:
-            print(f"[StraicoAPIClient] Error: {e}")
-            return f"Error calling Straico API: {str(e)}"
+            except Exception as e:
+                # Other unexpected errors
+                print(f"[StraicoAPIClient] Unexpected Error: {e}")
+                raise e
+        
+        return ""
 
 
 # Global client instance

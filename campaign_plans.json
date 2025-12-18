@@ -551,5 +551,69 @@
     "created_at": "2025-12-16T02:06:50.280653Z",
     "status": "draft",
     "language": "English"
+  },
+  {
+    "campaign_id": "20241027181833",
+    "brand_name": "Ohydration",
+    "campaign_name": "Winter Hydration Tips",
+    "campaign_goal": "Educate audience on 5 tips to stay hydrated in winter",
+    "duration": "1 week",
+    "total_emails": 1,
+    "overarching_narrative": "Combat winter dryness with Ohydration's tasty and easy hydration solutions, transforming from parched to pleasantly quenched.",
+    "promotional_balance": "60% educational, 40% promotional",
+    "email_slots": [
+      {
+        "slot_number": 1,
+        "send_date": "2025-12-18",
+        "email_purpose": "educational",
+        "intensity_level": "medium",
+        "transformation_description": "From feeling overwhelmed by winter dryness and the chore of staying hydrated, to easily incorporating Ohydration's delightful flavors into your daily routine, enhancing winter activities with optimal hydration.",
+        "structure_id": "STRUCT_5050_SPLIT",
+        "angle_description": "Highlighting how Ohydration can seamlessly integrate into winter activities like skiing or cozy evenings at home, making hydration an enjoyable part of the experience, while focusing on the added benefits of improved energy and skin health.",
+        "persona_description": "A caring wellness coach, providing actionable advice and showcasing Ohydration as a convenient and enjoyable way to stay healthy during winter.",
+        "cta_description": "Guide readers through enjoying the winter season with Ohydration flavors that complement their winter hydration routine.",
+        "theme": "Winter Hydration Guide",
+        "key_message": "Follow these simple steps to stay hydrated this winter with Ohydration.",
+        "connection_to_previous": null,
+        "connection_to_next": null,
+        "offer_details": "A selection of flavors available in ready-to-drink and powder form.",
+        "offer_placement": "Product"
+      }
+    ],
+    "created_at": "2025-12-18T16:45:55.390996Z",
+    "status": "draft",
+    "language": "English"
+  },
+  {
+    "campaign_id": "20241127163300",
+    "brand_name": "Ohydration",
+    "campaign_name": "Winter Hydration Tips",
+    "campaign_goal": "Educate customers on staying hydrated in winter with 5 tips",
+    "duration": "1 week",
+    "total_emails": 1,
+    "overarching_narrative": "Combat winter dehydration with practical tips and Ohydration solutions, promoting overall well-being during the colder months.",
+    "promotional_balance": "60% educational, 40% promotional",
+    "email_slots": [
+      {
+        "slot_number": 1,
+        "send_date": "2025-12-18",
+        "email_purpose": "educational",
+        "intensity_level": "medium",
+        "transformation_description": "From feeling sluggish during winter activities to feeling energized and performing your best with optimal hydration using Ohydration.",
+        "structure_id": "STRUCT_EMOJI_CHECKLIST",
+        "angle_description": "Highlight hydration's critical role in maintaining peak physical performance during winter sports and outdoor adventures, enhanced by the convenience of Ohydration.",
+        "persona_description": "An active lifestyle enthusiast who shares personal experiences and demonstrates how Ohydration helps them stay hydrated and energized while enjoying winter activities, offering practical advice and product integration tips.",
+        "cta_description": "Encourage readers to explore Ohydration's range of flavors ideal for active hydration and consider purchasing a variety pack to discover their favorite.",
+        "theme": "Winter Activity Hydration",
+        "key_message": "Boost your winter performance and enjoyment by prioritizing hydration with Ohydration for sustained energy and optimal physical function.",
+        "connection_to_previous": null,
+        "connection_to_next": null,
+        "offer_details": "Free \u00d6\u2122 Sports Cap with variety pack purchase",
+        "offer_placement": "Hero"
+      }
+    ],
+    "created_at": "2025-12-18T17:03:09.643228Z",
+    "status": "draft",
+    "language": "English"
   }
 ]
