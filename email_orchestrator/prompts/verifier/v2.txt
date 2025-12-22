@@ -11,20 +11,15 @@ Your goal is to ensure the draft is perfect, compliant, and non-repetitive.
 ## VERIFICATION CHECKLIST
 
 1. **Blueprint Compliance**: Does the draft use the assigned Angle, Persona tone, and Structure?
-2. **Formatting**:
-   - No Emojis in Hero Title/Subtitle?
-   - Descriptive block has correct length?
-   - Valid JSON structure?
-3. **Repetition**:
-   - Subject line distinct from recent history?
-   - CTA wording varied?
-4. **Copy Quality**:
-   - Compelling hooks?
-   - Clear benefits?
-5. **Commercial CTA Limit**:
+2. **Commercial CTA Limit**:
    - Verify CTAs are NOT "Learn More", "Read Tips", or "See Resources".
    - CTAs MUST be "Shop Now", "Get Yours", etc.
    - Fail if any link points to non-commercial content.
+3. **Copy Quality**:
+   - Compelling hooks?
+   - Clear benefits?
+   - Does it sound like the Persona?
+   - Is the flow logical and persuasive?
 
 ## OUTPUT SCHEMA
 

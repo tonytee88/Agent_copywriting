@@ -12,6 +12,7 @@ from email_orchestrator.subagents.campaign_plan_verifier_agent import campaign_p
 from email_orchestrator.subagents.strategist_agent import strategist_agent
 from email_orchestrator.subagents.drafter_agent import drafter_agent
 from email_orchestrator.subagents.verifier_agent import verifier_agent
+from email_orchestrator.tools.deterministic_verifier import DeterministicVerifier
 
 from email_orchestrator.tools.knowledge_reader import KnowledgeReader
 from email_orchestrator.tools.history_manager import HistoryManager
@@ -23,6 +24,7 @@ from email_orchestrator.tools.token_tracker import get_token_tracker
 knowledge = KnowledgeReader()
 history_manager = HistoryManager()
 campaign_manager = CampaignPlanManager()
+det_verifier = DeterministicVerifier()
 
 # Default folder from User Feedback
 POPBRUSH_FOLDER_ID = "1pAK5hmb2Kvn2KUOwxXVfOptvfUqDGu4Y"
@@ -66,8 +68,47 @@ async def plan_campaign(
     
     for attempt in range(max_retries):
         print(f"\n[Plan Verification] Attempt {attempt+1}/{max_retries}")
-        verification = await campaign_plan_verifier_agent(plan, brand_bio)
         
+        # --- LAYER 1: Deterministic QA ---
+        # Fetch history for duplication checks
+        # Critical: Use brand_id for isolation if available.
+        # HistoryManager.get_recent_campaigns prioritizes brand_id lookup.
+        
+        history_identifier = brand_bio.brand_id if getattr(brand_bio, 'brand_id', None) else brand_name
+        
+        # NOTE: If history_identifier is a name (legacy), duplicate names across brands could be an issue.
+        # But for now, we trust brand_id is set for new brands.
+        
+        past_campaigns = history_manager.get_recent_campaigns(history_identifier, limit=10) # Get enough history
+        
+        print(f"[Plan QA] Loaded {len(past_campaigns)} history items for brand '{history_identifier}'")
+        
+        # Convert Pydantic to dict for verifier
+        past_campaigns_dicts = [entry.model_dump() for entry in past_campaigns]
+
+        det_issues = det_verifier.verify_plan(plan, past_campaigns_dicts)
+        
+        if det_issues:
+            print(f"[Plan Verification] Layer 1 (Deterministic) Failed. Issues: {len(det_issues)}")
+            # Skip Layer 2, enforce fixes immediately
+            issues_summary = "\n".join([f"- {i.field}: {i.problem}" for i in det_issues])
+            feedback_msg = f"Strict Constraints Violation. Fix these repetition errors:\n{issues_summary}"
+            
+            verification = CampaignPlanVerification(
+                approved=False,
+                score=0,
+                variety_check={},
+                balance_check={},
+                coherence_check={},
+                issues=det_issues,
+                feedback_for_planner=feedback_msg
+            )
+        else:
+            # --- LAYER 2: LLM QA ---
+            print("[Plan Verification] Layer 1 Passed. Proceeding to LLM QA...")
+            verification = await campaign_plan_verifier_agent(plan, brand_bio)
+        
+        # Proceed with existing logic using 'verification' object
         if verification.approved:
             print(f"[Plan Verification] SUCCESS! Score: {verification.score}")
             plan.status = "approved"
@@ -158,8 +199,30 @@ async def generate_email_campaign(
             # C. Drafter
             draft = await drafter_agent(blueprint, brand_bio, revision_feedback)
             
-            # D. Verify
-            verification = await verifier_agent(draft, blueprint, plan.brand_name)
+            # --- LAYER 1: Deterministic QA ---
+            det_issues = det_verifier.verify_draft(draft)
+            
+            if det_issues:
+                print(f"[Email #{slot.slot_number}] Layer 1 (Deterministic) Failed. Issues: {len(det_issues)}")
+                # Construct detailed feedback so the agent knows what to fix
+                issues_summary = "\n".join([f"- {i.field}: {i.problem} ({i.rationale})" for i in det_issues])
+                feedback_msg = f"Strict Rules Violation. You must fix these errors:\n{issues_summary}"
+                
+                # Construct a pseudo-verification result to trigger revision
+                verification = EmailVerification(
+                    approved=False,
+                    score=0,
+                    issues=det_issues,
+                    feedback_for_drafter=feedback_msg,
+                    replacement_options=None # No replacements for formatting
+                )
+            else:
+                # --- LAYER 2: LLM QA ---
+                print(f"[Email #{slot.slot_number}] Layer 1 Passed. Proceeding to LLM QA...")
+                verification = await verifier_agent(draft, blueprint, plan.brand_name)
+            
+            # D. Verify (Common handling)
+            # verification = await verifier_agent(draft, blueprint, plan.brand_name) <-- Replaced by above logic
             
             if verification.approved:
                 print(f"[Email #{slot.slot_number}] APPROVED! Score: {verification.score}")
@@ -191,9 +254,12 @@ async def generate_email_campaign(
             timestamp=datetime.now().isoformat(),
             brand_id=plan.brand_id, # Added for multi-brand isolation
             brand_name=plan.brand_name,
+            transformation_description=blueprint.transformation_description,
             transformation_id=blueprint.transformation_id,
             structure_id=blueprint.structure_id,
+            angle_description=blueprint.angle_description,
             angle_id=blueprint.angle_id,
+            cta_description=blueprint.cta_description,
             cta_style_id=blueprint.cta_style_id,
             offer_placement_used=blueprint.offer_placement,
             blueprint=blueprint,

@@ -132,15 +132,27 @@ class CampaignPlanManager:
                 return CampaignPlan(**plan_dict)
         return None
     
-    def get_plans_by_brand(self, brand_name: str) -> List[CampaignPlan]:
+    def get_plans_by_brand(self, brand_name: str, brand_id: Optional[str] = None) -> List[CampaignPlan]:
         """Get all campaign plans for a specific brand."""
         plans = self._load_all()
-        brand_plans = [
-            CampaignPlan(**p) for p in plans
-            if p.get("brand_name", "").lower() == brand_name.lower()
-            and p.get("status") != "archived"  # Exclude archived
-        ]
-        return sorted(brand_plans, key=lambda x: x.created_at, reverse=True)
+        
+        filtered_plans = []
+        for p in plans:
+            # Skip archived
+            if p.get("status") == "archived":
+                continue
+                
+            # Filter logic: Prefer brand_id if both have it. Fallback to name.
+            p_brand_id = p.get("brand_id")
+            p_brand_name = p.get("brand_name", "")
+            
+            if brand_id and p_brand_id:
+                if p_brand_id == brand_id:
+                    filtered_plans.append(CampaignPlan(**p))
+            elif brand_name and p_brand_name.lower() == brand_name.lower():
+                filtered_plans.append(CampaignPlan(**p))
+                
+        return sorted(filtered_plans, key=lambda x: x.created_at, reverse=True)
 
     def list_all_plans(self) -> List[CampaignPlan]:
         """List all available campaign plans."""

@@ -1,0 +1,18 @@
+[
+  {
+    "time": 1766419225.031729,
+    "type": "agent_start",
+    "agent": "email_orchestrator"
+  },
+  {
+    "time": 1766419226.141711,
+    "type": "runner_event",
+    "event_type": "model_turn",
+    "content_preview": "My apologies. Please provide the details of the rejection so I can address the issues. I need the error messages or feedback to understand what went wrong and how to correct it.\n"
+  },
+  {
+    "time": 1766419226.141823,
+    "type": "agent_end",
+    "agent": "email_orchestrator"
+  }
+]

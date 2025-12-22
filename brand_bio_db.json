@@ -1,5 +1,7 @@
 {
-  "popbrush": {
+  "popbrush.fr": {
+    "brand_id": "popbrush.fr",
+    "website_url": "https://popbrush.fr",
     "brand_name": "PopBrush",
     "industry": "Haircare",
     "target_audience": "Families, parents with children, individuals with all hair types looking for painless and efficient hair detangling solutions.",
@@ -12,22 +14,9 @@
     ],
     "mission_statement": "To make hair detangling easy, painless, and enjoyable for everyone, transforming a typically stressful experience into a moment of comfort and care."
   },
-  "popbrush\u00ae": {
-    "brand_name": "PopBrush\u00ae",
-    "industry": "Hair Care and Beauty Accessories",
-    "target_audience": "Families, parents with children, and individuals of all ages and hair types looking for effective and gentle hair detangling solutions.",
-    "unique_selling_proposition": "Innovative detangling brushes designed with ergonomic shapes and a unique combination of high-quality boar bristles and nylon tips, ensuring pain-free, anti-breakage hair care for all hair types.",
-    "brand_voice": "Supportive, family-friendly, approachable, innovative, and trustworthy.",
-    "key_products": [
-      "Detangling brushes",
-      "Pocket-size brushes",
-      "Hair care combs",
-      "Shampoo brushes",
-      "Hair care accessories like clips, scrunchies, and keratin treatments"
-    ],
-    "mission_statement": "To make hair care easy, pain-free, and enjoyable for everyone, helping families start their day with smiles while ensuring gentle and effective detangling for all hair types."
-  },
-  "ohydration": {
+  "ohydration.com": {
+    "brand_id": "ohydration.com",
+    "website_url": "https://ohydration.com",
     "brand_name": "Ohydration",
     "industry": "Beverages / Health and Wellness",
     "target_audience": "Health-conscious individuals seeking hydration solutions, likely aged 18-45, who value convenience and flavor in their hydration products.",

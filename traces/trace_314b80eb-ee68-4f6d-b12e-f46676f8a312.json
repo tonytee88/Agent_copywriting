@@ -1,0 +1,18 @@
+[
+  {
+    "time": 1766429164.4590201,
+    "type": "agent_start",
+    "agent": "email_orchestrator"
+  },
+  {
+    "time": 1766429165.269223,
+    "type": "runner_event",
+    "event_type": "model_turn",
+    "content_preview": "I am sorry, I cannot fulfill this request. The input is not valid. Please provide a valid request.\n"
+  },
+  {
+    "time": 1766429165.269451,
+    "type": "agent_end",
+    "agent": "email_orchestrator"
+  }
+]

@@ -1,0 +1,18 @@
+[
+  {
+    "time": 1766419223.9981241,
+    "type": "agent_start",
+    "agent": "email_orchestrator"
+  },
+  {
+    "time": 1766419225.025495,
+    "type": "runner_event",
+    "event_type": "model_turn",
+    "content_preview": "OK. I am ready to start. Please provide the brand name, campaign goal, and the number of emails for the campaign. If you don't have a Brand Bio JSON, please provide the website URL so I can analyze the brand first.\n"
+  },
+  {
+    "time": 1766419225.0256262,
+    "type": "agent_end",
+    "agent": "email_orchestrator"
+  }
+]

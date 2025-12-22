@@ -1,0 +1,18 @@
+[
+  {
+    "time": 1766419221.367575,
+    "type": "agent_start",
+    "agent": "email_orchestrator"
+  },
+  {
+    "time": 1766419222.775234,
+    "type": "runner_event",
+    "event_type": "model_turn",
+    "content_preview": "Okay, I'm ready to proceed. Please provide the details of the campaign or single email you'd like me to create. I need to know the brand name and the goal of the campaign. If it's a multi-email campaign, please also specify the total number of emails. If you don't have a Brand Bio, I will need the w"
+  },
+  {
+    "time": 1766419222.77541,
+    "type": "agent_end",
+    "agent": "email_orchestrator"
+  }
+]

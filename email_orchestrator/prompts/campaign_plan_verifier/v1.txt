@@ -19,22 +19,12 @@ If the plan has issues, you MUST provide explicit REPAIR OPTIONS so the Planner 
    - Is `structure_id` a valid ID found in [CATALOG]?
    - If NO: Mark as P1 Issue, suggest valid ID.
 
-2. **Semantic Variety (Creative)**: 
-   - **Transformation**: Are the descriptions distinct across emails? (Avoid repeating the same journey).
-   - **Angle**: Are the hooks distinct?
-   - **Structure**: No `structure_id` should appear twice (Strict).
-   - If Semantic Repetition found: Mark as P2 Issue, suggest a different angle/transformation.
-
-3. **History Repetition (Semantic)**:
-   - Compare descriptions to [HISTORY LOG]. 
-   - If a concept is semantically too similar to a recent one (e.g., rephrased but same idea): Mark as P2 Issue.
-
-4. **Balance & Logic**:
+2. **Balance & Logic**:
    - Verify promotional ratio matches the goal.
    - **IMPORTANT**: If the `promotional_balance` requested by the User matches the plan, it is correct. Trust the User.
    - Verify logical progression.
-   
-5. **Quantity & Duration Constraint (CRITICAL)**:
+    
+3. **Quantity & Duration Constraint (CRITICAL)**:
    - Accept the `total_emails` and `duration` in the plan as FIXED constraints from the User.
    - Do NOT suggest adding or removing emails.
    - Do NOT suggest changing the duration.
