@@ -1,0 +1,46 @@
+[
+  {
+    "time": 1766505755.2719738,
+    "type": "agent_start",
+    "agent": "email_orchestrator"
+  },
+  {
+    "time": 1766505756.220254,
+    "type": "runner_event",
+    "event_type": "TOOL_CALL",
+    "tool_name": "plan_campaign",
+    "content_preview": "Calling tool: plan_campaign({'brand_name': 'PopBrush', 'campaign_goal': 'New Year Sales', 'total_emails': 3, 'duration': '1 week...)"
+  },
+  {
+    "time": 1766505781.92543,
+    "type": "runner_event",
+    "event_type": "TOOL_RESULT",
+    "tool_name": "plan_campaign",
+    "content_preview": "Tool returned: plan_campaign -> {'result': 'Campaign Plan Created! ID: 20240229112233. Status: approved'}"
+  },
+  {
+    "time": 1766505782.9760242,
+    "type": "runner_event",
+    "event_type": "TOOL_CALL",
+    "tool_name": "generate_email_campaign",
+    "content_preview": "OK. I have planned a 3-email campaign for PopBrush with the goal of New Year Sales. The campaign ID is 20240229112233. Now I will generate the emails for this campaign.\n | Calling tool: generate_email_campaign({'campaign_id': '20240229112233'})"
+  },
+  {
+    "time": 1766505854.810487,
+    "type": "runner_event",
+    "event_type": "TOOL_RESULT",
+    "tool_name": "generate_email_campaign",
+    "content_preview": "Tool returned: generate_email_campaign -> {'result': '[\\n  {\\n    \"slot\": 1,\\n    \"subject\": \"Transform Mornings: Quick Tips for Happy Hair!\",\\n    \"status\": \"completed\"\\n  },\\n  {\\n    \"slot\"..."
+  },
+  {
+    "time": 1766505855.773494,
+    "type": "runner_event",
+    "event_type": "model_turn",
+    "content_preview": "OK. I have generated the emails for the PopBrush New Year Sales campaign. Here are the subject lines:\nEmail 1: \"Transform Mornings: Quick Tips for Happy Hair!\"\nEmail 2: \"Transform Hair Care into Fun this Christmas!\"\nEmail 3: \"Transform Your Hair Care Routine Today\""
+  },
+  {
+    "time": 1766505855.773968,
+    "type": "agent_end",
+    "agent": "email_orchestrator"
+  }
+]

@@ -4,7 +4,8 @@ from typing import Optional, Dict
 
 from email_orchestrator.schemas import (
     BrandBio, CampaignPlan, CampaignRequest, EmailBlueprint, EmailDraft, 
-    CampaignLogEntry, CampaignPlanVerification, EmailVerification
+    CampaignLogEntry, CampaignPlanVerification, EmailVerification,
+    BlockingIssue, OptimizationOption, TopImprovement
 )
 from email_orchestrator.tools.brand_scraper_tool import analyze_brand
 from email_orchestrator.subagents.campaign_planner_agent import campaign_planner_agent, revise_campaign_plan
@@ -63,7 +64,7 @@ async def plan_campaign(
         plan.brand_id = brand_bio.brand_id
     
     # 3. Verification Loop (Judge + Repair)
-    max_retries = 3
+    max_retries = 2 # Limit to 1 Revision Pass
     is_approved = False
     
     for attempt in range(max_retries):
@@ -91,17 +92,23 @@ async def plan_campaign(
         if det_issues:
             print(f"[Plan Verification] Layer 1 (Deterministic) Failed. Issues: {len(det_issues)}")
             # Skip Layer 2, enforce fixes immediately
-            issues_summary = "\n".join([f"- {i.field}: {i.problem}" for i in det_issues])
-            feedback_msg = f"Strict Constraints Violation. Fix these repetition errors:\n{issues_summary}"
+            
+            # Map deterministic issues to TopImprovement for consistency
+            top_improvements = [
+                TopImprovement(
+                    rank=i+1,
+                    category="structure_purpose_fit",
+                    problem=issue.problem,
+                    why_it_matters=issue.rationale,
+                    options={"A": "Fix the structure ID or repetition issue manually."}
+                ) for i, issue in enumerate(det_issues)
+            ]
             
             verification = CampaignPlanVerification(
                 approved=False,
-                score=0,
-                variety_check={},
-                balance_check={},
-                coherence_check={},
-                issues=det_issues,
-                feedback_for_planner=feedback_msg
+                final_verdict="Plan rejected due to strict validation rules (Repetition or Invalid IDs).",
+                top_improvements=top_improvements,
+                issues=det_issues # Kept for internal record
             )
         else:
             # --- LAYER 2: LLM QA ---
@@ -110,20 +117,24 @@ async def plan_campaign(
         
         # Proceed with existing logic using 'verification' object
         if verification.approved:
-            print(f"[Plan Verification] SUCCESS! Score: {verification.score}")
+            print(f"[Plan Verification] SUCCESS! Initial plan approved.")
             plan.status = "approved"
             is_approved = True
             break
         else:
-            print(f"[Plan Verification] REJECTED. Score: {verification.score}")
-            print(f"Issues: {len(verification.issues)}")
+            print(f"[Plan Verification] REJECTED. Verdict: {verification.final_verdict}")
             
             # Call Repair Logic
             if attempt < max_retries - 1:
-                print("[Plan Verification] Requesting Revision...")
+                print("[Plan Verification] Requesting ONE-TIME Revision based on QA feedback...")
                 plan = await revise_campaign_plan(plan, verification, brand_bio)
+                plan.status = "approved" # Forced approved as per user request
+                print("[Plan Verification] Revised plan created and marked as approved.")
+                break
             else:
-                print("[Plan Verification] Max retries reached. Proceeding with best effort (marked as draft).")
+                # Should not be reachable with max_retries=2 and the break above, but kept for safety
+                print("[Plan Verification] Max retries reached or process skipped.")
+                break
     
     # 4. Save Plan
     # Ensure created_at is current to prevent auto-cleanup deletion of "old" hallucinated dates

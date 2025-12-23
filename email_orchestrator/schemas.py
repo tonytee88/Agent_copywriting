@@ -196,32 +196,42 @@ class Issue(BaseModel):
     problem: str
     rationale: str
 
-class PlanVariationSuggestion(BaseModel):
-    """Alternative IDs suggested by Plan QA."""
-    email_slot: int
-    suggested_transformations: Optional[List[str]] = Field(default_factory=list)
-    suggested_angles: Optional[List[str]] = Field(default_factory=list)
-    suggested_structures: Optional[List[str]] = Field(default_factory=list)
-    notes: Optional[str] = None
+class BlockingIssue(BaseModel):
+    """Legacy strategic blocker (keeping for compat)."""
+    category: Literal["offer_alignment", "narrative_ladder", "structure_purpose_fit", "calendar_sanity"]
+    description: str
+    why_it_matters: str
+
+class TopImprovement(BaseModel):
+    """High-impact improvement for the simplified QA process."""
+    rank: int
+    category: Literal["calendar_sanity", "offer_alignment", "narrative_ladder", "structure_purpose_fit"]
+    problem: str
+    why_it_matters: str
+    options: Dict[str, str] # {A: ..., B: ...}
+
+class OptimizationOption(BaseModel):
+    """Concrete strategic options for a blocking issue (Legacy)."""
+    issue_category: str
+    options: Dict[str, str] # e.g. {"A": "...", "B": "..."}
 
 class CampaignPlanVerification(BaseModel):
-    """Verification result for a campaign plan."""
+    """Verification result for a campaign plan (Simplified Mode)."""
     approved: bool
-    score: int  # 0-10
+    final_verdict: str
     
-    # Specific checks (Legacy + New)
-    variety_check: Dict[str, bool]
-    balance_check: Dict[str, bool]
-    coherence_check: Dict[str, bool]
+    # New Standard
+    top_improvements: List[TopImprovement] = Field(default_factory=list)
     
-    critical_issues: List[str] = Field(default_factory=list) # Keeping for backward compat briefly
-    
-    # New Judge+Repair Fields
+    # Legacy Fields (Optional/Deprecated)
+    score: int = 0 
+    blocking_issues: List[BlockingIssue] = Field(default_factory=list)
+    optimization_options: List[OptimizationOption] = Field(default_factory=list)
+    variety_check: Dict[str, bool] = Field(default_factory=dict)
+    balance_check: Dict[str, bool] = Field(default_factory=dict)
+    coherence_check: Dict[str, bool] = Field(default_factory=dict)
     issues: List[Issue] = Field(default_factory=list)
-    per_email_suggestions: List[PlanVariationSuggestion] = Field(default_factory=list)
-    campaign_level_suggestions: List[str] = Field(default_factory=list)
-    
-    feedback_for_planner: str
+    feedback_for_planner: Optional[str] = None
 
 class DraftReplacementOptions(BaseModel):
     """Ready-to-use replacement copy for Email QA."""

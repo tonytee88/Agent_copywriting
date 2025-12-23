@@ -1,0 +1,18 @@
+[
+  {
+    "time": 1766504098.730922,
+    "type": "agent_start",
+    "agent": "email_orchestrator"
+  },
+  {
+    "time": 1766504100.054924,
+    "type": "runner_event",
+    "event_type": "model_turn",
+    "content_preview": "I need more information to plan a campaign.\nPlease provide:\n\n1.  The goal of the campaign (e.g., \"Drive sales\", \"Increase brand awareness\", \"Promote a new product\").\n2.  The brand name (you mentioned PopBrush).\n3.  The number of emails in the campaign (you mentioned 3).\n\nOnce I have this information"
+  },
+  {
+    "time": 1766504100.055063,
+    "type": "agent_end",
+    "agent": "email_orchestrator"
+  }
+]

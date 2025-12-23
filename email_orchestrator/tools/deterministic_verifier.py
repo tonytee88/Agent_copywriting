@@ -210,7 +210,7 @@ class DeterministicVerifier:
         # Take last 10 to check dates, but we only really care about the most recent ones for repetition
         
         # DEFINED ALLOWED STRUCTURES (from catalogs/global/structures.json)
-        self.ALLOWED_STRUCTURES = {
+        self.ALLOWED_STRUCTURES = [
             "STRUCT_NARRATIVE_PARAGRAPH",
             "STRUCT_EMOJI_CHECKLIST",
             "STRUCT_5050_SPLIT",
@@ -221,7 +221,13 @@ class DeterministicVerifier:
             "STRUCT_MINI_GRID",
             "STRUCT_SOCIAL_PROOF_QUOTE",
             "STRUCT_GIF_PREVIEW"
-        }
+        ]
+        
+        # Pre-calculate used structures in the current plan for smarter suggestions
+        plan_structures = {s.structure_id for s in plan.email_slots}
+        available_structures = [s for s in self.ALLOWED_STRUCTURES if s not in plan_structures]
+        suggest_text = f"Available alternatives: {', '.join(available_structures)}" if available_structures else "No other standard structures available."
+
         
         for slot in plan.email_slots:
             # 0. Validity Check (Structure ID)
@@ -298,8 +304,8 @@ class DeterministicVerifier:
                         severity="P1",
                         scope="campaign",
                         field="structure_id",
-                        problem=f"Structure '{slot.structure_id}' used recently (Campaign {prev_campaign.get('campaign_id')}).",
-                        rationale="Must be different from recent (<7 days) emails."
+                        problem=f"Structure '{slot.structure_id}' in Slot {slot.slot_number} was used in recent Campaign {prev_campaign.get('campaign_id')}.",
+                        rationale=f"Recent history collision. Please use a different structure. {suggest_text}"
                     ))
                  
                  # Check Transformation (Similarity)
@@ -312,14 +318,15 @@ class DeterministicVerifier:
                      
 
 
-                 if self._check_similarity(slot.transformation_description, prev_trans)[0]:
+                 is_sim, reason = self._check_similarity(slot.transformation_description, prev_trans)
+                 if is_sim:
                       issues.append(Issue(
                         type="history_repetition",
                         severity="P1",
                         scope="campaign",
                         field="transformation_description",
-                        problem=f"Transformation too similar to recent campaign {prev_campaign.get('campaign_id')}.",
-                        rationale="Must be different from recent (<7 days) emails."
+                        problem=f"Transformation in Slot {slot.slot_number} is too similar to recent Campaign {prev_campaign.get('campaign_id')}.",
+                        rationale=f"Similarity Match: '{slot.transformation_description[:50]}...' vs historical '{prev_trans[:50]}...'. {reason}"
                     ))
 
                  # Check Angle (Similarity)
@@ -332,14 +339,15 @@ class DeterministicVerifier:
                      
 
 
-                 if self._check_similarity(slot.angle_description, prev_angle)[0]:
+                 is_sim, reason = self._check_similarity(slot.angle_description, prev_angle)
+                 if is_sim:
                       issues.append(Issue(
                         type="history_repetition",
                         severity="P1",
                         scope="campaign",
                         field="angle_description",
-                        problem=f"Angle too similar to recent campaign {prev_campaign.get('campaign_id')}.",
-                        rationale="Must be different from recent (<7 days) emails."
+                        problem=f"Angle in Slot {slot.slot_number} is too similar to recent Campaign {prev_campaign.get('campaign_id')}.",
+                        rationale=f"Similarity Match: '{slot.angle_description[:50]}...' vs historical '{prev_angle[:50]}...'. {reason}"
                     ))
 
         # 2. Intra-Plan Repetition Checks (New)
@@ -357,8 +365,8 @@ class DeterministicVerifier:
                     severity="P1",
                     scope="campaign", # Internal repetition
                     field="structure_id",
-                    problem=f"Structure '{slot.structure_id}' used in Slot {slot.slot_number} and Slot {first_slot}.",
-                    rationale="Each email must use a unique structure."
+                    problem=f"Structure '{slot.structure_id}' is repeated in Slot {slot.slot_number} and Slot {first_slot}.",
+                    rationale=f"Each email in the plan must use a unique structure. {suggest_text}"
                 ))
             else:
                 seen_structures[slot.structure_id] = slot.slot_number
@@ -366,28 +374,30 @@ class DeterministicVerifier:
             # B. Angle Similarity (Internal)
             for prev_slot_num, prev_desc in seen_angles:
                 # Fuzzy description match
-                if self._check_similarity(slot.angle_description, prev_desc)[0]:
+                is_sim, reason = self._check_similarity(slot.angle_description, prev_desc)
+                if is_sim:
                      issues.append(Issue(
                         type="repetition",
                         severity="P1",
                         scope="campaign", # Internal repetition
                         field="angle_description",
-                        problem=f"Angle in Slot {slot.slot_number} too similar to Slot {prev_slot_num}.",
-                        rationale="Emails within the campaign must have distinct angles."
+                        problem=f"Angle in Slot {slot.slot_number} is too similar to Slot {prev_slot_num}.",
+                        rationale=f"Internal collision. '{slot.angle_description[:50]}...' vs Slot {prev_slot_num} '{prev_desc[:50]}...'. {reason}"
                     ))
             seen_angles.append((slot.slot_number, slot.angle_description))
 
             # C. Transformation Similarity (Internal)
             for prev_slot_num, prev_trans in seen_transformations:
                 # Fuzzy description match
-                if self._check_similarity(slot.transformation_description, prev_trans)[0]:
+                is_sim, reason = self._check_similarity(slot.transformation_description, prev_trans)
+                if is_sim:
                      issues.append(Issue(
                         type="repetition",
                         severity="P1",
                         scope="campaign", # Internal repetition
                         field="transformation_description",
-                        problem=f"Transformation in Slot {slot.slot_number} too similar to Slot {prev_slot_num}.",
-                        rationale="Emails within the campaign must have distinct transformations."
+                        problem=f"Transformation in Slot {slot.slot_number} is too similar to Slot {prev_slot_num}.",
+                        rationale=f"Internal collision. '{slot.transformation_description[:50]}...' vs Slot {prev_slot_num} '{prev_trans[:50]}...'. {reason}"
                     ))
             seen_transformations.append((slot.slot_number, slot.transformation_description))
 

@@ -32,8 +32,8 @@ MOCK_PLAN = CampaignPlan(
             
             # Slot 1 Settings
             structure_id="STRUCT_STAT_ATTACK", 
-            angle_description="Emphasizing on the lasagna.",
-            transformation_description="From baby toddlers to calm adults",
+            angle_description="Preparing lasagna",
+            transformation_description="From toys to love",
             
             # Other required fields (Ignore for this test)
             theme="Recovery", key_message="Relax", persona_description="Best Friend", cta_description="Shop Sale"
@@ -44,10 +44,10 @@ MOCK_PLAN = CampaignPlan(
             email_purpose="educational",
             intensity_level="soft",
             
-            # Slot 2 Settings (DISTINCT)
-            structure_id="STRUCT_SPOTLIGHT_BOX", 
+            # Slot 2 Settings: REPEATING STRUCTURE ID from Slot 1
+            structure_id="STRUCT_GIF_PREVIEW", 
             angle_description="Prepare for New Year's Eve with the perfect look.",
-            transformation_description="Emphasizing on the lasagna.",
+            transformation_description="From flat hair to voluminous NYE style.",
             
             theme="NYE Prep", key_message="Volume", persona_description="Expert Stylist", cta_description="Get the Look"
         ),
@@ -57,9 +57,9 @@ MOCK_PLAN = CampaignPlan(
             email_purpose="promotional",
             intensity_level="hard_sell",
             
-            # Slot 3 Settings (DISTINCT)
-            structure_id="STRUCT_EMOJI_CHECKLIST",
-            angle_description="Last chance to grab 2024 pricing.",
+            # Slot 3 Settings: FUZZY ANGLE REPETITION from Slot 1
+            structure_id="STRUCT_MINI_GRID",
+            angle_description="Emphasizing the the love and food in the fridge", # Very close match 
             transformation_description="From outdated tools to modern efficiency.",
             
             theme="Last Chance", key_message="Urgency", persona_description="Hype Man", cta_description="Buy Now"

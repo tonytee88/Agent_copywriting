@@ -169,28 +169,23 @@ ORIGINAL PLAN:
 {catalogs_str}
 =================================
 
-VERIFICATION FEEDBACK:
-- Score: {verification_feedback.score}/10
+VERIFICATION FEEDBACK (STRICT MODE):
 - Approved: {verification_feedback.approved}
+- Verdict: {verification_feedback.final_verdict}
 
-CRITICAL ISSUES:
-{chr(10).join(f"- {issue.problem}" for issue in verification_feedback.issues)}
-
-SUGGESTED REPAIRS:
-{json.dumps([s.model_dump() for s in verification_feedback.per_email_suggestions], indent=2)}
-
-DETAILED FEEDBACK:
-{verification_feedback.feedback_for_planner}
+STRATEGIC TOP IMPROVEMENTS (FIX THESE - RANKED BY IMPACT):
+{chr(10).join(f"- [Rank {issue.rank}] [{issue.category}] {issue.problem}\n  Rationale: {issue.why_it_matters}\n  Options: {json.dumps(issue.options)}" for issue in verification_feedback.top_improvements)}
 
 REVISION RULES:
-1. Fix ALL critical issues.
-2. If suggestions are provided, incorporate them creatively.
+1. Fix ALL blocking issues using the provided Optimization Options as guidance.
+2. Maintain exactly {original_plan.total_emails} emails.
 3. Ensure STRUCTURE_ID is always valid from the catalog.
 4. Return ONLY valid JSON matching the CampaignPlan schema.
 5. Allowed intensity_level: "hard_sell", "medium", "soft".
 6. Allowed email_purpose: "promotional", "educational", "storytelling", "nurture", "conversion".
 7. CRITICAL: Maintain exactly {original_plan.total_emails} emails (from original plan). Do NOT add or remove slots.
-8. CRITICAL: Ensure every email slot has a valid `structure_id` field.
+8. CRITICAL: Ensure every email slot has a valid `structure_id` field. If you are not changing the structure, YOU MUST COPY THE ORIGINAL `structure_id`.
+9. FINAL CHECK: Does every object in `email_slots` have a `structure_id`? If not, the plan will fail.
 """
     
     try:

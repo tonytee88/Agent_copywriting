@@ -5,7 +5,7 @@ from typing import List
 from email_orchestrator.tools.straico_tool import get_client
 from email_orchestrator.tools.history_manager import HistoryManager, CampaignLogEntry
 from email_orchestrator.tools.catalog_manager import get_catalog_manager
-from email_orchestrator.schemas import BrandBio, CampaignPlan, CampaignPlanVerification
+from email_orchestrator.schemas import BrandBio, CampaignPlan, CampaignPlanVerification, BlockingIssue
 from email_orchestrator.config import STRAICO_MODEL
 
 # Initialize tools
@@ -61,48 +61,34 @@ async def campaign_plan_verifier_agent(
         result = CampaignPlanVerification(**data)
         
         if result.approved:
-            print(f"[Campaign Plan Verifier] APPROVED (Score: {result.score}/10)")
+            print(f"[Campaign Plan Verifier] ✅ APPROVED: {result.final_verdict}")
         else:
-            issue_count = len(result.issues)
-            print(f"[Campaign Plan Verifier] REJECTED. {issue_count} issues found.")
-            for issue in result.issues:
-                print(f" - [{issue.severity}] {issue.problem}")
-            
-            print(f"\n[Campaign Plan Verifier] Feedback for Planner: {result.feedback_for_planner}")
-            
-            if result.campaign_level_suggestions:
-                print(f"[Campaign Plan Verifier] Campaign Level Suggestions:")
-                for sug in result.campaign_level_suggestions:
-                    print(f" - {sug}")
-
-            if result.per_email_suggestions:
-                print(f"[Campaign Plan Verifier] Per-Email Suggestions:")
-                for sug in result.per_email_suggestions:
-                    print(f" - Slot {sug.email_slot}: {sug.notes or 'Variations suggested'}")
-                    if sug.suggested_transformations:
-                        print(f"   * Transformations: {sug.suggested_transformations}")
-                    if sug.suggested_angles:
-                        print(f"   * Angles: {sug.suggested_angles}")
-                    if sug.suggested_structures:
-                        print(f"   * Structures: {sug.suggested_structures}")
-
+            print(f"[Campaign Plan Verifier] ❌ REJECTED: {result.final_verdict}")
+            print(f"Top Improvements Needed: {len(result.top_improvements)}")
+            for imp in result.top_improvements:
+                print(f" - [{imp.category}] {imp.problem}")
+                print(f"   Rationale: {imp.why_it_matters}")
+                for key, val in imp.options.items():
+                    print(f"   Option {key}: {val}")
+        
         return result
         
     except Exception as e:
         print(f"[Campaign Plan Verifier] EXCEPTION: {e}")
         print(f"[Campaign Plan Verifier] RAW OUTPUT: {result_json_str}")
         
-        # Return a failed verification
+        # Return a failed verification with the new schema in mind
         return CampaignPlanVerification(
             approved=False,
-            score=0,
-            variety_check={},
-            balance_check={},
-            coherence_check={},
-            critical_issues=[f"System Exception: {e}"],
-            issues=[],
-            suggestions=[],
-            feedback_for_planner="System error in verification. Please try again."
+            final_verdict=f"System error in verification: {e}",
+            blocking_issues=[
+                BlockingIssue(
+                    category="calendar_sanity", 
+                    description="Verification agent failed to parse LLM response.",
+                    why_it_matters="Technical failure prevents strategic verification."
+                )
+            ],
+            optimization_options=[]
         )
 
 def _format_history_for_verifier(history: List[CampaignLogEntry]) -> str:
@@ -141,6 +127,7 @@ def _clean_json_string(raw_text: str) -> str:
     elif "```" in text:
         text = text.split("```")[1].split("```")[0]
     text = text.strip()
+    text = text.replace('"why_it.matters"', '"why_it_matters"')
     if "{" in text:
         start = text.find("{")
         end = text.rfind("}") + 1
