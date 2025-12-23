@@ -28,18 +28,19 @@ class DeterministicVerifier:
         self.FUZZY_THRESHOLD = 80.0 # RapidFuzz uses 0-100
         
         # Length Constraints (Min-Max chars)
+        # UPDATED: Flexible minimum (0). Max is the only hard cap.
         self.LENGTH_RULES = {
-            "subject": (35, 40),
-            "preview": (35, 55),
-            "hero_title": (30, 40),
-            "hero_subtitle": (0, 100), # Max 100
-            "descriptive_block_title": (0, 60), # Approx
-            "descriptive_block_subtitle": (0, 80),
-            "descriptive_block_content": (300, 400),
-            "product_block_title": (30, 40),
+            "subject": (0, 40),
+            "preview": (0, 55),
+            "hero_title": (0, 40),
+            "hero_subtitle": (0, 55),
+            "descriptive_block_title": (0, 40),
+            "descriptive_block_subtitle": (0, 60),
+            "descriptive_block_content": (0, 400),
+            "product_block_title": (0, 40),
             "product_block_subtitle": (0, 80),
-            "cta_hero": (0, 20),
-            "cta_product": (0, 20)
+            "cta_hero": (0, 15), # Shorter CTAs (was 20)
+            "cta_product": (0, 15) # Shorter CTAs (was 20)
         }
         
     def _jaccard_similarity(self, s1: str, s2: str) -> float:
@@ -64,19 +65,39 @@ class DeterministicVerifier:
             
         return False, ""
 
-    def verify_draft(self, draft: EmailDraft) -> List[Issue]:
+    def _strip_tags(self, text: str) -> str:
+        """Removes <b> and </b> tags for comparison."""
+        if not text: return ""
+        return text.replace("<b>", "").replace("</b>", "")
+
+    def _is_entirely_bolded(self, text: str) -> bool:
+        """Checks if the text is wrapped in <b>...</b> from start to end."""
+        if not text: return False
+        t = text.strip()
+        return t.startswith("<b>") and t.endswith("</b>") and t.count("<b>") == 1 and t.count("</b>") == 1
+
+    def verify_draft(self, draft: EmailDraft, history: List[Dict] = None, campaign_id: str = None) -> List[Issue]:
         """Runs all deterministic checks on an email draft."""
         issues = []
         
-        # 1. Similarity Checks (Internal Repetition)
-        # "we should NOT see similarity between hero banner title, subtitle, descriptive block"
+        # 0. Strip tags for similarity and length checks
+        clean_hero_title = self._strip_tags(draft.hero_title)
+        clean_hero_subtitle = self._strip_tags(draft.hero_subtitle)
+        clean_desc_title = self._strip_tags(draft.descriptive_block_title)
+        clean_desc_subtitle = self._strip_tags(draft.descriptive_block_subtitle)
+
+        # 1. Similarity Checks (Internal Repetition - STRICT)
         pairs = [
-            ("Hero Title vs Subtitle", draft.hero_title, draft.hero_subtitle),
-            ("Hero Title vs Desc Block", draft.hero_title, draft.descriptive_block_content),
-            ("Hero Subtitle vs Desc Block", draft.hero_subtitle, draft.descriptive_block_content)
+            ("Hero Title vs Subtitle", clean_hero_title, clean_hero_subtitle),
+            ("Hero Title vs Desc Block Title", clean_hero_title, clean_desc_title),
+            ("Hero Title vs Desc Block Subtitle", clean_hero_title, clean_desc_subtitle),
+            ("Hero Subtitle vs Desc Block Title", clean_hero_subtitle, clean_desc_title),
+            ("Hero Subtitle vs Desc Block Subtitle", clean_hero_subtitle, clean_desc_subtitle),
+            ("Desc Block Title vs Subtitle", clean_desc_title, clean_desc_subtitle)
         ]
         
         for name, s1, s2 in pairs:
+            if not s1 or not s2: continue
             is_similar, reason = self._check_similarity(s1, s2)
             if is_similar:
                 issues.append(Issue(
@@ -84,12 +105,39 @@ class DeterministicVerifier:
                     severity="P1",
                     scope="email",
                     field="internal_repetition",
-                    problem=f"{name} are too similar.",
+                    problem=f"{name} are too similar (Repetition).",
                     rationale=reason
                 ))
-                
+
         # 2. Formatting Checks
-        # No Emojis in Hero Banner
+        # A. Banned Characters (Dashes) - STRICT
+        # Only allow simple punctuation. Reject em dash, en dash, hyphen if used as distinct separator.
+        # Actually user said "never use em dashes, hyphens or dashes".
+        all_text_fields = [
+            ("Subject", draft.subject),
+            ("Preview", draft.preview),
+            ("Hero Title", draft.hero_title),
+            ("Hero Subtitle", draft.hero_subtitle),
+            ("Descriptive Block Title", draft.descriptive_block_title),
+            ("Descriptive Block Subtitle", draft.descriptive_block_subtitle),
+            ("Descriptive Block Content", draft.descriptive_block_content),
+            ("Product Block Title", draft.product_block_title),
+            ("Product Block Subtitle", draft.product_block_subtitle)
+        ]
+        
+        for name, text in all_text_fields:
+            if not text: continue
+            if self._contains_banned_dashes(text):
+                issues.append(Issue(
+                    type="formatting",
+                    severity="P1",
+                    scope="email",
+                    field=name.lower().replace(" ", "_"),
+                    problem=f"{name} contains banned dashes/hyphens.",
+                    rationale="Strict Rule: Never use em dashes (—), en dashes (–), or hyphens (-)."
+                ))
+
+        # B. No Emojis in Hero Banner
         if self._contains_emoji(draft.hero_title) or self._contains_emoji(draft.hero_subtitle):
              issues.append(Issue(
                 type="formatting",
@@ -100,46 +148,66 @@ class DeterministicVerifier:
                 rationale="Strict Rule: No emojis in Hero Title or Subtitle."
             ))
 
-        # Banned Characters (Hyphen, Dash, Em Dash)
-        # Note: Hyphens are tricky in compound words. User said "Do not use hyphen".
-        # We will flag standalone dashes or overuse.
-        # Actually user said "Do not use hyphen, dash, em dash".
-        banned_chars = ["—", "–"] # Em dash, En dash
-        for field, text in draft.dict().items():
-            if isinstance(text, str):
-                for char in banned_chars:
-                    if char in text:
-                        issues.append(Issue(
-                            type="formatting",
-                            severity="P2",
-                            scope="email",
-                            field=field,
-                            problem=f"Contains banned character '{char}'",
-                            rationale="Use standard punctuation only."
-                        ))
-                # Check for " - " (hyphen used as dash)
-                if " - " in text:
-                     issues.append(Issue(
-                        type="formatting",
-                        severity="P2",
-                        scope="email",
-                        field=field,
-                        problem="Hyphen used as dash.",
-                        rationale="Do not use hyphens as dashes."
-                    ))
+        # C. Over-Bolding Check (New User Feedback)
+        # Rule: Strategic bolding ONLY. Do not bold the entire line.
+        check_bold_fields = [
+            ("Hero Title", draft.hero_title),
+            ("Hero Subtitle", draft.hero_subtitle),
+            ("Descriptive Block Title", draft.descriptive_block_title),
+            ("Descriptive Block Subtitle", draft.descriptive_block_subtitle)
+        ]
+        for name, text in check_bold_fields:
+            if self._is_entirely_bolded(text):
+                issues.append(Issue(
+                    type="formatting",
+                    severity="P1",
+                    scope="email",
+                    field=name.lower().replace(" ", "_"),
+                    problem=f"{name} is entirely bolded.",
+                    rationale="Strategic Bolding Rule: Never bold the entire line. Use <b>...</b> only for specific focused words to add emphasis."
+                ))
 
-        # Check for '$' and '%' usage
-        for field, text in draft.dict().items():
-             if isinstance(text, str):
-                if re.search(r'\b(dollars?|percentage|percent)\b', text, re.IGNORECASE):
-                     issues.append(Issue(
+        # D. Emoji Pacing (History Aware)
+        # Rule: Exactly 1 emoji per campaign. Target 1 every 4 emails overall.
+        if history:
+            # 1. Check current campaign usage
+            current_campaign_emails = [e for e in history if e.get("campaign_id") == campaign_id]
+            any_emoji_in_current = any(self._contains_emoji(e.get("final_draft", {}).get("subject", "")) for e in current_campaign_emails)
+            
+            if any_emoji_in_current:
+                if self._contains_emoji(draft.subject):
+                    issues.append(Issue(
                         type="formatting",
-                        severity="P2",
+                        severity="P1",
                         scope="email",
-                        field=field,
-                        problem="Found written currency/percentage.",
-                        rationale="Use signs $ and % instead."
+                        field="subject",
+                        problem="Too many emojis in campaign.",
+                        rationale="Strict Rule: Only 1 email per campaign should have an emoji in the subject line."
                     ))
+            else:
+                # 2. No emoji used in current campaign yet. Check overall spacing.
+                all_brand_emails = sorted(history, key=lambda x: x.get("timestamp", ""), reverse=True)
+                dist_to_last_emoji = 0
+                found_emoji_globally = False
+                for i, entry in enumerate(all_brand_emails[:8]):
+                    subj = entry.get("final_draft", {}).get("subject", "") if isinstance(entry.get("final_draft"), dict) else ""
+                    if self._contains_emoji(subj):
+                        dist_to_last_emoji = i + 1
+                        found_emoji_globally = True
+                        break
+                    dist_to_last_emoji = i + 1
+                
+                # If we haven't used an emoji in a while (>3 emails), we SHOULD use it now.
+                # But only if it's the first in this campaign.
+                if not found_emoji_globally or dist_to_last_emoji >= 3:
+                    if not self._contains_emoji(draft.subject):
+                        # We don't FORCE it yet unless we want to, but the prompt should encourage it.
+                        if dist_to_last_emoji >= 4:
+                            issues.append(Issue(
+                                field="subject",
+                                problem="Subject line requires an emoji (Pacing).",
+                                rationale=f"Gap since last emoji: {dist_to_last_emoji}. Goal is 1 in 4."
+                            ))
 
         # 3. Length Constraints
         for field, (min_len, max_len) in self.LENGTH_RULES.items():
@@ -156,16 +224,35 @@ class DeterministicVerifier:
                         rationale=f"Must be between {min_len}-{max_len} chars."
                     ))
                 if max_len > 0 and length > max_len:
-                     issues.append(Issue(
+                    # UPDATED: More descriptive for max caps
+                    issue_problem = f"Text too long ({length} chars)."
+                    issue_rationale = f"Maximum limit is {max_len} characters. Please shorten this field."
+                    if min_len > 0:
+                        issue_rationale = f"Must be between {min_len}-{max_len} chars."
+                        
+                    issues.append(Issue(
                         type="formatting",
                         severity="P2",
                         scope="email",
                         field=field,
-                        problem=f"Text too long ({length} > {max_len} chars).",
-                        rationale=f"Must be between {min_len}-{max_len} chars."
+                        problem=issue_problem,
+                        rationale=issue_rationale
                     ))
 
         return issues
+    
+    def _contains_banned_dashes(self, text: str) -> bool:
+        """Check for -, –, —"""
+        # We need to be careful. User said "Never ever".
+        # But hyphens in words like "stress-free"?
+        # "Never use em dashes, hyphens or dashes. Never ever".
+        # This implies even compound words should be avoided or rephrased.
+        # Strict check.
+        banned = ["-", "–", "—"]
+        for char in banned:
+            if char in text:
+                return True
+        return False
 
     def _contains_emoji(self, text: str) -> bool:
         """Simple emoji detection check."""

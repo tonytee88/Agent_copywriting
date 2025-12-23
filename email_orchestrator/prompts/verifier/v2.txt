@@ -8,53 +8,56 @@ Your goal is to ensure the draft is perfect, compliant, and non-repetitive.
 3. [HISTORY LOG]: Recent emails (avoid repeating copy patterns).
 4. [FORMAT RULES]: Style guide.
 
-## VERIFICATION CHECKLIST
+## VERIFICATION CHECKLIST (TOP 3 FOCUS)
 
-1. **Blueprint Compliance**: Does the draft use the assigned Angle, Persona tone, and Structure?
-2. **Commercial CTA Limit**:
-   - Verify CTAs are NOT "Learn More", "Read Tips", or "See Resources".
-   - CTAs MUST be "Shop Now", "Get Yours", etc.
-   - Fail if any link points to non-commercial content.
-3. **Copy Quality**:
-   - Compelling hooks?
-   - Clear benefits?
-   - Does it sound like the Persona?
-   - Is the flow logical and persuasive?
+1. **Content Distribution (SEMANTIC)**: 
+   - Is the **Promotion/Offer**, **Urgency**, and **Angle/Transformation** distributed across different blocks?
+   - **NUANCE**: If the email purpose is **"Educational"**, the **Offer** and **Urgency** are OPTIONAL. Do not penalize for missing them if the value is purely narrative/knowledge-based.
+   - They MUST NOT be clustered in one spot.
+2. **Visual Hierarchy & Formatting**:
+   - Are titles **Bolded**?
+   - Is there internal repetition between the Hero and Descriptive blocks?
+3. **Tone & Voice**: 
+   - Does it sound exactly like the brand persona?
+4. **Commercial Flow**:
+   - Are CTAs standard commercial commands (Shop Now, Claim Offer)? No "Learn More".
 
+## DECISION RULE
+✅ **APPROVE** if the draft is high-quality, fits the brand, and correctly follows the blueprint. Minor stylistic tweaks should not block approval.
+❌ **NEED IMPROVEMENT** if there are material gaps in the Narrative, Distribution, or Formatting that require a focused patch.
+
+## THE "PATCH & REPAIR" RULE
+If you find issues, do NOT ask for a full rewrite. Identify the **EXACT components** that need changing and provide the **SPECIFIC replacement copy** or instructions in the `top_improvements` and `replacement_options` sections. The goal is to "surgicaly repair" the draft while keeping the successful elements intact.
 ## OUTPUT SCHEMA
-
 Return Valid JSON:
-```json
 {{
   "approved": boolean,
   "score": integer (0-10),
-  "critical_issues": ["Summary string 1"],
-  
-  "issues": [
+  "top_improvements": [
     {{
-      "type": "repetition|compliance|formatting|quality",
-      "severity": "P1|P2",
-      "scope": "email",
-      "field": "hero_title",
-      "problem": "Contains emoji",
-      "rationale": "Violates format rules"
+      "rank": 1,
+      "category": "content_distribution | visual_hierarchy | tone_voice | conversion_flow",
+      "problem": "...",
+      "why_it_matters": "...",
+      "options": {{
+        "A": "Specific copy or structural fix",
+        "B": "Alternative fix"
+      }}
     }}
   ],
-  
   "replacement_options": {{
-    "hero_title_alternatives": ["Clean Title option 1", "Clean Title option 2"],
-    "subject_alternatives": ["Subject option 1", "Subject option 2"],
-    "descriptive_block_rewrite_hint": "Rewrite to focus more on X"
+    "hero_title_alternatives": [],
+    "subject_alternatives": [],
+    "descriptive_block_rewrite_hint": "..."
   }},
-  
-  "feedback_for_drafter": "Detailed instructions"
+  "feedback_for_drafter": "Detailed summary"
 }}
-```
 
 ## RULES
 
-1. **REPAIR, DON'T JUST REJECT**: If a specific field fails (e.g. Hero Title has emoji), you MUST provide valid `replacement_options` for that field.
+1. **REPAIR & PATCH, DON'T RESTART**: Focus on specific, actionable fixes. If a field isn't hitting the mark, provide the solution (copy alternatives) in `replacement_options`.
 2. **STRICT JSON**: Do not output markdown code blocks.
+3. **VALUE THE "GOOD"**: Acknowledge what works in the `feedback_for_drafter` so the Drafter knows what to keep.
 
 === DRAFT ===
 {draft}

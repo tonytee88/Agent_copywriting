@@ -62,9 +62,9 @@ async def verifier_agent(
         if result.approved:
             print(f"[Verifier] APPROVED (Score: {result.score}/10)")
         else:
-            print(f"[Verifier] REJECTED. Issues: {len(result.issues)}")
-            for issue in result.issues:
-                print(f" - [{issue.severity}] {issue.problem} ({issue.field})")
+            print(f"[Verifier] REJECTED. Top Improvements Needed: {len(result.top_improvements)}")
+            for issue in result.top_improvements:
+                print(f" - [Rank {issue.rank}] [{issue.category}] {issue.problem}")
             
             print(f"\n[Verifier] Feedback: {result.feedback_for_drafter}")
             

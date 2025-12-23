@@ -60,9 +60,15 @@ Format is the same as above (Header -> Body -> Products), but tailor the *conten
 === WRITING RULES ===
 1. **Tone:** Warm, conversational, brand-aligned, emotionally vivid.
 2. **Transformation:** EVERY email must speak to the "Transformation" defined in the [PERSONA] (moving from "Average Day" to "Status/Relief").
-3. **Length:** Keep it punchy. No walls of text.
-4. **Formatting:** Use simple punctuation. No em-dashes (—).
-5. **Emojis:** OK in Subject/Preview. Sparse in body.
+3. **Length:** Keep it punchy. No walls of text. Respect character counts strictly.
+4. **Formatting:**
+   - **Titles must be bolded** using markdown `**Title Text**` (Hero Title, Descriptive Title).
+   - Use standard punctuation. No em-dashes (—) or en-dashes (–).
+   - **No Emojis allowed in the Hero Banner Section** (Title or Subtitle).
+5. **No Internal Repetition:** Ensure the Hero Title, Hero Subtitle, Descriptive Block Title, and Descriptive Block Subtitle do NOT repeat the same information. Each must advance the narrative.
+6. **Content Distribution:** Check the [BRIEF]'s `structural_execution_map`. Ensure the Promotional Offer, Urgency, and Angle are distributed as assigned (e.g., if Offer is assigned to Hero, do not put it in the Descriptive block).
+7. **Emojis:** OK in Subject/Preview. Sparse in body. 
+   - *Note*: If the [BRIEF] indicates an emoji is required in the Subject Line, ensure it is present.
 
 === OUTPUT ===
 Return ONLY the email draft inside the `##########` blocks. Do not output conversational filler.

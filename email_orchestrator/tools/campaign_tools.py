@@ -165,10 +165,18 @@ async def plan_campaign(
 
 async def generate_email_campaign(
     campaign_id: str,
-    drive_folder_id: Optional[str] = POPBRUSH_FOLDER_ID
+    drive_folder_id: Optional[str] = POPBRUSH_FOLDER_ID,
+    slot_number: Optional[int] = None
 ) -> str:
     """
     Orchestrates the Execution Phase (Writing Emails).
+    
+    Args:
+        campaign_id (str): The ID of the campaign plan created via plan_campaign.
+        drive_folder_id (str, optional): The Google Drive folder ID to export results to.
+        slot_number (int, optional): The specific email slot number to generate (idx, e.g. 1). 
+                                     If provided, ONLY this slot is generated. 
+                                     If omitted, ALL slots in the plan are generated.
     """
     tracker = get_token_tracker()
     tracker.reset()
@@ -188,6 +196,10 @@ async def generate_email_campaign(
     
     # 2. Iterate Slots
     for slot in plan.email_slots:
+        # FILTER: If slot_number is provided, skip others
+        if slot_number is not None and slot.slot_number != slot_number:
+            continue
+            
         print(f"\n>>> PROCESSING EMAIL #{slot.slot_number} ({slot.email_purpose}) <<<")
         
         # A. Strategist (Create Blueprint using Slot Directives)
@@ -201,63 +213,70 @@ async def generate_email_campaign(
         # Pass folder selection context? Not needed for Strategist.
         blueprint = await strategist_agent(request, brand_bio, campaign_context=slot)
         
-        # B. Drafter Wrapper Loop
-        max_draft_retries = 3
+        # B. Drafter Wrapper Loop (Judge + Repair)
         final_draft = None
         revision_feedback = None
         
-        for attempt in range(max_draft_retries):
-            # C. Drafter
+        # Determine history for this brand/ isolation
+        history_identifier = brand_bio.brand_id if getattr(brand_bio, 'brand_id', None) else plan.brand_name
+        past_emails = history_manager.get_recent_campaigns(history_identifier, limit=10)
+        past_emails_dicts = [entry.model_dump() for entry in past_emails]
+
+        # 1. GENERATION + DETERMINISTIC LOOP (Strict)
+        max_det_retries = 5
+        det_attempt = 0
+        while det_attempt < max_det_retries:
             draft = await drafter_agent(blueprint, brand_bio, revision_feedback)
+            det_issues = det_verifier.verify_draft(draft, history=past_emails_dicts, campaign_id=plan.campaign_id)
             
-            # --- LAYER 1: Deterministic QA ---
-            det_issues = det_verifier.verify_draft(draft)
-            
-            if det_issues:
-                print(f"[Email #{slot.slot_number}] Layer 1 (Deterministic) Failed. Issues: {len(det_issues)}")
-                # Construct detailed feedback so the agent knows what to fix
-                issues_summary = "\n".join([f"- {i.field}: {i.problem} ({i.rationale})" for i in det_issues])
-                feedback_msg = f"Strict Rules Violation. You must fix these errors:\n{issues_summary}"
-                
-                # Construct a pseudo-verification result to trigger revision
-                verification = EmailVerification(
-                    approved=False,
-                    score=0,
-                    issues=det_issues,
-                    feedback_for_drafter=feedback_msg,
-                    replacement_options=None # No replacements for formatting
-                )
-            else:
-                # --- LAYER 2: LLM QA ---
-                print(f"[Email #{slot.slot_number}] Layer 1 Passed. Proceeding to LLM QA...")
-                verification = await verifier_agent(draft, blueprint, plan.brand_name)
-            
-            # D. Verify (Common handling)
-            # verification = await verifier_agent(draft, blueprint, plan.brand_name) <-- Replaced by above logic
-            
-            if verification.approved:
-                print(f"[Email #{slot.slot_number}] APPROVED! Score: {verification.score}")
-                final_draft = draft
+            if not det_issues:
+                print(f"[Email #{slot.slot_number}] Layer 1 (Deterministic) Passed.")
                 break
-            else:
-                print(f"[Email #{slot.slot_number}] QA DETECTED ISSUES. OPTIMIZING DRAFT (Attempt {attempt+1}). Issues: {len(verification.issues)}")
                 
-                if attempt < max_draft_retries - 1:
-                    feedback_lines = []
-                    feedback_lines.append(f"FEEDBACK: {verification.feedback_for_drafter}")
-                    if verification.replacement_options:
-                        opts = verification.replacement_options
-                        if opts.hero_title_alternatives:
-                            feedback_lines.append(f"SUGGESTED HERO TITLES: {opts.hero_title_alternatives}")
-                        if opts.subject_alternatives:
-                             feedback_lines.append(f"SUGGESTED SUBJECTS: {opts.subject_alternatives}")
-                        if opts.descriptive_block_rewrite_hint:
-                             feedback_lines.append(f"REWRITE HINT: {opts.descriptive_block_rewrite_hint}")
-                    
-                    revision_feedback = "\n".join(feedback_lines)
-                else:
-                    print(f"[Email #{slot.slot_number}] Max retries reached. Using last draft.")
-                    final_draft = draft
+            det_attempt += 1
+            print(f"[Email #{slot.slot_number}] Layer 1 FAILED ({len(det_issues)} issues). Retry {det_attempt}/{max_det_retries}...")
+            
+            # Construct feedback ONLY for deterministic issues
+            feedback_msg = "STRICT RULES VIOLATION. You MUST fix these before we can proceed:\n"
+            feedback_msg += "\n".join([f"- [{i.field}] {i.problem} (Reason: {i.rationale})" for i in det_issues])
+            
+            # LOGGING for diagnosis (User Request)
+            print(f"[Email #{slot.slot_number}] DET FEEDBACK SENT TO DRAFTER:\n{feedback_msg}")
+            
+            revision_feedback = feedback_msg
+
+        if det_attempt >= max_det_retries:
+            print(f"[Email #{slot.slot_number}] CRITICAL: Failed to fix deterministic issues after {max_det_retries} attempts.")
+            # We still proceed to LLM QA but it will likely fail too. Or we could raise/skip.
+            # For now, let's proceed with the best we have.
+
+        # 2. LLM QA LOOP (One-Pass)
+        print(f"[Email #{slot.slot_number}] Proceeding to LLM QA...")
+        verification = await verifier_agent(draft, blueprint, plan.brand_name)
+        
+        if verification.approved:
+            print(f"[Email #{slot.slot_number}] APPROVED! Score: {verification.score}")
+            final_draft = draft
+        else:
+            print(f"[Email #{slot.slot_number}] REJECTED. Requesting ONE-TIME Strategic Revision...")
+            
+            # Construct detailed feedback for revision
+            feedback_lines = [f"QA VERDICT: {verification.feedback_for_drafter}"]
+            for imp in verification.top_improvements:
+                feedback_lines.append(f"- [Rank {imp.rank}] [{imp.category}] {imp.problem}")
+                feedback_lines.append(f"  Fix Options: {json.dumps(imp.options)}")
+
+            revision_feedback = "\n".join(feedback_lines)
+            
+            # One-time revision
+            final_draft = await drafter_agent(blueprint, brand_bio, revision_feedback)
+            
+            # Final Deterministic Check on revised draft (Safety)
+            final_det = det_verifier.verify_draft(final_draft, history=past_emails_dicts, campaign_id=plan.campaign_id)
+            if final_det:
+                print(f"[Email #{slot.slot_number}] Warning: Revised draft still has {len(final_det)} deterministic issues.")
+            
+            print(f"[Email #{slot.slot_number}] Revision complete. Auto-approving for export.")
         
         # E. Save Metadata (Log History)
         log_entry = CampaignLogEntry(

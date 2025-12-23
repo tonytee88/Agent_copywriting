@@ -205,7 +205,10 @@ class BlockingIssue(BaseModel):
 class TopImprovement(BaseModel):
     """High-impact improvement for the simplified QA process."""
     rank: int
-    category: Literal["calendar_sanity", "offer_alignment", "narrative_ladder", "structure_purpose_fit"]
+    category: Literal[
+        "calendar_sanity", "offer_alignment", "narrative_ladder", "structure_purpose_fit",
+        "content_distribution", "visual_hierarchy", "tone_voice", "conversion_flow"
+    ]
     problem: str
     why_it_matters: str
     options: Dict[str, str] # {A: ..., B: ...}
@@ -250,6 +253,7 @@ class EmailVerification(BaseModel):
     critical_issues: List[str] = Field(default_factory=list)
     
     # New Judge+Repair Fields
+    top_improvements: List[TopImprovement] = Field(default_factory=list)
     issues: List[Issue] = Field(default_factory=list)
     replacement_options: Optional[DraftReplacementOptions] = None
     

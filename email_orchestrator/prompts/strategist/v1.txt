@@ -27,9 +27,15 @@ Output a Valid JSON `EmailBlueprint` that defines the strategy.
 1. **Analyze Directives**: Read the assigned Transformation, Angle, Persona, and CTA descriptions.
 2. **Analyze Structure**: Look up the assigned `structure_id` in the [CATALOG] to understand the layout.
 3. **Flesh out the Blueprint**:
-   - create `structural_execution_map`: specific goals for each block based on the structure and directives.
+   - create `structural_execution_map`: specific goals for each block. 
+   - 🎯 **CONTENT DISTRIBUTION RULE**: You MUST distribute these 3 elements across the email (do not cluster them):
+     1. **Promotion/Offer Details** (e.g., Hero title)
+     2. **Urgency/Scarcity** (e.g., Hero subtitle)
+     3. **Angle/Transformation Emphasis** (e.g., Descriptive block)
+     Assign each to a specific block in the `structural_execution_map`.
    - create `subject_ideas` and `preview_text_ideas` that align with the Angle.
    - define `key_points_for_descriptive_block` based on the Transformation.
+   - ✍️ **BOLDNESS RULE**: In your execution map, instruct the drafter to use `<b>Text</b>` for emphasis in the descriptive block to enhance readability.
 
 ✨ REQUIRED NARRATIVE STRUCTURES (MUST VARY)
  

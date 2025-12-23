@@ -10,34 +10,42 @@ Your goal is to write a high-converting "Type #1" email by strictly following th
 
 ## EXECUTION RULES
 
-1. **NO EMOJIS IN TITLES (CRITICAL)**: ABSOLUTELY NO EMOJIS in Hero Title, Subtitle, or Product Titles. This is a strict brand rule.
-2. **Follow the Structure Map**: The Blueprint defines specific goals for the Hero, Descriptive, and Product blocks. Follow them exactly.
-3. **Adopt the Persona**: Use the voice/tone defined by the Persona Description in the Blueprint.
-4. **Use the Transformation**: The copy must move the reader from the "Before" state to the "After" state defined by the Transformation Description.
-5. **Format**:
-   - No walls of text. Short paragraphs.
-   - No emojis in Hero Titles.
-   - **JSON OUTPUT ONLY**.
-6. **Commercial CTAs ONLY**: NEVER use "Learn More", "Read Tips", or resource links. CTAs must drive to Product or Homepage (e.g., "Shop Now", "Get the Look"). All education must be INSIDE the email.
+1. **FORMATTING - STRATEGIC BOLDING**: Use `<b>...</b>` tags.
+   - **DO NOT** make entire titles or blocks bold automatically.
+   - **NEVER BOLD AN ENTIRE LINE**.
+   - **DO** use `<b>...</b>` to highlight key focused keywords (1-3 words) to add emphasis and scannability.
+   - **ENHANCE THE COPY**: Use `<b>...</b>` more frequently in the **descriptive_block_content** to highlight benefits, transformation points, or key emotional drivers. A true marketing copy uses bolding to guide the reader's eye to the most important "gems".
+   - Example: "Our formula is <b>fast acting</b> and <b>stress free</b>."
+2. **NO DASHES OR HYPHENS (STRICT)**: ABSOLUTELY NO hyphens (-), en-dashes (–), or em-dashes (—). Rewrite sentences to avoid them (e.g., use commas, colons, or new sentences). Compound words must be separated or rewritten (e.g. "stress free" instead of "stress-free").
+3. **NO EMOJIS IN HERO BANNER (STRICT)**: ABSOLUTELY NO EMOJIS in `hero_title` or `hero_subtitle`.
+4. **Internal Repetition**: Ensure `hero_title`, `hero_subtitle`, `descriptive_block_title`, and `descriptive_block_subtitle` are ALL UNIQUE. 
+5. **Follow the Structure Map**: The Blueprint defines specific goals for each block.
+   - 🎯 **CONTENT DISTRIBUTION**: Ensure the **Promotional Offer**, **Urgency**, and **Angle** are distributed across the blocks. 
+   - **NUANCE**: If the Blueprint defines an **"Educational"** purpose, you do NOT need to include an Offer or Urgency. Focus purely on value and transformation.
+   - 🎯 **EMOJI PACING**: If the Blueprint requests an emoji in the subject, provide exactly ONE.
+6. **Adopt the Persona**: Use the voice/tone defined by the Persona Description.
+7. **Commercial CTAs ONLY**: NEVER use "Learn More". Use "Shop Now", "Get Yours". Keep them SHORT (Max 15 chars).
+8. **JSON OUTPUT ONLY**.
+9. **PATCHING MINDSET (IF REVISION)**: If `REVISION FEEDBACK` is provided, do NOT restart. KEEP the good parts of the draft and only PATCH/FIX the specific issues requested. Enhance the existing copy rather than replacing it entirely unless instructed.
 
 ## OUTPUT SCHEMA
 
 Return valid JSON:
 ```json
 {{
-  "subject": "35-40 chars max. Curiosity inducing.",
-  "preview": "35-50 chars max. Supports subject line.",
+  "subject": "Max 40 chars. Curiosity inducing.",
+  "preview": "Max 55 chars. Supports subject line.",
   
-  "hero_title": "30-40 chars max. Main benefit/hook.",
-  "hero_subtitle": "60-80 chars max. Elaboration.",
-  "cta_hero": "Button text",
+  "hero_title": "Max 40 chars. Main benefit/hook.",
+  "hero_subtitle": "Max 55 chars. Elaboration.",
+  "cta_hero": "Short button text (Max 15 chars)",
   
-  "descriptive_block_title": "40-60 chars max. The 'Why' or 'Story'.",
-  "descriptive_block_subtitle": "60-80 chars max. The 'How' or 'Benefit'.",
-  "descriptive_block_content": "300 chars max. Focus on the transformation.",
+  "descriptive_block_title": "Max 40 chars. The 'Why' or 'Story'.",
+  "descriptive_block_subtitle": "Max 60 chars. The 'How' or 'Benefit'.",
+  "descriptive_block_content": "Max 400 chars. Focus on the transformation.",
   
-  "product_block_title": "30-40 chars max. Bridge angle to products.",
-  "product_block_subtitle": "60-80 chars max. Theme extension.",
+  "product_block_title": "Max 40 chars. Bridge angle to products.",
+  "product_block_subtitle": "Max 80 chars. Theme extension.",
   "products": [
     "Product Name 1 (Output ONLY the name, exactly as in Brand Bio)",
     "Product Name 2 (Output ONLY the name)",
