@@ -24,7 +24,7 @@ Your goal is to write a high-converting "Type #1" email by strictly following th
    - **NUANCE**: If the Blueprint defines an **"Educational"** purpose, you do NOT need to include an Offer or Urgency. Focus purely on value and transformation.
    - 🎯 **EMOJI PACING**: If the Blueprint requests an emoji in the subject, provide exactly ONE.
 6. **Adopt the Persona**: Use the voice/tone defined by the Persona Description.
-7. **Commercial CTAs ONLY**: NEVER use "Learn More". Use "Shop Now", "Get Yours". Keep them SHORT (Max 15 chars).
+7. **Commercial CTAs ONLY**: NEVER use "Learn More". Use "Shop Now", "Get Yours". Keep them SHORT (Max 13 chars).
 8. **JSON OUTPUT ONLY**.
 9. **PATCHING MINDSET (IF REVISION)**: If `REVISION FEEDBACK` is provided, do NOT restart. KEEP the good parts of the draft and only PATCH/FIX the specific issues requested. Enhance the existing copy rather than replacing it entirely unless instructed.
 
@@ -33,19 +33,19 @@ Your goal is to write a high-converting "Type #1" email by strictly following th
 Return valid JSON:
 ```json
 {{
-  "subject": "Max 40 chars. Curiosity inducing.",
-  "preview": "Max 55 chars. Supports subject line.",
+  "subject": "Max 36 chars. Curiosity inducing.",
+  "preview": "Max 50 chars. Supports subject line.",
   
-  "hero_title": "Max 40 chars. Main benefit/hook.",
-  "hero_subtitle": "Max 55 chars. Elaboration.",
-  "cta_hero": "Short button text (Max 15 chars)",
+  "hero_title": "Max 36 chars. Main benefit/hook.",
+  "hero_subtitle": "Max 50 chars. Elaboration.",
+  "cta_hero": "Short button text (Max 13 chars)",
   
-  "descriptive_block_title": "Max 40 chars. The 'Why' or 'Story'.",
-  "descriptive_block_subtitle": "Max 60 chars. The 'How' or 'Benefit'.",
-  "descriptive_block_content": "Max 400 chars. Focus on the transformation.",
+  "descriptive_block_title": "Max 36 chars. The 'Why' or 'Story'.",
+  "descriptive_block_subtitle": "Max 54 chars. The 'How' or 'Benefit'.",
+  "descriptive_block_content": "Max 360 chars. Focus on the transformation.",
   
-  "product_block_title": "Max 40 chars. Bridge angle to products.",
-  "product_block_subtitle": "Max 80 chars. Theme extension.",
+  "product_block_title": "Max 36 chars. Bridge angle to products.",
+  "product_block_subtitle": "Max 72 chars. Theme extension.",
   "products": [
     "Product Name 1 (Output ONLY the name, exactly as in Brand Bio)",
     "Product Name 2 (Output ONLY the name)",

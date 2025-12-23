@@ -12,6 +12,7 @@ from email_orchestrator.subagents.campaign_planner_agent import campaign_planner
 from email_orchestrator.subagents.campaign_plan_verifier_agent import campaign_plan_verifier_agent
 from email_orchestrator.subagents.strategist_agent import strategist_agent
 from email_orchestrator.subagents.drafter_agent import drafter_agent
+from email_orchestrator.tools.campaign_planner_tools import optimize_plan_transformations
 from email_orchestrator.subagents.verifier_agent import verifier_agent
 from email_orchestrator.tools.deterministic_verifier import DeterministicVerifier
 
@@ -58,6 +59,9 @@ async def plan_campaign(
         brand_bio=brand_bio,
         promotional_ratio=promotional_ratio
     )
+
+    # 2. [NEW] Strategic Optimization Layer: Refine Transformations
+    plan = await optimize_plan_transformations(plan, brand_bio)
     
     # Ensure brand_id is set (Critical for Multi-Brand Isolation)
     if not plan.brand_id and brand_bio.brand_id:
