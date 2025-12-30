@@ -183,6 +183,7 @@ class CampaignPlan(BaseModel):
     created_at: str
     status: Literal["draft", "approved", "in_progress", "completed"] = "draft"
     language: str = "English"
+    sheet_url: Optional[str] = None # Link to the Google Sheet for this plan
 
 # --- Verification Schemas ---
 

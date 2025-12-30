@@ -219,12 +219,99 @@ class CampaignPlanManager:
             by_brand[brand] = by_brand.get(brand, 0) + 1
             by_status[status] = by_status.get(status, 0) + 1
         
-        return {
-            "total_plans": len(plans),
-            "brands": len(by_brand),
-            "plans_by_brand": by_brand,
-            "plans_by_status": by_status,
-            "max_per_brand": MAX_PLANS_PER_BRAND,
-            "archive_after_days": ARCHIVE_COMPLETED_AFTER_DAYS,
-            "delete_after_days": DELETE_ARCHIVED_AFTER_DAYS
-        }
+    def update_plan_from_import(self, imported_data: Dict[str, Any]) -> bool:
+        """
+        Updates an existing plan with data imported from Google Sheets.
+        Strictly overrides text fields.
+        """
+        campaign_id = imported_data.get("campaign_id")
+        if not campaign_id:
+            print("[CampaignPlanManager] Update failed: No campaign_id in imported data.")
+            return False
+            
+        plans = self._load_all()
+        target_index = -1
+        
+        for i, p in enumerate(plans):
+            if p.get("campaign_id") == campaign_id:
+                target_index = i
+                break
+        
+        if target_index == -1:
+            print(f"[CampaignPlanManager] Plan {campaign_id} not found.")
+            return False
+        
+        # Merge Data
+        target_plan = plans[target_index]
+        
+        # 1. Update Top-Level fields if present (e.g. Narrative)
+        # Note: Current importer mainly focuses on slots, but we can extend.
+        
+        # 2. Update Slots
+        imported_slots = imported_data.get("email_slots", [])
+        current_slots = target_plan.get("email_slots", []) # Pydantic model is dict here actually
+        
+        # Create map of current slots by number to preserve non-sheet fields (like connection_to_prev)
+        # Note: current_slots is a list of dicts.
+        current_slot_map = {s.get("slot_number"): s for s in current_slots}
+        
+        updated_slots_list = []
+        changes_made = False
+        
+        # We strictly iterate over IMPORTED slots. 
+        # If a slot is in imported but not current -> We should probably add it (or warn).
+        # If a slot is in current but not imported -> It gets dropped (Deletions).
+        
+        for new_slot in imported_slots:
+            s_num = new_slot.get("slot_number")
+            
+            # Base object to use: existing or new
+            if s_num in current_slot_map:
+                base_slot = current_slot_map[s_num]
+            else:
+                # User added a row? We need a basic structure.
+                # Since we don't know all fields, we initialize with defaults + imported data.
+                # This might be tricky if schema requires fields not in sheet.
+                # For now, let's assume we copy new_slot and hope for best (or skip adding new rows for safety if schema is strict).
+                # Safer: Warn about new rows being unsupported for now, Or try to support.
+                # Let's try to support by using new_slot as base.
+                base_slot = new_slot
+                changes_made = True
+            
+            # List of fields to sync from Sheet
+            fields_to_sync = [
+                "theme", "email_purpose", "intensity_level", 
+                "transformation_description", "angle_description",
+                "structure_id", "persona_description", 
+                "key_message", "offer_details", "offer_placement",
+                "cta_description"
+            ]
+            
+            # Ensure defaults for required fields if missing (Schema safety)
+            if "cta_description" not in base_slot or not base_slot["cta_description"]:
+                 base_slot["cta_description"] = "Shop Now" # Default fallback
+            
+            for field in fields_to_sync:
+                # Only update if sheet has a value (non-empty)
+                val = new_slot.get(field)
+                if val is not None:
+                    if base_slot.get(field) != val:
+                        base_slot[field] = val
+                        changes_made = True
+            
+            updated_slots_list.append(base_slot)
+            
+        # Check if deletions occurred
+        if len(updated_slots_list) != len(current_slots):
+            changes_made = True
+            print(f"[CampaignPlanManager] Plan slot count changed: {len(current_slots)} -> {len(updated_slots_list)}")
+            
+        if changes_made:
+            target_plan["email_slots"] = updated_slots_list
+            plans[target_index] = target_plan
+            self._save_all(plans)
+            print(f"[CampaignPlanManager] ✓ Synced plan {campaign_id} with Google Sheet data (Strict Sync).")
+            return True
+        else:
+            print(f"[CampaignPlanManager] No changes detected during sync for {campaign_id}.")
+            return True

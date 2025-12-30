@@ -38,8 +38,26 @@ async def campaign_planner_agent(
     total_emails: int,
     duration: str,
     brand_bio: BrandBio,
-    promotional_ratio: float = 0.4
+    promotional_ratio: float = 0.4,
+    notes: Optional[str] = None
 ) -> CampaignPlan:
+    """
+    Plans a multi-email campaign using ADK agent with Catalog Injection.
+    """
+    print(f"[Campaign Planner] Planning {total_emails}-email campaign for {brand_name}...")
+    
+    # 0. Load Catalogs (Structures Only)
+    # ... (existing code omitted but implied by function body preservation unless I rewrite logic)
+    # actually replace_file_content replaces the block. 
+    # To be safe and minimal, I will target the function signature and the prompt construction separately or together if close.
+    # They are far apart (lines 35-42 vs 72-99). Multi-replace is better or two replaces.
+    # I will use multi-replace.
+    pass
+
+# Actually I cannot use MultiReplace tool yet as per rules I should use replace_file_content if I can.
+# But I need to change signature AND prompt.
+# I will use replace_file_content for signature first.
+
     """
     Plans a multi-email campaign using ADK agent with Catalog Injection.
     """
@@ -90,6 +108,9 @@ Brand Bio:
 
 Historic Campaigns (AVOID REPEATING THESE CONCEPTS):
 {history_summary}
+
+ADDITIONAL CONTEXT/CONSTRAINTS (Adhere strictly if provided):
+{notes if notes else "None"}
 
 Requirements:
 1. Generate CREATIVE, BRAND-SPECIFIC descriptions for Angle, Persona, Transformation, and CTA (Free Text).

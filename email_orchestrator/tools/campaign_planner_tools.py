@@ -4,6 +4,7 @@ These tools provide contextual suggestions for strategic content selection.
 """
 
 from typing import List, Dict, Any
+import json
 from email_orchestrator.tools.knowledge_reader import KnowledgeReader
 from email_orchestrator.tools.history_manager import HistoryManager
 

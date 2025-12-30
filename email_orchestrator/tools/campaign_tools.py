@@ -37,6 +37,7 @@ async def plan_campaign(
     duration: str,
     total_emails: int,
     promotional_ratio: float = 0.4,
+    notes: Optional[str] = None,
     drive_folder_id: Optional[str] = POPBRUSH_FOLDER_ID
 ) -> str:
     """
@@ -57,7 +58,8 @@ async def plan_campaign(
         total_emails=total_emails,
         duration=duration,
         brand_bio=brand_bio,
-        promotional_ratio=promotional_ratio
+        promotional_ratio=promotional_ratio,
+        notes=notes
     )
 
     # 2. [NEW] Strategic Optimization Layer: Refine Transformations
@@ -148,6 +150,7 @@ async def plan_campaign(
     campaign_manager.save_plan(plan)
     
     # 5. Export Plan Summary to Google Sheets (Updated Feature)
+    sheet_url = "N/A"
     try:
         from email_orchestrator.tools.google_sheets_export import export_plan_to_google_sheets
         
@@ -157,7 +160,12 @@ async def plan_campaign(
             plan_data=plan.dict(),
             folder_id=drive_folder_id
         )
-        print(f"[Export] Plan exported to: {sheet_result['spreadsheet_url']} (Folder: {drive_folder_id})")
+        sheet_url = sheet_result['spreadsheet_url']
+        print(f"[Export] Plan exported to: {sheet_url} (Folder: {drive_folder_id})")
+        
+        # Save Sheet URL to Plan
+        plan.sheet_url = sheet_url
+        campaign_manager.save_plan(plan)
             
     except Exception as e:
         print(f"[Export] Plan Export Failed: {e}")
@@ -165,7 +173,8 @@ async def plan_campaign(
     # 6. Report Tokens
     print(tracker.get_summary())
     
-    return f"Campaign Plan Created! ID: {plan.campaign_id}. Status: {plan.status}"
+    # PHASE 1 COMPLETE: Return Info for CLI
+    return f"Campaign Plan Created! ID: {plan.campaign_id}\nGoogle Sheet: {sheet_url}"
 
 async def generate_email_campaign(
     campaign_id: str,
@@ -302,23 +311,27 @@ async def generate_email_campaign(
         history_manager.log_campaign(log_entry)
         
         results.append({
-            "slot": slot.slot_number,
+            "slot_number": slot.slot_number, # Standardized key
             "subject": final_draft.subject,
-            "status": "completed"
+            "status": "completed",
+            "content": final_draft.full_text_formatted, # Plain text optimized
+            "html_content": getattr(final_draft, 'html_content', None), # If available
+            "body": final_draft.descriptive_block_content # Fallback
         })
         
-        # F. Export to Google Docs
-        try:
-            doc_result = export_email_to_google_docs(
-                email_draft=final_draft.dict(),
-                brand_name=plan.brand_name,
-                folder_id=drive_folder_id, # Use the passed folder ID
-                structure_name=blueprint.structure_id,
-                language=plan.language
-            )
-            print(f"[Export] Email #{slot.slot_number} exported to: {doc_result['document_url']} (Folder: {drive_folder_id})")
-        except Exception as e:
-            print(f"[Export] Failed: {e}")
+        # F. Export to Google Docs (LEGACY - Disabled)
+        # try:
+        #     doc_result = export_email_to_google_docs(
+        #         email_draft=final_draft.dict(),
+        #         brand_name=plan.brand_name,
+        #         folder_id=drive_folder_id, # Use the passed folder ID
+        #         structure_name=blueprint.structure_id,
+        #         language=plan.language
+        #     )
+        #     print(f"[Export] Email #{slot.slot_number} exported to: {doc_result['document_url']} (Folder: {drive_folder_id})")
+        # except Exception as e:
+        #     print(f"[Export] Failed to export doc: {e}")
+
 
     print("\n--- CAMPAIGN EXECUTION FINISHED ---")
     print(tracker.get_summary())

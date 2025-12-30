@@ -74,13 +74,50 @@ class GoogleSheetsExporter:
         """
         Creates a formatted Google Sheet for the campaign plan.
         """
+    def _get_target_month(self, plan_data: Dict[str, Any]) -> str:
+        """Derives the target month from duration or start_date."""
+        try:
+            # 1. Try explicit duration string (e.g. "January 2026")
+            duration = plan_data.get('duration', '')
+            if duration:
+                # Naive check: if it contains a month name
+                for month in ["January", "February", "March", "April", "May", "June", 
+                              "July", "August", "September", "October", "November", "December"]:
+                    if month.lower() in duration.lower():
+                        return month
+            
+            # 2. Try start_date
+            start_date = plan_data.get('start_date')
+            if start_date:
+                # Assuming YYYY-MM-DD
+                dt = datetime.strptime(start_date, '%Y-%m-%d')
+                return dt.strftime('%B')
+                
+        except Exception:
+            pass
+            
+        # Fallback to current month
+        return datetime.now().strftime('%B')
+
+    def export_plan(
+        self,
+        plan_data: Dict[str, Any],
+        folder_id: Optional[str] = None
+    ) -> Dict[str, str]:
+        """
+        Creates a formatted Google Sheet for the campaign plan.
+        """
         try:
             timestamp = datetime.now().strftime('%Y-%m-%d')
             # Handle possible missing keys gracefully
             c_name = plan_data.get('campaign_name', 'Untitled Campaign')
-            start_date = plan_data.get('start_date', timestamp)
+            brand_name = plan_data.get('brand_name', 'Brand')
+            campaign_id = plan_data.get('campaign_id', 'UNKNOWN_ID')
             
-            sheet_title = f"{plan_data.get('brand_name', 'Brand')} - Plan - {c_name} ({timestamp})"
+            target_month = self._get_target_month(plan_data)
+            
+            # FILE NAMING: BRAND-MONTH-CAMPAIGN ID
+            sheet_title = f"{brand_name}-{target_month}-{campaign_id}"
             
             # Create spreadsheet
             spreadsheet = {'properties': {'title': sheet_title}}
@@ -117,6 +154,7 @@ class GoogleSheetsExporter:
         # 1. Prepare Overview Data
         overview_data = [
             ["CAMPAIGN SUMMARY", ""],
+            ["Campaign ID", safe('campaign_id')], # Added ID for re-import
             ["Campaign Name", safe('campaign_name')],
             ["Brand", safe('brand_name')],
             ["Goal", safe('campaign_goal')],
@@ -127,12 +165,13 @@ class GoogleSheetsExporter:
             ["Narrative", safe('overarching_narrative')],
             ["", ""]  # Spacer
         ]
+
         
         # 2. Prepare Emails Data headers
         headers = [
             "Slot #", "Send Date", "Theme", "Purpose", "Intensity",
             "Transformation", "Angle", "Structure", "Persona",
-            "Key Message", "Offer Details", "Placement"
+            "Key Message", "Offer Details", "Placement", "CTA"
         ]
         
         email_rows = []
@@ -150,7 +189,8 @@ class GoogleSheetsExporter:
                 s_get('persona_description'),
                 s_get('key_message'),
                 s_get('offer_details'),
-                s_get('offer_placement')
+                s_get('offer_placement'),
+                s_get('cta_description')
             ]
             email_rows.append(row)
         
