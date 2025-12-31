@@ -1,0 +1,27 @@
+[
+  {
+    "subject": "Transformez les moments de d\u00e9m\u00ealage en moments de bonheur !",
+    "preview": "Profitez de 20% de r\u00e9duction sur notre collection artisanale.",
+    "hero_title": "<b>Offre sp\u00e9ciale 20%</b>",
+    "hero_subtitle": "D\u00e9couvrez notre collection Bois Pr\u00e9cieux avant qu'il ne soit trop tard !",
+    "cta_hero": "Shoppez maintenant",
+    "descriptive_block_title": "<b>L'artisanat au service</b> de votre famille",
+    "descriptive_block_subtitle": "Un bois vietnamien qui fait la diff\u00e9rence.",
+    "descriptive_block_content": "Chaque brosse PopBrush est fabriqu\u00e9e \u00e0 partir de <b>bois vietnamien durable</b>, alliant artisanat et authenticit\u00e9. Transformez le d\u00e9m\u00ealage en un moment de <b>complicit\u00e9 et de douceur</b> avec vos enfants. Nos brosses minimisent la casse des cheveux, rendant chaque brossage <b>indolore</b> et agr\u00e9able. Profitez de cette exp\u00e9rience unique pour cr\u00e9er des souvenirs inoubliables en famille.",
+    "product_block_title": "<b>Des brosses uniques</b> pour des moments pr\u00e9cieux",
+    "product_block_subtitle": "\u00c9levez votre routine capillaire avec le meilleur de l'artisanat.",
+    "products": [
+      "Brosse D\u00e9m\u00ealante",
+      "Brosse de Voyage Pliable",
+      "Accessoires de Soins Capillaires"
+    ],
+    "product_block_content": null,
+    "cta_product": "Obtenez le v\u00f4tre",
+    "full_text_formatted": "\nSUBJECT: Transformez les moments de d\u00e9m\u00ealage en moments de bonheur !\nPREVIEW: Profitez de 20% de r\u00e9duction sur notre collection artisanale.\n\n=== HERO ===\nTitle: <b>Offre sp\u00e9ciale 20%</b>\nSubtitle: D\u00e9couvrez notre collection Bois Pr\u00e9cieux avant qu'il ne soit trop tard !\nCTA: Shoppez maintenant\n\n=== <b>L'artisanat au service</b> de votre famille ===\nUn bois vietnamien qui fait la diff\u00e9rence.\n\nChaque brosse PopBrush est fabriqu\u00e9e \u00e0 partir de <b>bois vietnamien durable</b>, alliant artisanat et authenticit\u00e9. Transformez le d\u00e9m\u00ealage en un moment de <b>complicit\u00e9 et de douceur</b> avec vos enfants. Nos brosses minimisent la casse des cheveux, rendant chaque brossage <b>indolore</b> et agr\u00e9able. Profitez de cette exp\u00e9rience unique pour cr\u00e9er des souvenirs inoubliables en famille.\n\n=== PRODUCT: <b>Des brosses uniques</b> pour des moments pr\u00e9cieux ===\n\u00c9levez votre routine capillaire avec le meilleur de l'artisanat.\n\n- Brosse D\u00e9m\u00ealante\n- Brosse de Voyage Pliable\n- Accessoires de Soins Capillaires\n\nCTA: Obtenez le v\u00f4tre\n",
+    "slot_number": 1,
+    "status": "completed",
+    "content": "\nSUBJECT: Transformez les moments de d\u00e9m\u00ealage en moments de bonheur !\nPREVIEW: Profitez de 20% de r\u00e9duction sur notre collection artisanale.\n\n=== HERO ===\nTitle: <b>Offre sp\u00e9ciale 20%</b>\nSubtitle: D\u00e9couvrez notre collection Bois Pr\u00e9cieux avant qu'il ne soit trop tard !\nCTA: Shoppez maintenant\n\n=== <b>L'artisanat au service</b> de votre famille ===\nUn bois vietnamien qui fait la diff\u00e9rence.\n\nChaque brosse PopBrush est fabriqu\u00e9e \u00e0 partir de <b>bois vietnamien durable</b>, alliant artisanat et authenticit\u00e9. Transformez le d\u00e9m\u00ealage en un moment de <b>complicit\u00e9 et de douceur</b> avec vos enfants. Nos brosses minimisent la casse des cheveux, rendant chaque brossage <b>indolore</b> et agr\u00e9able. Profitez de cette exp\u00e9rience unique pour cr\u00e9er des souvenirs inoubliables en famille.\n\n=== PRODUCT: <b>Des brosses uniques</b> pour des moments pr\u00e9cieux ===\n\u00c9levez votre routine capillaire avec le meilleur de l'artisanat.\n\n- Brosse D\u00e9m\u00ealante\n- Brosse de Voyage Pliable\n- Accessoires de Soins Capillaires\n\nCTA: Obtenez le v\u00f4tre\n",
+    "structure_id": "STRUCT_NARRATIVE_PARAGRAPH",
+    "language": "FR"
+  }
+]

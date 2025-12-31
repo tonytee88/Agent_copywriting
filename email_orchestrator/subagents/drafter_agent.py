@@ -13,7 +13,8 @@ knowledge_reader = KnowledgeReader()
 async def drafter_agent(
     blueprint: EmailBlueprint, 
     brand_bio: BrandBio,
-    revision_feedback: Optional[str] = None
+    revision_feedback: Optional[str] = None,
+    language: str = "French"
 ) -> EmailDraft:
     """
     The Drafter Agent writes the email content based on the Strategist's blueprint.
@@ -44,6 +45,9 @@ async def drafter_agent(
         brand_bio=brand_bio.model_dump_json(indent=2),
         revision_feedback=revision_feedback or "N/A - First draft"
     )
+    
+    # Inject Language Instruction
+    full_prompt += f"\n\nCRITICAL: You MUST write the email in {language}."
     
     # 4. Call Straico API
     client = get_client()

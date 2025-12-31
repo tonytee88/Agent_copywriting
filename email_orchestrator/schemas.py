@@ -22,6 +22,7 @@ class CampaignRequest(BaseModel):
     theme_angle: str
     transformation: Optional[str] = None
     target_audience: Optional[str] = None # Optional override
+    languages: List[str] = ["FR"] # Defaut: FR
 
 # --- Strategist Output / Drafter Input ---
 
@@ -182,8 +183,10 @@ class CampaignPlan(BaseModel):
     # Metadata
     created_at: str
     status: Literal["draft", "approved", "in_progress", "completed"] = "draft"
-    language: str = "English"
+    language: str = "English" # Deprecated/Reference
+    languages: List[str] = ["FR"] # Default FR
     sheet_url: Optional[str] = None # Link to the Google Sheet for this plan
+    drive_folder_id: Optional[str] = None # Folder where assets are stored
 
 # --- Verification Schemas ---
 

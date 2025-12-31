@@ -23,7 +23,8 @@ async def brainstorm_transformations(
     campaign_goal: str,
     product: str,
     purpose: str,
-    structure: str
+    structure: str,
+    language: str = "FR"
 ) -> List[Dict]:
     """
     Agent A: Generates 3 transformation options.
@@ -44,6 +45,9 @@ async def brainstorm_transformations(
         catalog_sample=catalog_sample
     )
     
+    # Appending language instruction
+    full_prompt += f"\n\nTarget Language: {language}\nIMPORTANT: Generate all transformation options and rationales in {language}."
+    
     client = get_client()
     try:
         response = await client.generate_text(full_prompt, model=STRAICO_MODEL)
@@ -58,7 +62,8 @@ async def brainstorm_transformations(
 async def select_best_transformation(
     brand_bio: BrandBio,
     campaign_goal: str,
-    options: List[Dict]
+    options: List[Dict],
+    language: str = "FR"
 ) -> Dict:
     """
     Agent B: Selects the best transformation.
@@ -71,6 +76,9 @@ async def select_best_transformation(
         campaign_goal=campaign_goal,
         options_json=json.dumps(options, indent=2)
     )
+    
+    # Appending language instruction
+    full_prompt += f"\n\nTarget Language: {language}\nIMPORTANT: The 'final_refined_transformation' and 'rationale' MUST be in {language}."
     
     client = get_client()
     try:
@@ -91,6 +99,9 @@ async def optimize_plan_transformations(
     """
     print(f"\n[Transformation Optimizer] Refining transformations for {plan.total_emails} emails...")
     
+    target_lang = plan.languages[0] if plan.languages else "FR"
+    print(f"[Optimization] Target Language detected: {target_lang}")
+    
     for slot in plan.email_slots:
         print(f" - [Slot {slot.slot_number}] Brainstorming...")
         
@@ -100,7 +111,8 @@ async def optimize_plan_transformations(
             campaign_goal=plan.campaign_goal,
             product=slot.offer_details or slot.key_message or "General Brand Products",
             purpose=slot.email_purpose,
-            structure=slot.structure_id
+            structure=slot.structure_id,
+            language=target_lang
         )
         
         if not options:
@@ -109,7 +121,7 @@ async def optimize_plan_transformations(
             
         # 2. Judge
         print(f"   - [Slot {slot.slot_number}] Judging {len(options)} options...")
-        verdict = await select_best_transformation(brand_bio, plan.campaign_goal, options)
+        verdict = await select_best_transformation(brand_bio, plan.campaign_goal, options, language=target_lang)
         
         if verdict and verdict.get("final_refined_transformation"):
             # 3. Apply

@@ -1,6 +1,6 @@
 import json
 from datetime import datetime
-from typing import Dict, Any, Optional
+from typing import Dict, Any, Optional, List
 from pydantic import BaseModel, Field
 
 from email_orchestrator.tools.straico_tool import StraicoAPIClient
@@ -9,9 +9,11 @@ class CampaignRequest(BaseModel):
     brand_name: str = Field(description="Name of the brand")
     campaign_goal: str = Field(description="Goal or theme of the campaign")
     duration: str = Field(description="Timeframe (e.g., 'October', 'Next Month', 'Jan 1 to Jan 15')")
+    start_date: Optional[str] = Field(default=None, description="Specific start date if mentioned (YYYY-MM-DD or readable string)")
     total_emails: int = Field(default=3, description="Number of emails")
     promotional_ratio: float = Field(default=0.4, description="Ratio of promotional emails (0.0 to 1.0)")
-    notes: Optional[str] = Field(default=None, description="Any additional context, constraints, or specific instructions found in the request")
+    languages: List[str] = Field(default=["FR"], description="List of target languages (e.g. ['FR', 'EN'])")
+    notes: Optional[str] = Field(default=None, description="Any additional context, constraints, or instruction")
 
 async def parse_campaign_request(user_input: str) -> CampaignRequest:
     """
@@ -28,9 +30,10 @@ async def parse_campaign_request(user_input: str) -> CampaignRequest:
     - brand_name: (Required) Guess if implied or explicit.
     - campaign_goal: (Required) e.g., "Black Friday", "Welcome Series".
     - duration: (Required) e.g., "November", "Next Month", "Q4". Default to "Next Month" if unclear.
-    - total_emails: (Integer) Default to 3 if not specified.
+    - start_date: (Optional) If user specifies a start date (e.g. "starting Jan 7th"), extract it here.
+    - total_emails: (Integer) Look for explicit numbers (e.g. "1 email", "3 emails", "5-email sequence"). Default to 3 ONLY if strictly not specified.
     - promotional_ratio: (Float 0-1) Default to 0.4.
-    - notes: (String) Catch-all for ANY other context, constraints, or instructions that don't fit above (e.g. "Skip Dec 25th", "Focus on bundles").
+    - notes: (String) Catch-all for ANY other context, constraints, or instruction.
     
     USER INPUT: "{user_input}"
     
@@ -39,10 +42,19 @@ async def parse_campaign_request(user_input: str) -> CampaignRequest:
         "brand_name": "...",
         "campaign_goal": "...",
         "duration": "...",
+        "start_date": "...", 
         "total_emails": 3,
         "promotional_ratio": 0.4,
+        "languages": ["FR"],
         "notes": "..."
     }}
+
+    Language Rules:
+    - Default to ["FR"] if not specified.
+    - If user says "in English" or "en Anglais", return ["EN"].
+    - If user says "in French" or "en FR" or "en Français", return ["FR"].
+    - If user says "French and English" or "FR + EN", return ["FR", "EN"].
+    - If user says "English and French", return ["FR", "EN"] order is always FR then EN unless specifically mapped otherwise.
     """
     
     try:

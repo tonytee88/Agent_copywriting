@@ -8,7 +8,7 @@ from email_orchestrator.schemas import (
     BlockingIssue, OptimizationOption, TopImprovement
 )
 from email_orchestrator.tools.brand_scraper_tool import analyze_brand
-from email_orchestrator.subagents.campaign_planner_agent import campaign_planner_agent, revise_campaign_plan
+# from email_orchestrator.subagents.campaign_planner_agent import campaign_planner_agent, revise_campaign_plan
 from email_orchestrator.subagents.campaign_plan_verifier_agent import campaign_plan_verifier_agent
 from email_orchestrator.subagents.strategist_agent import strategist_agent
 from email_orchestrator.subagents.drafter_agent import drafter_agent
@@ -37,7 +37,9 @@ async def plan_campaign(
     duration: str,
     total_emails: int,
     promotional_ratio: float = 0.4,
+    languages: Optional[list] = ["FR"],
     notes: Optional[str] = None,
+    start_date: Optional[str] = None,
     drive_folder_id: Optional[str] = POPBRUSH_FOLDER_ID
 ) -> str:
     """
@@ -52,22 +54,31 @@ async def plan_campaign(
     brand_bio = BrandBio(**json.loads(analysis_result))
     
     # 2. Generate Initial Plan
-    plan = await campaign_planner_agent(
-        brand_name=brand_name,
+    # Instantiate Session for this run
+    from email_orchestrator.subagents.campaign_planner_agent import CampaignPlanningSession
+    planner_session = CampaignPlanningSession(brand_name)
+    
+    plan = await planner_session.generate_initial_plan(
         campaign_goal=campaign_goal,
         total_emails=total_emails,
         duration=duration,
         brand_bio=brand_bio,
+        start_date=start_date,
         promotional_ratio=promotional_ratio,
+        languages=languages,
         notes=notes
     )
-
+    
     # 2. [NEW] Strategic Optimization Layer: Refine Transformations
     plan = await optimize_plan_transformations(plan, brand_bio)
     
     # Ensure brand_id is set (Critical for Multi-Brand Isolation)
     if not plan.brand_id and brand_bio.brand_id:
         plan.brand_id = brand_bio.brand_id
+    
+    # Save folder ID to plan for Phase 2 persistence
+    plan.drive_folder_id = drive_folder_id
+    plan.languages = languages # Ensure persistent languages
     
     # 3. Verification Loop (Judge + Repair)
     max_retries = 2 # Limit to 1 Revision Pass
@@ -77,20 +88,9 @@ async def plan_campaign(
         print(f"\n[Plan Verification] Attempt {attempt+1}/{max_retries}")
         
         # --- LAYER 1: Deterministic QA ---
-        # Fetch history for duplication checks
-        # Critical: Use brand_id for isolation if available.
-        # HistoryManager.get_recent_campaigns prioritizes brand_id lookup.
-        
         history_identifier = brand_bio.brand_id if getattr(brand_bio, 'brand_id', None) else brand_name
-        
-        # NOTE: If history_identifier is a name (legacy), duplicate names across brands could be an issue.
-        # But for now, we trust brand_id is set for new brands.
-        
         past_campaigns = history_manager.get_recent_campaigns(history_identifier, limit=10) # Get enough history
-        
         print(f"[Plan QA] Loaded {len(past_campaigns)} history items for brand '{history_identifier}'")
-        
-        # Convert Pydantic to dict for verifier
         past_campaigns_dicts = [entry.model_dump() for entry in past_campaigns]
 
         det_issues = det_verifier.verify_plan(plan, past_campaigns_dicts)
@@ -98,8 +98,6 @@ async def plan_campaign(
         if det_issues:
             print(f"[Plan Verification] Layer 1 (Deterministic) Failed. Issues: {len(det_issues)}")
             # Skip Layer 2, enforce fixes immediately
-            
-            # Map deterministic issues to TopImprovement for consistency
             top_improvements = [
                 TopImprovement(
                     rank=i+1,
@@ -132,8 +130,10 @@ async def plan_campaign(
             
             # Call Repair Logic
             if attempt < max_retries - 1:
-                print("[Plan Verification] Requesting ONE-TIME Revision based on QA feedback...")
-                plan = await revise_campaign_plan(plan, verification, brand_bio)
+                print("[Plan Verification] Requesting ONE-TIME Revision based on QA feedback via SESSION...")
+                # Use session for revision to maintain context
+                plan = await planner_session.process_qa_feedback(plan, verification)
+                plan.languages = languages # Re-assert languages after revision
                 plan.status = "approved" # Forced approved as per user request
                 print("[Plan Verification] Revised plan created and marked as approved.")
                 break
@@ -208,6 +208,8 @@ async def generate_email_campaign(
     results = []
     
     # 2. Iterate Slots
+    target_languages = plan.languages or ["FR"]
+
     for slot in plan.email_slots:
         # FILTER: If slot_number is provided, skip others
         if slot_number is not None and slot.slot_number != slot_number:
@@ -215,109 +217,118 @@ async def generate_email_campaign(
             
         print(f"\n>>> PROCESSING EMAIL #{slot.slot_number} ({slot.email_purpose}) <<<")
         
-        # A. Strategist (Create Blueprint using Slot Directives)
-        request = CampaignRequest(
-            brand_name=plan.brand_name,
-            offer=slot.offer_details or "General Brand Awareness",
-            theme_angle=slot.theme,
-            target_audience=brand_bio.target_audience
-        )
-        
-        # Pass folder selection context? Not needed for Strategist.
-        blueprint = await strategist_agent(request, brand_bio, campaign_context=slot)
-        
-        # B. Drafter Wrapper Loop (Judge + Repair)
-        final_draft = None
-        revision_feedback = None
-        
-        # Determine history for this brand/ isolation
-        history_identifier = brand_bio.brand_id if getattr(brand_bio, 'brand_id', None) else plan.brand_name
-        past_emails = history_manager.get_recent_campaigns(history_identifier, limit=10)
-        past_emails_dicts = [entry.model_dump() for entry in past_emails]
-
-        # 1. GENERATION + DETERMINISTIC LOOP (Strict)
-        max_det_retries = 5
-        det_attempt = 0
-        while det_attempt < max_det_retries:
-            draft = await drafter_agent(blueprint, brand_bio, revision_feedback)
-            det_issues = det_verifier.verify_draft(draft, history=past_emails_dicts, campaign_id=plan.campaign_id)
+        for lang in target_languages:
+            print(f"   > [Language: {lang}]")
             
-            if not det_issues:
-                print(f"[Email #{slot.slot_number}] Layer 1 (Deterministic) Passed.")
-                break
+            # A. Strategist (Create Blueprint using Slot Directives)
+            request = CampaignRequest(
+                brand_name=plan.brand_name,
+                offer=slot.offer_details or "General Brand Awareness",
+                theme_angle=slot.theme,
+                target_audience=brand_bio.target_audience
+            )
+            
+            # Pass folder selection context? Not needed for Strategist.
+            blueprint = await strategist_agent(request, brand_bio, campaign_context=slot, language=lang)
+            
+            # B. Drafter Wrapper Loop (Judge + Repair)
+            final_draft = None
+            revision_feedback = None
+            
+            # Determine history for this brand/ isolation
+            history_identifier = brand_bio.brand_id if getattr(brand_bio, 'brand_id', None) else plan.brand_name
+            past_emails = history_manager.get_recent_campaigns(history_identifier, limit=10)
+            past_emails_dicts = [entry.model_dump() for entry in past_emails]
+    
+            # 1. GENERATION + DETERMINISTIC LOOP (Strict)
+            max_det_retries = 5
+            det_attempt = 0
+            while det_attempt < max_det_retries:
+                draft = await drafter_agent(blueprint, brand_bio, revision_feedback, language=lang)
+                det_issues = det_verifier.verify_draft(draft, history=past_emails_dicts, campaign_id=plan.campaign_id)
                 
-            det_attempt += 1
-            print(f"[Email #{slot.slot_number}] Layer 1 FAILED ({len(det_issues)} issues). Retry {det_attempt}/{max_det_retries}...")
+                if not det_issues:
+                    print(f"[Email #{slot.slot_number}-{lang}] Layer 1 (Deterministic) Passed.")
+                    break
+                    
+                det_attempt += 1
+                print(f"[Email #{slot.slot_number}-{lang}] Layer 1 FAILED ({len(det_issues)} issues). Retry {det_attempt}/{max_det_retries}...")
+                
+                # Construct feedback ONLY for deterministic issues
+                feedback_msg = "STRICT RULES VIOLATION. You MUST fix these before we can proceed:\n"
+                feedback_msg += "\n".join([f"- [{i.field}] {i.problem} (Reason: {i.rationale})" for i in det_issues])
+                
+                # LOGGING for diagnosis (User Request)
+                print(f"[Email #{slot.slot_number}-{lang}] DET FEEDBACK SENT TO DRAFTER:\n{feedback_msg}")
+                
+                revision_feedback = feedback_msg
+    
+            if det_attempt >= max_det_retries:
+                print(f"[Email #{slot.slot_number}-{lang}] CRITICAL: Failed to fix deterministic issues after {max_det_retries} attempts.")
+                # We still proceed to LLM QA but it will likely fail too. Or we could raise/skip.
+                # For now, let's proceed with the best we have.
+    
+            # 2. LLM QA LOOP (One-Pass)
+            print(f"[Email #{slot.slot_number}-{lang}] Proceeding to LLM QA...")
+            # Todo: Verifier should ideally know language too, but English feedback is usually fine for general structure checks.
+            # Assuming Verifier is Language-Agnostic or defaults to EN analysis which works ok for structure.
+            # Ideally Verifier should verify IN that language.
+            # For now, standard verifier is used.
+            verification = await verifier_agent(draft, blueprint, plan.brand_name)
             
-            # Construct feedback ONLY for deterministic issues
-            feedback_msg = "STRICT RULES VIOLATION. You MUST fix these before we can proceed:\n"
-            feedback_msg += "\n".join([f"- [{i.field}] {i.problem} (Reason: {i.rationale})" for i in det_issues])
+            if verification.approved:
+                print(f"[Email #{slot.slot_number}-{lang}] APPROVED! Score: {verification.score}")
+                final_draft = draft
+            else:
+                print(f"[Email #{slot.slot_number}-{lang}] REJECTED. Requesting ONE-TIME Strategic Revision...")
+                
+                # Construct detailed feedback for revision
+                feedback_lines = [f"QA VERDICT: {verification.feedback_for_drafter}"]
+                for imp in verification.top_improvements:
+                    feedback_lines.append(f"- [Rank {imp.rank}] [{imp.category}] {imp.problem}")
+                    feedback_lines.append(f"  Fix Options: {json.dumps(imp.options)}")
+    
+                revision_feedback = "\n".join(feedback_lines)
+                
+                # One-time revision
+                final_draft = await drafter_agent(blueprint, brand_bio, revision_feedback, language=lang)
+                
+                # Final Deterministic Check on revised draft (Safety)
+                final_det = det_verifier.verify_draft(final_draft, history=past_emails_dicts, campaign_id=plan.campaign_id)
+                if final_det:
+                    print(f"[Email #{slot.slot_number}-{lang}] Warning: Revised draft still has {len(final_det)} deterministic issues.")
+                
+                print(f"[Email #{slot.slot_number}-{lang}] Revision complete. Auto-approving for export.")
             
-            # LOGGING for diagnosis (User Request)
-            print(f"[Email #{slot.slot_number}] DET FEEDBACK SENT TO DRAFTER:\n{feedback_msg}")
+            # E. Save Metadata (Log History)
+            log_entry = CampaignLogEntry(
+                campaign_id=campaign_id,
+                timestamp=datetime.now().isoformat(),
+                brand_id=plan.brand_id, # Added for multi-brand isolation
+                brand_name=plan.brand_name,
+                transformation_description=blueprint.transformation_description,
+                transformation_id=blueprint.transformation_id,
+                structure_id=blueprint.structure_id,
+                angle_description=blueprint.angle_description,
+                angle_id=blueprint.angle_id,
+                cta_description=blueprint.cta_description,
+                cta_style_id=blueprint.cta_style_id,
+                offer_placement_used=blueprint.offer_placement,
+                blueprint=blueprint,
+                final_draft=final_draft
+            )
+            history_manager.log_campaign(log_entry)
             
-            revision_feedback = feedback_msg
-
-        if det_attempt >= max_det_retries:
-            print(f"[Email #{slot.slot_number}] CRITICAL: Failed to fix deterministic issues after {max_det_retries} attempts.")
-            # We still proceed to LLM QA but it will likely fail too. Or we could raise/skip.
-            # For now, let's proceed with the best we have.
-
-        # 2. LLM QA LOOP (One-Pass)
-        print(f"[Email #{slot.slot_number}] Proceeding to LLM QA...")
-        verification = await verifier_agent(draft, blueprint, plan.brand_name)
-        
-        if verification.approved:
-            print(f"[Email #{slot.slot_number}] APPROVED! Score: {verification.score}")
-            final_draft = draft
-        else:
-            print(f"[Email #{slot.slot_number}] REJECTED. Requesting ONE-TIME Strategic Revision...")
-            
-            # Construct detailed feedback for revision
-            feedback_lines = [f"QA VERDICT: {verification.feedback_for_drafter}"]
-            for imp in verification.top_improvements:
-                feedback_lines.append(f"- [Rank {imp.rank}] [{imp.category}] {imp.problem}")
-                feedback_lines.append(f"  Fix Options: {json.dumps(imp.options)}")
-
-            revision_feedback = "\n".join(feedback_lines)
-            
-            # One-time revision
-            final_draft = await drafter_agent(blueprint, brand_bio, revision_feedback)
-            
-            # Final Deterministic Check on revised draft (Safety)
-            final_det = det_verifier.verify_draft(final_draft, history=past_emails_dicts, campaign_id=plan.campaign_id)
-            if final_det:
-                print(f"[Email #{slot.slot_number}] Warning: Revised draft still has {len(final_det)} deterministic issues.")
-            
-            print(f"[Email #{slot.slot_number}] Revision complete. Auto-approving for export.")
-        
-        # E. Save Metadata (Log History)
-        log_entry = CampaignLogEntry(
-            campaign_id=campaign_id,
-            timestamp=datetime.now().isoformat(),
-            brand_id=plan.brand_id, # Added for multi-brand isolation
-            brand_name=plan.brand_name,
-            transformation_description=blueprint.transformation_description,
-            transformation_id=blueprint.transformation_id,
-            structure_id=blueprint.structure_id,
-            angle_description=blueprint.angle_description,
-            angle_id=blueprint.angle_id,
-            cta_description=blueprint.cta_description,
-            cta_style_id=blueprint.cta_style_id,
-            offer_placement_used=blueprint.offer_placement,
-            blueprint=blueprint,
-            final_draft=final_draft
-        )
-        history_manager.log_campaign(log_entry)
-        
-        results.append({
-            "slot_number": slot.slot_number, # Standardized key
-            "subject": final_draft.subject,
-            "status": "completed",
-            "content": final_draft.full_text_formatted, # Plain text optimized
-            "html_content": getattr(final_draft, 'html_content', None), # If available
-            "body": final_draft.descriptive_block_content # Fallback
-        })
+            # Serialize full draft for compiler
+            draft_data = final_draft.dict()
+            draft_data.update({
+                "slot_number": slot.slot_number,
+                "status": "completed",
+                "content": final_draft.full_text_formatted,
+                "structure_id": blueprint.structure_id,
+                "language": lang 
+            })
+            results.append(draft_data)
         
         # F. Export to Google Docs (LEGACY - Disabled)
         # try:

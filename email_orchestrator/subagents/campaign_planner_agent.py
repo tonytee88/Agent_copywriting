@@ -1,100 +1,125 @@
+
 """
-Campaign Planner Agent - ADK/Gemini Implementation
-Uses Catalog Injection for strategic content selection.
+Campaign Planner Agent - Session-Based Implementation
+Uses persistent InMemoryRunner session to maintain context across revisions.
 """
 
 import json
 from pathlib import Path
 from datetime import datetime
-from typing import List, Dict, Optional
+from typing import List, Dict, Optional, Any
+import traceback
 
 from google.adk.agents.llm_agent import Agent
+from google.adk.runners import InMemoryRunner
+from google.genai import types as genai_types
+
 from email_orchestrator.schemas import BrandBio, CampaignPlan
 from email_orchestrator.tools.timing_calculator import calculate_send_schedule, parse_duration_to_start_date
 from email_orchestrator.tools.history_manager import HistoryManager
 from email_orchestrator.tools.catalog_manager import get_catalog_manager
 from email_orchestrator.config import ADK_MODEL
 
-# Initialize history manager
+# Initialize managers
 history_manager = HistoryManager()
+catalog_manager = get_catalog_manager()
 
 def load_campaign_planner_instruction() -> str:
     """Load the campaign planner prompt template."""
     prompt_path = Path(__file__).parent.parent / "prompts" / "campaign_planner" / "v1.txt"
     return prompt_path.read_text(encoding="utf-8")
 
-# Create the Campaign Planner ADK Agent (No tools needed with Catalog Injection)
+# Create the ADK Agent definition
 campaign_planner_adk_agent = Agent(
     model=ADK_MODEL,
     name="campaign_planner",
-    description="Strategic multi-email campaign planner using Catalog Injection",
+    description="Strategic multi-email campaign planner with session memory.",
     instruction=load_campaign_planner_instruction(),
-    tools=[] # No tools needed, catalogs are provided in context
+    tools=[] # Catalogs provided in context
 )
 
-async def campaign_planner_agent(
-    brand_name: str,
-    campaign_goal: str,
-    total_emails: int,
-    duration: str,
-    brand_bio: BrandBio,
-    promotional_ratio: float = 0.4,
-    notes: Optional[str] = None
-) -> CampaignPlan:
+class CampaignPlanningSession:
     """
-    Plans a multi-email campaign using ADK agent with Catalog Injection.
+    Manages a persistent planning session.
+    Keeps the conversation history (Request -> Plan -> Feedback -> Revision).
     """
-    print(f"[Campaign Planner] Planning {total_emails}-email campaign for {brand_name}...")
     
-    # 0. Load Catalogs (Structures Only)
-    # ... (existing code omitted but implied by function body preservation unless I rewrite logic)
-    # actually replace_file_content replaces the block. 
-    # To be safe and minimal, I will target the function signature and the prompt construction separately or together if close.
-    # They are far apart (lines 35-42 vs 72-99). Multi-replace is better or two replaces.
-    # I will use multi-replace.
-    pass
+    def __init__(self, brand_name: str):
+        self.brand_name = brand_name
+        self.runner = InMemoryRunner(agent=campaign_planner_adk_agent, app_name="campaign_planner")
+        self.session = None # Created on first run
+        self.user_id = f"planner_user_{brand_name}"
 
-# Actually I cannot use MultiReplace tool yet as per rules I should use replace_file_content if I can.
-# But I need to change signature AND prompt.
-# I will use replace_file_content for signature first.
+    async def _ensure_session(self):
+        if not self.session:
+            self.session = await self.runner.session_service.create_session(
+                app_name="campaign_planner",
+                user_id=self.user_id
+            )
 
-    """
-    Plans a multi-email campaign using ADK agent with Catalog Injection.
-    """
-    print(f"[Campaign Planner] Planning {total_emails}-email campaign for {brand_name}...")
-    
-    # 0. Load Catalogs (Structures Only)
-    cm = get_catalog_manager()
-    catalogs_data = {
-        "structures": cm.get_global_catalog("structures"),
-    }
-    catalogs_str = json.dumps(catalogs_data, indent=2)
-    
-    # 1. Calculate send schedule
-    start_date = parse_duration_to_start_date(duration)
-    send_schedule = calculate_send_schedule(start_date, total_emails, duration)
-    schedule_str = json.dumps(send_schedule, indent=2)
-    
-    # 2. Get historic campaigns
-    # Use brand_id for isolation if available
-    history_identifier = brand_bio.brand_id if getattr(brand_bio, 'brand_id', None) else brand_name
-    recent_history = history_manager.get_recent_campaigns(history_identifier, limit=5)
-    history_summary = _format_history_for_prompt(recent_history)
-    #print(f"[Campaign Planner] Recent history summary:\n{history_summary}")
-    
-    # 3. Prepare prompt variables
-    promotional_percentage = int(promotional_ratio * 100)
-    educational_percentage = 100 - promotional_percentage
-    
-    # 4. Build the user message
-    user_message = f"""
+    async def generate_initial_plan(
+        self,
+        campaign_goal: str,
+        total_emails: int,
+        duration: str,
+        brand_bio: BrandBio,
+        start_date: Optional[str] = None,
+        promotional_ratio: float = 0.4,
+        languages: List[str] = ["FR"],
+        notes: Optional[str] = None
+    ) -> CampaignPlan:
+        """
+        Generates the initial plan based on user requirements.
+        """
+        await self._ensure_session()
+        
+        print(f"[PlanningSession] Starting new session for {self.brand_name}...")
+        
+        # 1. Prepare Content
+        # Load Catalogs
+        catalogs_data = {
+            "structures": catalog_manager.get_global_catalog("structures"),
+        }
+        catalogs_str = json.dumps(catalogs_data, indent=2)
+        
+        # Calculate Schedule
+        # Use explicit start_date if provided, else parse from duration
+        if start_date:
+            from email_orchestrator.tools.timing_calculator import parse_readable_date
+            # Try to parse readable date if it's not ISO
+            parsed_start = parse_readable_date(start_date)
+            if not parsed_start:
+                 # Fallback to duration parser if explicit parse fails (shouldn't happen with robust ISO return from LLM)
+                 parsed_start = parse_duration_to_start_date(duration)
+        else:
+            parsed_start = parse_duration_to_start_date(duration)
+            
+        send_schedule = calculate_send_schedule(parsed_start, total_emails, duration)
+        schedule_str = json.dumps(send_schedule, indent=2)
+        
+        # Get History
+        history_identifier = brand_bio.brand_id if getattr(brand_bio, 'brand_id', None) else self.brand_name
+        recent_history = history_manager.get_recent_campaigns(history_identifier, limit=5)
+        history_summary = _format_history_for_prompt(recent_history)
+        
+        # Ratios
+        promotional_percentage = int(promotional_ratio * 100)
+        educational_percentage = 100 - promotional_percentage
+        
+        # Target Language
+        target_lang = languages[0] if languages else "FR"
+        
+        # 2. Build Prompt
+        prompt = f"""
 Please create a campaign plan with the following requirements:
 
-Brand: {brand_name}
+Brand: {self.brand_name}
 Goal: {campaign_goal}
 Total Emails: {total_emails}
 Duration: {duration}
 Promotional Ratio: {promotional_percentage}% promotional, {educational_percentage}% educational
+Target Language: {target_lang}
+IMPORTANT: You MUST write all descriptive fields (Rationale, Angle, Persona, Transformation, CTA Description) in the Target Language. Structure IDs must remain in English as per Catalog.
 
 Send Schedule (pre-calculated):
 {schedule_str}
@@ -113,140 +138,81 @@ ADDITIONAL CONTEXT/CONSTRAINTS (Adhere strictly if provided):
 {notes if notes else "None"}
 
 Requirements:
-1. Generate CREATIVE, BRAND-SPECIFIC descriptions for Angle, Persona, Transformation, and CTA (Free Text).
+1. Generate CREATIVE, BRAND-SPECIFIC descriptions.
 2. Select a valid STRUCTURE ID from the [CATALOG] for every email.
-3. Ensure variety (avoid semantic repetition).
-4. Ensure logical flow and balance.
+3. Ensure variety.
+4. Return ONLY valid JSON matching the CampaignPlan schema.
 """
-    
-    # 5. Call the ADK agent
-    try:
-        from google.adk.runners import InMemoryRunner
-        from google.genai import types as genai_types
+        # 3. Send to Agent
+        response_text = await self._send_message(prompt)
         
-        runner = InMemoryRunner(agent=campaign_planner_adk_agent, app_name="campaign_planner")
-        session = await runner.session_service.create_session(
-            app_name="campaign_planner",
-            user_id="campaign_planner_user"
-        )
+        # 4. Parse & Return
+        return self._parse_to_plan(response_text)
+
+    async def process_qa_feedback(
+        self,
+        original_plan: CampaignPlan,
+        verification_feedback: Any
+    ) -> CampaignPlan:
+        """
+        Sends QA feedback to the EXISTING session to request a revision.
+        The agent remembers the original constraints from the first message.
+        """
+        print(f"[PlanningSession] Sending QA feedback to session...")
         
+        # Re-load catalogs in case context is lost (though session should keep it, it's safer to provide reference)
+        # Actually, for a session, we don't strictly need to dump the whole catalog again if the context window allows.
+        # But to be safe, we'll focus on the feedback.
+        
+        feedback_str = chr(10).join(f"- [Rank {issue.rank}] [{issue.category}] {issue.problem}\n  Rationale: {issue.why_it_matters}\n  Options: {json.dumps(issue.options)}" for issue in verification_feedback.top_improvements)
+        
+        prompt = f"""
+The plan you generated has been reviewed by QA.
+VERDICT: {verification_feedback.final_verdict}
+
+STRATEGIC FEEDBACK (FIX THESE ISSUES):
+{feedback_str}
+
+REVISION RULES:
+1. Fix all issues above.
+2. CRITICAL: You must STILL adhere to the ORIGINAL DATES, GOAL, and CONSTRAINTS provided in the first message. Do NOT change the start date or duration unless explicitly asked.
+3. Keep the same number of emails ({original_plan.total_emails}).
+4. Return the full updated CampaignPlan JSON.
+"""
+        response_text = await self._send_message(prompt)
+        return self._parse_to_plan(response_text)
+
+    async def _send_message(self, text: str) -> str:
+        """Helper to send message to runner and collect text response."""
         user_content = genai_types.Content(
             role="user",
-            parts=[genai_types.Part(text=user_message)]
+            parts=[genai_types.Part(text=text)]
         )
         
         result_text = ""
-        async for event in runner.run_async(
-            user_id="campaign_planner_user",
-            session_id=session.id,
+        async for event in self.runner.run_async(
+            user_id=self.user_id,
+            session_id=self.session.id,
             new_message=user_content
         ):
             if event.content and event.content.parts:
                 for part in event.content.parts:
                     if getattr(part, "text", None):
                         result_text += part.text
+        return result_text
+
+    def _parse_to_plan(self, text: str) -> CampaignPlan:
+        """Helper to clean JSON and parse Pydantic model."""
+        cleaned = _clean_json_string(text)
+        data = json.loads(cleaned)
         
-        cleaned_json = _clean_json_string(result_text)
-        data = json.loads(cleaned_json)
-        
-        # Ensure created_at is present
+        # Ensure created_at
         if "created_at" not in data:
             data["created_at"] = datetime.now().isoformat()
             
-        plan = CampaignPlan(**data)
-        print(f"[Campaign Planner] ✓ Plan created: {plan.campaign_name} ({plan.total_emails} emails)")
-        return plan
-        
-    except Exception as e:
-        print(f"[Campaign Planner] ERROR: {e}")
-        import traceback
-        print(traceback.format_exc())
-        raise e
+        return CampaignPlan(**data)
 
-async def revise_campaign_plan(
-    original_plan,
-    verification_feedback,
-    brand_bio: BrandBio
-) -> "CampaignPlan":
-    """
-    Revises a campaign plan based on verification feedback.
-    """
-    print(f"[Campaign Planner Revision] Revising plan based on feedback...")
-    
-    # Re-load catalogs for revision context (Structures Only)
-    cm = get_catalog_manager()
-    catalogs_data = {
-        "structures": cm.get_global_catalog("structures"),
-    }
-    catalogs_str = json.dumps(catalogs_data, indent=2)
-    
-    revision_message = f"""
-I need you to revise the following campaign plan based on verification feedback.
-
-ORIGINAL PLAN:
-{original_plan.model_dump_json(indent=2)}
-
-=== CATALOG (STRUCTURES ONLY) ===
-{catalogs_str}
-=================================
-
-VERIFICATION FEEDBACK (STRICT MODE):
-- Approved: {verification_feedback.approved}
-- Verdict: {verification_feedback.final_verdict}
-
-STRATEGIC TOP IMPROVEMENTS (FIX THESE - RANKED BY IMPACT):
-{chr(10).join(f"- [Rank {issue.rank}] [{issue.category}] {issue.problem}\n  Rationale: {issue.why_it_matters}\n  Options: {json.dumps(issue.options)}" for issue in verification_feedback.top_improvements)}
-
-REVISION RULES:
-1. Fix ALL blocking issues using the provided Optimization Options as guidance.
-2. Maintain exactly {original_plan.total_emails} emails.
-3. Ensure STRUCTURE_ID is always valid from the catalog.
-4. Return ONLY valid JSON matching the CampaignPlan schema.
-5. Allowed intensity_level: "hard_sell", "medium", "soft".
-6. Allowed email_purpose: "promotional", "educational", "storytelling", "nurture", "conversion".
-7. CRITICAL: Maintain exactly {original_plan.total_emails} emails (from original plan). Do NOT add or remove slots.
-8. CRITICAL: Ensure every email slot has a valid `structure_id` field. If you are not changing the structure, YOU MUST COPY THE ORIGINAL `structure_id`.
-9. FINAL CHECK: Does every object in `email_slots` have a `structure_id`? If not, the plan will fail.
-"""
-    
-    try:
-        from google.adk.runners import InMemoryRunner
-        from google.genai import types as genai_types
-        
-        runner = InMemoryRunner(agent=campaign_planner_adk_agent, app_name="campaign_planner_revision")
-        session = await runner.session_service.create_session(
-            app_name="campaign_planner_revision",
-            user_id="campaign_planner_user"
-        )
-        
-        user_content = genai_types.Content(
-            role="user",
-            parts=[genai_types.Part(text=revision_message)]
-        )
-        
-        result_text = ""
-        async for event in runner.run_async(
-            user_id="campaign_planner_user",
-            session_id=session.id,
-            new_message=user_content
-        ):
-            if event.content and event.content.parts:
-                for part in event.content.parts:
-                    if getattr(part, "text", None):
-                        result_text += part.text
-        
-        cleaned_json = _clean_json_string(result_text)
-        data = json.loads(cleaned_json)
-        revised_plan = CampaignPlan(**data)
-        
-        print(f"[Campaign Planner Revision] ✓ Revised plan created")
-        return revised_plan
-        
-    except Exception as e:
-        print(f"[Campaign Planner Revision] ERROR: {e}")
-        import traceback
-        print(traceback.format_exc())
-        raise e
+# --- Helpers ---
 
 def _clean_json_string(raw_text: str) -> str:
     """Aggressive JSON cleanup"""
@@ -263,13 +229,12 @@ def _clean_json_string(raw_text: str) -> str:
     return text
 
 def _format_history_for_prompt(history) -> str:
-    """Format history for campaign planner prompt (Descriptions)."""
+    """Format history for campaign planner prompt."""
     if not history:
         return "No previous emails found."
     
     summary_lines = []
     for i, entry in enumerate(history):
-        # Extract Persona from blueprint if available (now description)
         persona = "N/A"
         if entry.blueprint and hasattr(entry.blueprint, 'persona_description'):
             persona = entry.blueprint.persona_description
@@ -278,9 +243,7 @@ def _format_history_for_prompt(history) -> str:
             f"Email #{i+1} ({entry.timestamp[:10]}): "
             f"Trans='{entry.transformation_description}', "
             f"Struct='{entry.structure_id}', "
-            f"Angle='{entry.angle_description}', "
-            f"CTA='{entry.cta_description or 'N/A'}', "
-            f"Persona='{persona}'"
+            f"Angle='{entry.angle_description}'"
         )
         summary_lines.append(line)
     

@@ -22,7 +22,9 @@ async def run_plan(args):
     print("[Orchestrator] Parsing request...")
     
     req = await parse_campaign_request(user_prompt)
-    print(f"[Parser] Detected: Brand='{req.brand_name}', Goal='{req.campaign_goal}', Count={req.total_emails}")
+    print(f"[Parser] Detected: Brand='{req.brand_name}', Goal='{req.campaign_goal}', Count={req.total_emails}, Languages={req.languages}")
+    if req.start_date:
+        print(f"[Parser] Start Date Detected: {req.start_date}")
     if req.notes:
         print(f"[Parser] Notes: {req.notes}")
 
@@ -33,7 +35,9 @@ async def run_plan(args):
             duration=req.duration,
             total_emails=req.total_emails,
             promotional_ratio=req.promotional_ratio,
-            notes=req.notes
+            languages=req.languages,
+            notes=req.notes,
+            start_date=req.start_date
         )
         print("\n" + "="*50)
         print(result)
@@ -145,7 +149,7 @@ async def run_execute(args):
             campaign_id=plan.campaign_id,
             target_month=target_month,
             drafts=drafts,
-            folder_id=None # Optionally we could lookup folder from plan meta if we stored it
+            folder_id=plan.drive_folder_id # Use folder ID from plan
         )
         
         print("\n" + "="*50)

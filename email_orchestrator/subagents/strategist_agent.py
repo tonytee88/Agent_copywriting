@@ -15,7 +15,8 @@ history_manager = HistoryManager()
 async def strategist_agent(
     request: CampaignRequest, 
     brand_bio: BrandBio,
-    campaign_context: Any = None
+    campaign_context: Any = None,
+    language: str = "French"
 ) -> EmailBlueprint:
     """
     The Strategist Agent plans the email campaign structure and angle using Catalog IDs.
@@ -59,7 +60,9 @@ Context:
 - Theme: {campaign_context.theme}
 - Key Message: {campaign_context.key_message}
 - Purpose: {campaign_context.email_purpose}
+- Purpose: {campaign_context.email_purpose}
 - Intensity: {campaign_context.intensity_level}
+- Target Language: {language} (You MUST write the blueprint content in this language)
 """
     
     full_prompt = prompt_template.format(

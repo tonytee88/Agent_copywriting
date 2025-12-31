@@ -7,110 +7,68 @@ def calculate_send_schedule(
     duration_str: str = "1 month"
 ) -> List[Dict[str, str]]:
     """
-    Calculate email send schedule based on best practice timing rules.
-    
-    Rules:
-    - Default: 2 emails per week (Thursday + Sunday)
-    - If >2/week needed: Auto-adjust to 3/week (Thursday, Sunday, + 1 midweek)
-    - Thursday: Alternate between 7:00 PM and 7:00 AM (every 3rd send)
-    - Sunday: Always 7:00 PM (only 1 per week)
-    - Midweek (for 3/week): Tuesday or Wednesday, 7:00 AM
-    
-    Args:
-        start_date: Campaign start date
-        total_emails: Number of emails to schedule
-        duration_str: Duration string (e.g., "1 month", "4 weeks")
-    
-    Returns:
-        List of schedule entries with email_num, day, date, time
+    Calculate email send schedule.
+    Rule:
+    - Email 1: STRICTLY on start_date.
+    - Subsequent Emails: Snap to next Thursday/Sunday grid.
+    - Cadence: 2-3 emails/week based on volume.
     """
     schedule = []
     current_date = start_date
     email_count = 0
-    thursday_count = 0
-    week_count = 0
     
-    # Determine emails per week
-    estimated_weeks = 4  # Default assumption
+    # 1. Schedule First Email
+    schedule.append({
+        "email_num": 1,
+        "day": current_date.strftime("%A"),
+        "date": current_date.strftime("%Y-%m-%d"),
+        "time": "7:00 AM" # Default start time
+    })
+    email_count += 1
+    
+    if email_count >= total_emails:
+        return schedule
+        
+    # Determine density
+    estimated_weeks = 4
     if "week" in duration_str.lower():
         try:
             estimated_weeks = int(duration_str.split()[0])
         except:
             pass
+    emails_per_week = total_emails / max(1, estimated_weeks)
+    use_high_freq = emails_per_week > 2.5
     
-    emails_per_week = total_emails / estimated_weeks
-    use_three_per_week = emails_per_week > 2
-    
-    # Find next Thursday from start date
-    days_until_thursday = (3 - current_date.weekday()) % 7
-    if days_until_thursday == 0 and current_date.hour >= 19:
-        days_until_thursday = 7
-    current_date = current_date + timedelta(days=days_until_thursday)
+    # Advance to next grid slot (Thursday or Sunday)
+    # Grid days: Thursday (3), Sunday (6)
+    # If high freq, also Tuesday (1)
     
     while email_count < total_emails:
-        day_of_week = current_date.weekday()
+        current_date += timedelta(days=1)
+        weekday = current_date.weekday()
         
-        # Thursday (3)
-        if day_of_week == 3:
-            thursday_count += 1
-            # Every 3rd Thursday send at 7PM, otherwise 7AM
-            time = "7:00 PM" if thursday_count % 3 == 0 else "7:00 AM"
+        is_send_day = False
+        time = "7:00 AM"
+        
+        if weekday == 3: # Thursday
+            is_send_day = True
+            time = "7:00 AM" # Simplified
+        elif weekday == 6: # Sunday
+            is_send_day = True
+            time = "7:00 PM"
+        elif use_high_freq and weekday == 1: # Tuesday
+            is_send_day = True
+            time = "7:00 AM"
             
+        if is_send_day:
             schedule.append({
                 "email_num": email_count + 1,
-                "day": "Thursday",
+                "day": current_date.strftime("%A"),
                 "date": current_date.strftime("%Y-%m-%d"),
                 "time": time
             })
             email_count += 1
             
-            if email_count >= total_emails:
-                break
-            
-            # Add midweek email if using 3/week (Tuesday or Wednesday)
-            if use_three_per_week:
-                # Alternate between Tuesday (5 days back) and Wednesday (4 days back)
-                days_to_midweek = -5 if week_count % 2 == 0 else -4
-                midweek_date = current_date + timedelta(days=days_to_midweek)
-                midweek_day = "Tuesday" if week_count % 2 == 0 else "Wednesday"
-                
-                # Only add if we haven't exceeded total
-                if email_count < total_emails:
-                    schedule.insert(len(schedule) - 1, {  # Insert before Thursday
-                        "email_num": email_count + 1,
-                        "day": midweek_day,
-                        "date": midweek_date.strftime("%Y-%m-%d"),
-                        "time": "7:00 AM"
-                    })
-                    email_count += 1
-                    
-                    # Re-number emails after insertion
-                    for i, slot in enumerate(schedule):
-                        slot["email_num"] = i + 1
-            
-            if email_count >= total_emails:
-                break
-            
-            # Move to Sunday (3 days later)
-            current_date += timedelta(days=3)
-            
-        # Sunday (6)
-        elif day_of_week == 6:
-            schedule.append({
-                "email_num": email_count + 1,
-                "day": "Sunday",
-                "date": current_date.strftime("%Y-%m-%d"),
-                "time": "7:00 PM"
-            })
-            email_count += 1
-            
-            if email_count >= total_emails:
-                break
-            
-            # Move to next Thursday (4 days later)
-            current_date += timedelta(days=4)
-            week_count += 1
-    
     return schedule
 
 def get_next_thursday(from_date: Optional[datetime] = None) -> datetime:
@@ -150,3 +108,51 @@ def parse_duration_to_start_date(duration_str: str) -> datetime:
     else:
         # Default: next Thursday from now
         return get_next_thursday(now)
+
+def parse_readable_date(date_str: str) -> Optional[datetime]:
+    """
+    Attempts to parse a human-readable date string into a datetime object.
+    Supports: "YYYY-MM-DD", "Jan 7", "January 7th", "7 Jan 2026".
+    """
+    import re
+    from datetime import datetime
+    
+    clean_str = date_str.strip()
+    
+    # Try ISO format first
+    try:
+        return datetime.strptime(clean_str, "%Y-%m-%d")
+    except ValueError:
+        pass
+        
+    # Remove ordinal suffixes (st, nd, rd, th)
+    clean_str = re.sub(r'(\d+)(st|nd|rd|th)', r'\1', clean_str)
+    
+    # Try common formats
+    formats = [
+        "%b %d",        # Jan 7
+        "%B %d",        # January 7
+        "%d %b",        # 7 Jan
+        "%d %B",        # 7 January
+        "%b %d %Y",     # Jan 7 2026
+        "%B %d %Y",     # January 7 2026
+        "%Y %b %d",     # 2026 Jan 7
+    ]
+    
+    current_year = datetime.now().year
+    
+    for fmt in formats:
+        try:
+            dt = datetime.strptime(clean_str, fmt)
+            # If no year parsed, assume next occurrence of this date
+            if dt.year == 1900:
+                dt = dt.replace(year=current_year)
+                # If date is in past, move to next year (unless it's Jan and we are in Dec, etc. logic implies forward looking)
+                # Simple logic: if date is more than 30 days in past, assume next year.
+                if dt < datetime.now() - timedelta(days=30):
+                    dt = dt.replace(year=current_year + 1)
+            return dt
+        except ValueError:
+            continue
+            
+    return None
