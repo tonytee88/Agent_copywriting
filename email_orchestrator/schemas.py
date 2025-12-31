@@ -187,6 +187,9 @@ class CampaignPlan(BaseModel):
     languages: List[str] = ["FR"] # Default FR
     sheet_url: Optional[str] = None # Link to the Google Sheet for this plan
     drive_folder_id: Optional[str] = None # Folder where assets are stored
+    
+    # Context Propagation
+    campaign_context: Optional[str] = None # Raw user input + notes for downstream agents
 
 # --- Verification Schemas ---
 

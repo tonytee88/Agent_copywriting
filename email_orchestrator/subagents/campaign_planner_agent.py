@@ -64,9 +64,11 @@ class CampaignPlanningSession:
         duration: str,
         brand_bio: BrandBio,
         start_date: Optional[str] = None,
+        excluded_days: List[str] = [],
         promotional_ratio: float = 0.4,
         languages: List[str] = ["FR"],
-        notes: Optional[str] = None
+        notes: Optional[str] = None,
+        raw_user_input: Optional[str] = None
     ) -> CampaignPlan:
         """
         Generates the initial plan based on user requirements.
@@ -94,7 +96,12 @@ class CampaignPlanningSession:
         else:
             parsed_start = parse_duration_to_start_date(duration)
             
-        send_schedule = calculate_send_schedule(parsed_start, total_emails, duration)
+        send_schedule = calculate_send_schedule(
+            parsed_start, 
+            total_emails, 
+            duration,
+            excluded_days=excluded_days
+        )
         schedule_str = json.dumps(send_schedule, indent=2)
         
         # Get History
@@ -137,6 +144,16 @@ Historic Campaigns (AVOID REPEATING THESE CONCEPTS):
 ADDITIONAL CONTEXT/CONSTRAINTS (Adhere strictly if provided):
 {notes if notes else "None"}
 
+ORIGINAL USER REQUEST (SOURCE OF TRUTH):
+"{raw_user_input if raw_user_input else 'N/A'}"
+
+STRICT DATA ADHERENCE:
+1. OFFERS: Check the ORIGINAL USER REQUEST above for specific offers, prices, or discounts. you MUST USE THEM EXACTLY. 
+   - DO NOT invent new discounts (e.g., do not say "15% off" if user said " $10 off").
+   - DO NOT change product names.
+   - COPY details verbatim.
+2. If no offers are provided in the Request, use generic placeholders like "[Offer Details Here]". DO NOT HALLUCINATE.
+
 Requirements:
 1. Generate CREATIVE, BRAND-SPECIFIC descriptions.
 2. Select a valid STRUCTURE ID from the [CATALOG] for every email.
@@ -147,7 +164,19 @@ Requirements:
         response_text = await self._send_message(prompt)
         
         # 4. Parse & Return
-        return self._parse_to_plan(response_text)
+        plan = self._parse_to_plan(response_text)
+        
+        # 5. Inject Context for Propagation
+        context_parts = []
+        if raw_user_input:
+            context_parts.append(f"USER INPUT: {raw_user_input}")
+        if notes:
+            context_parts.append(f"NOTES: {notes}")
+        
+        if context_parts:
+            plan.campaign_context = "\n\n".join(context_parts)
+            
+        return plan
 
     async def process_qa_feedback(
         self,

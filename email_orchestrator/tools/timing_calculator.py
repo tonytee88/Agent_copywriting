@@ -4,7 +4,8 @@ from typing import List, Dict, Optional
 def calculate_send_schedule(
     start_date: datetime,
     total_emails: int,
-    duration_str: str = "1 month"
+    duration_str: str = "1 month",
+    excluded_days: List[str] = []
 ) -> List[Dict[str, str]]:
     """
     Calculate email send schedule.
@@ -12,64 +13,128 @@ def calculate_send_schedule(
     - Email 1: STRICTLY on start_date.
     - Subsequent Emails: Snap to next Thursday/Sunday grid.
     - Cadence: 2-3 emails/week based on volume.
+    - Exclusions: Skip matches in excluded_days.
     """
-    schedule = []
-    current_date = start_date
-    email_count = 0
-    
-    # 1. Schedule First Email
-    schedule.append({
+    # 1. Normalize exclusions
+    exclusions_normalized = [d.lower() for d in excluded_days]
+
+    # 2. Determine Deadline
+    # For now, simplistic deadline calculation based on duration
+    # If duration is a month name, end of that month in the start_date's year
+    deadline = None
+    if any(m in duration_str.lower() for m in ["january", "february", "march", "april", "may", "june", "july", "august", "september", "october", "november", "december"]):
+        # It's likely a specific month request.
+        # Find the last day of the start_date's month
+        import calendar
+        last_day = calendar.monthrange(start_date.year, start_date.month)[1]
+        deadline = start_date.replace(day=last_day)
+    elif "week" in duration_str.lower():
+         try:
+             weeks = int(duration_str.split()[0])
+             deadline = start_date + timedelta(weeks=weeks)
+         except:
+             deadline = start_date + timedelta(days=30)
+    else:
+        # Default 30 days
+        deadline = start_date + timedelta(days=30)
+
+    print(f"[Timing] Calculated Deadline: {deadline.strftime('%Y-%m-%d')}")
+
+    # 3. Define Strategies
+    strategies = [
+        {"name": "Standard (Thu/Sun)", "high_freq": False, "interval": None},
+        {"name": "High Freq (Tue/Thu/Sun)", "high_freq": True, "interval": None},
+        {"name": "Compressed (Every 3 Days)", "high_freq": False, "interval": 3},
+        {"name": "Rapid (Every 2 Days)", "high_freq": False, "interval": 2},
+        {"name": "Daily (Maximize)", "high_freq": False, "interval": 1}
+    ]
+
+    # 1. Define First Email (Fixed)
+    first_email = {
         "email_num": 1,
-        "day": current_date.strftime("%A"),
-        "date": current_date.strftime("%Y-%m-%d"),
-        "time": "7:00 AM" # Default start time
-    })
-    email_count += 1
+        "day": start_date.strftime("%A"),
+        "date": start_date.strftime("%Y-%m-%d"),
+        "time": "7:00 AM"
+    }
+
+    final_schedule = []
     
-    if email_count >= total_emails:
-        return schedule
+    for strategy in strategies:
+        temp_schedule = []
+        temp_email_count = 1 # Already have correct first email
+        temp_current_date = start_date # Start from first email
         
-    # Determine density
-    estimated_weeks = 4
-    if "week" in duration_str.lower():
-        try:
-            estimated_weeks = int(duration_str.split()[0])
-        except:
-            pass
-    emails_per_week = total_emails / max(1, estimated_weeks)
-    use_high_freq = emails_per_week > 2.5
-    
-    # Advance to next grid slot (Thursday or Sunday)
-    # Grid days: Thursday (3), Sunday (6)
-    # If high freq, also Tuesday (1)
-    
-    while email_count < total_emails:
-        current_date += timedelta(days=1)
-        weekday = current_date.weekday()
+        # Add the first fixed email
+        temp_schedule.append(first_email)
         
-        is_send_day = False
-        time = "7:00 AM"
+        failed_strategy = False
         
-        if weekday == 3: # Thursday
-            is_send_day = True
-            time = "7:00 AM" # Simplified
-        elif weekday == 6: # Sunday
-            is_send_day = True
-            time = "7:00 PM"
-        elif use_high_freq and weekday == 1: # Tuesday
-            is_send_day = True
+        while temp_email_count < total_emails:
+            # Advance logic
+            if strategy["interval"]:
+                temp_current_date += timedelta(days=strategy["interval"])
+            else:
+                temp_current_date += timedelta(days=1)
+            
+            day_name = temp_current_date.strftime("%A")
+            weekday = temp_current_date.weekday() # Mon=0, Sun=6
+            
+            # 1. Global Exclusion Check
+            if day_name.lower() in exclusions_normalized:
+                continue
+            
+            # 2. Grid Check (Only if not using naive interval)
+            is_send_day = False
             time = "7:00 AM"
             
-        if is_send_day:
-            schedule.append({
-                "email_num": email_count + 1,
-                "day": current_date.strftime("%A"),
-                "date": current_date.strftime("%Y-%m-%d"),
-                "time": time
-            })
-            email_count += 1
+            if strategy["interval"]:
+                # If using interval, any non-excluded day is valid
+                is_send_day = True
+            else:
+                # Use Grid
+                if weekday == 3: # Thursday
+                    is_send_day = True
+                elif weekday == 6: # Sunday
+                    is_send_day = True
+                    time = "7:00 PM"
+                elif strategy["high_freq"] and weekday == 1: # Tuesday
+                    is_send_day = True
             
-    return schedule
+            if is_send_day:
+                temp_schedule.append({
+                    "email_num": temp_email_count + 1,
+                    "day": day_name,
+                    "date": temp_current_date.strftime("%Y-%m-%d"),
+                    "time": time
+                })
+                temp_email_count += 1
+                
+            # Safety break for infinite loops
+            if (temp_current_date - start_date).days > 60:
+                break
+        
+        # Check if strategy worked (Last email <= Deadline)
+        if temp_schedule and len(temp_schedule) == total_emails:
+            last_date_str = temp_schedule[-1]["date"]
+            last_date = datetime.strptime(last_date_str, "%Y-%m-%d")
+            
+            if last_date <= deadline:
+                print(f"[Timing] Strategy '{strategy['name']}' SUCCESS. Ends: {last_date_str}")
+                final_schedule = temp_schedule
+                break
+            else:
+                print(f"[Timing] Strategy '{strategy['name']}' failed. Ends {last_date_str} > {deadline.strftime('%Y-%m-%d')}")
+        else:
+             print(f"[Timing] Strategy '{strategy['name']}' failed to generate enough emails.")
+
+    # Fallback: if all strategies fail, return the last generated one (likely Daily or compressed)
+    # or just return the Standard one even if it overruns (better than nothing)
+    if not final_schedule and strategies: 
+        print("[Timing] All strategies failed strict deadline. Returning best effort (last calculation).")
+        # Re-run last strategy just to fit the list
+        final_schedule = temp_schedule 
+
+    return final_schedule
 
 def get_next_thursday(from_date: Optional[datetime] = None) -> datetime:
     """Get the next Thursday from the given date (or today)."""

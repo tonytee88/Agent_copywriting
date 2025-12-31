@@ -14,7 +14,8 @@ async def drafter_agent(
     blueprint: EmailBlueprint, 
     brand_bio: BrandBio,
     revision_feedback: Optional[str] = None,
-    language: str = "French"
+    language: str = "French",
+    campaign_context: Optional[str] = None
 ) -> EmailDraft:
     """
     The Drafter Agent writes the email content based on the Strategist's blueprint.
@@ -48,6 +49,10 @@ async def drafter_agent(
     
     # Inject Language Instruction
     full_prompt += f"\n\nCRITICAL: You MUST write the email in {language}."
+    
+    # Inject Campaign Context (User Constraints)
+    if campaign_context:
+        full_prompt += f"\n\nCAMPAIGN CONTEXT/CONSTRAINTS:\n{campaign_context}\n\nIMPORTANT: You MUST respect all constraints mentioned in the Campaign Context above."
     
     # 4. Call Straico API
     client = get_client()

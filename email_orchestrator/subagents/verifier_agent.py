@@ -15,7 +15,8 @@ history_manager = HistoryManager()
 async def verifier_agent(
     draft: EmailDraft,
     blueprint: EmailBlueprint,
-    brand_name: str
+    brand_name: str,
+    campaign_context: str = None
 ) -> EmailVerification:
     """
     The Verifier Agent checks the draft for quality and adherence to rules.
@@ -45,6 +46,10 @@ async def verifier_agent(
         history_log=history_summary,
         draft=draft.model_dump_json(indent=2)
     )
+    
+    # Inject Campaign Context (User Constraints)
+    if campaign_context:
+        full_prompt += f"\n\nCAMPAIGN CONTEXT/CONSTRAINTS:\n{campaign_context}\n\nIMPORTANT: Verify that the draft respects ALL constraints mentioned in the Campaign Context above. If any constraint is violated, mark as REJECTED and provide specific feedback."
     
     # 4. Call Straico API
     client = get_client()

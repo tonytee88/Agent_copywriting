@@ -1,6 +1,6 @@
 import json
 from datetime import datetime
-from typing import Optional, Dict
+from typing import Optional, Dict, List
 
 from email_orchestrator.schemas import (
     BrandBio, CampaignPlan, CampaignRequest, EmailBlueprint, EmailDraft, 
@@ -40,6 +40,8 @@ async def plan_campaign(
     languages: Optional[list] = ["FR"],
     notes: Optional[str] = None,
     start_date: Optional[str] = None,
+    excluded_days: List[str] = [],
+    raw_user_input: Optional[str] = None,
     drive_folder_id: Optional[str] = POPBRUSH_FOLDER_ID
 ) -> str:
     """
@@ -64,9 +66,11 @@ async def plan_campaign(
         duration=duration,
         brand_bio=brand_bio,
         start_date=start_date,
+        excluded_days=excluded_days,
         promotional_ratio=promotional_ratio,
         languages=languages,
-        notes=notes
+        notes=notes,
+        raw_user_input=raw_user_input
     )
     
     # 2. [NEW] Strategic Optimization Layer: Refine Transformations
@@ -244,7 +248,7 @@ async def generate_email_campaign(
             max_det_retries = 5
             det_attempt = 0
             while det_attempt < max_det_retries:
-                draft = await drafter_agent(blueprint, brand_bio, revision_feedback, language=lang)
+                draft = await drafter_agent(blueprint, brand_bio, revision_feedback, language=lang, campaign_context=plan.campaign_context)
                 det_issues = det_verifier.verify_draft(draft, history=past_emails_dicts, campaign_id=plan.campaign_id)
                 
                 if not det_issues:
@@ -274,7 +278,7 @@ async def generate_email_campaign(
             # Assuming Verifier is Language-Agnostic or defaults to EN analysis which works ok for structure.
             # Ideally Verifier should verify IN that language.
             # For now, standard verifier is used.
-            verification = await verifier_agent(draft, blueprint, plan.brand_name)
+            verification = await verifier_agent(draft, blueprint, plan.brand_name, campaign_context=plan.campaign_context)
             
             if verification.approved:
                 print(f"[Email #{slot.slot_number}-{lang}] APPROVED! Score: {verification.score}")
@@ -291,7 +295,7 @@ async def generate_email_campaign(
                 revision_feedback = "\n".join(feedback_lines)
                 
                 # One-time revision
-                final_draft = await drafter_agent(blueprint, brand_bio, revision_feedback, language=lang)
+                final_draft = await drafter_agent(blueprint, brand_bio, revision_feedback, language=lang, campaign_context=plan.campaign_context)
                 
                 # Final Deterministic Check on revised draft (Safety)
                 final_det = det_verifier.verify_draft(final_draft, history=past_emails_dicts, campaign_id=plan.campaign_id)

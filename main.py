@@ -25,6 +25,8 @@ async def run_plan(args):
     print(f"[Parser] Detected: Brand='{req.brand_name}', Goal='{req.campaign_goal}', Count={req.total_emails}, Languages={req.languages}")
     if req.start_date:
         print(f"[Parser] Start Date Detected: {req.start_date}")
+    if req.excluded_days:
+        print(f"[Parser] Excluded Days: {req.excluded_days}")
     if req.notes:
         print(f"[Parser] Notes: {req.notes}")
 
@@ -37,7 +39,9 @@ async def run_plan(args):
             promotional_ratio=req.promotional_ratio,
             languages=req.languages,
             notes=req.notes,
-            start_date=req.start_date
+            start_date=req.start_date,
+            excluded_days=req.excluded_days,
+            raw_user_input=user_prompt
         )
         print("\n" + "="*50)
         print(result)
