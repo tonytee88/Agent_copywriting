@@ -274,7 +274,7 @@ def write_email_to_doc(docs_service, document_id: str, email_draft: Dict[str, An
         add_text_block(f"{header_text}\n", h1=True)
         add_text_block("##########\n\n")
 
-    add_text_block(f"SUBJECT: {email_draft.get('subject', '')}\n", bold=True)
+    add_text_block(f"SUBJECT: {email_draft.get('subject', '')}\n", bold=False)
     add_text_block(f"PREVIEW: {email_draft.get('preview', '')}\n", bold=False)
     add_text_block("##########\n\n")
     add_text_block(f"LANGUAGE: {language.upper()}\n\n")
@@ -411,15 +411,16 @@ def write_email_to_doc(docs_service, document_id: str, email_draft: Dict[str, An
                         })
                         
                         # Style (Must match the inserted text)
-                        # Since we process this cell "first" in our queue (actually last in document), 
-                        # subsequent requests (previous cells) won't be shifted by this one?
-                        # Wait. requests in batch are executed in order.
-                        # If we append Z, then Y.
-                        # Execution:
-                        # 1. Insert Z (at 200). Doc len += 5.
-                        # 2. Style Z (at 200).
-                        # 3. Insert Y (at 100). Valid? Yes, 100 is still 100.
-                        # CORRECT using Reverse Iteration + Sequential Append.
+                        
+                        # 0. SAFE RESET for Table Cell Content
+                        cell_requests.append({
+                            'updateTextStyle': {
+                                'range': {'startIndex': cell_insert_index, 'endIndex': cell_insert_index + text_len},
+                                'textStyle': {'bold': False, 'italic': False, 'underline': False},
+                                'fields': 'bold,italic,underline'
+                            }
+                        })
+                        
                         
                         for s in cell_data['styles']:
                             # relative to cell_insert_index because we insert at START of cell

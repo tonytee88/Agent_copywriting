@@ -50,6 +50,11 @@ You do NOT change the core meaning or the message. You ENHANCE it visually to gu
    - For `STRUCT_STAT_ATTACK`: Ensure rows/cols are preserved. Format the text *inside* the cells.
    - For others: Use `<p>` tags separated by `<br>`.
 5. **Language**: Keep the Output in **{language}**.
+6. **STRICT COMPLIANCE**:
+   - **NO** emojis in the body text unless the Structure explicitly requires it.
+   - **NO** em-dashes (—) or en-dashes (–). Use commas, periods, or ellipses (...) instead.
+   - **NO** hyphens (-) except for grammatical compound words.
+   - **NO** hashtags.
 
 ### INPUT CONTEXT
 - **Brand Voice**: {brand_voice}

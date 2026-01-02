@@ -334,7 +334,44 @@ async def generate_email_campaign(
                 
                 print(f"[Email #{slot.slot_number}-{lang}] Revision complete. Auto-approving for export.")
             
-            # E. Save Metadata (Log History)
+            # [CRITICAL UPDATE] RE-RUN STYLIST IF REVISED
+            # If revision happened, the new draft is raw text again. We must re-style it.
+            # Even if no revision, we want to ensure 'final_draft' is the one that gets logged and exported.
+            
+            target_draft = final_draft if final_draft else draft
+            
+            # Note: The Stylist runs on 'draft' above.
+            # If revision happened, 'final_draft' is a distinct object (the return of revise()).
+            # This 'final_draft' HAS NOT visited the Stylist yet.
+            
+            # Simple Logic: Always run Stylist on the *Approved* draft (target_draft) just before saving.
+            # But wait, verification happened on the *Styled* draft?
+            # CASE A: Pass 1 -> Stylist -> Verifier (Approved) -> target_draft IS styled.
+            # CASE B: Pass 1 -> Stylist -> Verifier (Reject) -> Revision (Raw) -> Verifier (Approve) -> target_draft IS RAW.
+            
+            # Fix: Run Stylist only if we went through revision (Case B).
+            # OR better: Just run it again on the final object if it lacks styling? Hard to detect.
+            # Safer: Just re-run Stylist on 'final_draft' if revision_feedback was present.
+            
+            if revision_feedback and final_draft:
+                print(f"[Email #{slot.slot_number}-{lang}] Re-applying Stylist to revised draft...")
+                try:
+                    raw_desc = getattr(final_draft, 'descriptive_block_content', '')
+                    if raw_desc:
+                        styled_desc = await stylist.style_content(
+                            content=raw_desc, 
+                            structure_id=blueprint.structure_id,
+                            brand_voice=brand_bio.brand_voice, 
+                            language=lang
+                        )
+                        final_draft.descriptive_block_content = styled_desc
+                        print(f"[Email #{slot.slot_number}-{lang}] Stylist applied formatting to revision.")
+                except Exception as e:
+                     print(f"[Email #{slot.slot_number}-{lang}] Stylist re-run failed: {e}")
+            
+            # Ensure final_draft connects to 'draft' if no revision occurred
+            if not final_draft:
+                final_draft = draft
             log_entry = CampaignLogEntry(
                 campaign_id=campaign_id,
                 timestamp=datetime.now().isoformat(),
