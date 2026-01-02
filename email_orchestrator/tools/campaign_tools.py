@@ -247,8 +247,16 @@ async def generate_email_campaign(
             # 1. GENERATION + DETERMINISTIC LOOP (Strict)
             max_det_retries = 5
             det_attempt = 0
+            
+            # SESSION START
+            from email_orchestrator.subagents.drafter_agent import DraftingSession
+            drafting_session = DraftingSession(blueprint, brand_bio, language=lang, campaign_context=plan.campaign_context)
+            
+            # Initial Draft
+            draft = await drafting_session.start()
+            
             while det_attempt < max_det_retries:
-                draft = await drafter_agent(blueprint, brand_bio, revision_feedback, language=lang, campaign_context=plan.campaign_context)
+                # draft is already generated above or via revision below
                 det_issues = det_verifier.verify_draft(draft, history=past_emails_dicts, campaign_id=plan.campaign_id)
                 
                 if not det_issues:
@@ -265,7 +273,8 @@ async def generate_email_campaign(
                 # LOGGING for diagnosis (User Request)
                 print(f"[Email #{slot.slot_number}-{lang}] DET FEEDBACK SENT TO DRAFTER:\n{feedback_msg}")
                 
-                revision_feedback = feedback_msg
+                # Session-based Revision
+                draft = await drafting_session.revise(feedback_msg)
     
             if det_attempt >= max_det_retries:
                 print(f"[Email #{slot.slot_number}-{lang}] CRITICAL: Failed to fix deterministic issues after {max_det_retries} attempts.")
@@ -294,8 +303,8 @@ async def generate_email_campaign(
     
                 revision_feedback = "\n".join(feedback_lines)
                 
-                # One-time revision
-                final_draft = await drafter_agent(blueprint, brand_bio, revision_feedback, language=lang, campaign_context=plan.campaign_context)
+                # Session-based Revision
+                final_draft = await drafting_session.revise(revision_feedback)
                 
                 # Final Deterministic Check on revised draft (Safety)
                 final_det = det_verifier.verify_draft(final_draft, history=past_emails_dicts, campaign_id=plan.campaign_id)

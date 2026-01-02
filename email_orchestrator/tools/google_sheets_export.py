@@ -163,6 +163,7 @@ class GoogleSheetsExporter:
             ["Status", safe('status')],
             ["Promotional Balance", safe('promotional_balance')],
             ["Narrative", safe('overarching_narrative')],
+            ["Campaign Context", safe('campaign_context')], # ADDED: Visibility for User
             ["", ""]  # Spacer
         ]
 

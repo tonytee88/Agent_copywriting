@@ -54,6 +54,10 @@ async def drafter_agent(
     if campaign_context:
         full_prompt += f"\n\nCAMPAIGN CONTEXT/CONSTRAINTS:\n{campaign_context}\n\nIMPORTANT: You MUST respect all constraints mentioned in the Campaign Context above."
     
+    # Inject Campaign Context (User Constraints)
+    if campaign_context:
+        full_prompt += f"\n\nCAMPAIGN CONTEXT/CONSTRAINTS:\n{campaign_context}\n\nIMPORTANT: You MUST respect all constraints mentioned in the Campaign Context above."
+    
     # 4. Call Straico API
     client = get_client()
     model = STRAICO_MODEL 
@@ -62,6 +66,132 @@ async def drafter_agent(
     result_json_str = await client.generate_text(full_prompt, model=model)
     
     # 5. Parse & Validate
+    return _parse_draft_response(result_json_str)
+
+class DraftingSession:
+    """
+    Manages a stateful drafting session for a single email slot.
+    Maintains context across revision loops (Draft -> Verify -> Revise).
+    """
+    def __init__(self, blueprint: EmailBlueprint, brand_bio: BrandBio, language: str, campaign_context: Optional[str] = None):
+        self.blueprint = blueprint
+        self.brand_bio = brand_bio
+        self.language = language
+        self.campaign_context = campaign_context
+        self.history = [] # List of {"role": "user"|"assistant", "content": str}
+        self.client = get_client()
+        self.model = STRAICO_MODEL
+        self.knowledge_reader = KnowledgeReader()
+
+    async def start(self) -> EmailDraft:
+        """Generates the initial draft."""
+        print(f"[DraftingSession] Starting new session for {self.blueprint.brand_name}...")
+        
+        # 1. Fetch Context
+        format_guide = self.knowledge_reader.get_document_content("Email instructions type #1.pdf")
+        if not format_guide:
+            format_guide = "Ensure strict Type #1 format: Hero, Descriptive Block, Product Block."
+
+        # 2. Load Prompt
+        prompt_path = Path(__file__).parent.parent / "prompts" / "drafter" / "v2.txt"
+        try:
+            prompt_template = prompt_path.read_text(encoding="utf-8")
+        except FileNotFoundError:
+            raise FileNotFoundError("Drafter prompt v2.txt not found")
+
+        # 3. Format Prompt
+        full_prompt = prompt_template.format(
+            format_guide=format_guide,
+            blueprint=self.blueprint.model_dump_json(indent=2),
+            brand_bio=self.brand_bio.model_dump_json(indent=2),
+            revision_feedback="N/A - First draft"
+        )
+        
+        # Inject Language & Context
+        full_prompt += f"\n\nCRITICAL: You MUST write the email in {self.language}."
+        if self.campaign_context:
+            full_prompt += f"\n\nCAMPAIGN CONTEXT/CONSTRAINTS:\n{self.campaign_context}\n\nIMPORTANT: You MUST respect all constraints mentioned in the Campaign Context above."
+            
+        # 4. Execute
+        self.history.append({"role": "user", "content": full_prompt})
+        
+        # Note: Straico tools might not support full message history in one call unless we concat.
+        # For simple LLM APIs, we often concat history. 
+        # Here we simulated session by appending previous turns if the API supports it, or just concat.
+        # Since 'generate_text' takes a string prompt, we'll concat for now or implement chat interface if available.
+        # StraicoTool.generate_text is stateless. We must manually standard prompt construction.
+        
+        # CONCAT STRATEGY for Stateless API:
+        # We only send the system/user prompt. For revisions, we'll append history.
+        # Actually proper chat persistence requires a Chat API. 
+        # If StraicoTool only has 'generate_text', we simulate by appending.
+        
+        response_text = await self.client.generate_text(full_prompt, model=self.model)
+        self.history.append({"role": "assistant", "content": response_text})
+        
+        return _parse_draft_response(response_text)
+
+    async def revise(self, feedback: str) -> EmailDraft:
+        """Revises the draft based on feedback, keeping context."""
+        print(f"[DraftingSession] Revising based on feedback...")
+        
+        revision_prompt = f"""
+CRITICAL FEEDBACK RECEIVED:
+{feedback}
+
+INSTRUCTIONS:
+1. Fix the issues above.
+2. Maintain the same Tone and Style as the previous draft.
+3. Return the FULL updated JSON for the email.
+"""
+        self.history.append({"role": "user", "content": revision_prompt})
+        
+        # Build Context Window for Stateless API
+        # Only inject the LAST assistant response + New Feedback? 
+        # Or full chain? Full chain is better but costly.
+        # Let's use: System Context (Hidden) + Last Draft + Feedback
+        # OR: Just concat everything.
+        
+        # Simple concat for now (watch token limits)
+        conversation_str = ""
+        # We don't want to re-send the HUGE initial prompt every time if we can avoid it, 
+        # but for coherence we might need the blueprint reference.
+        # Strategy: 
+        # [System/Blueprint] ...
+        # [Assistant] {Last JSON}
+        # [User] Fix X
+        
+        # Let's reconstruct a streamlined prompt for revision
+        # actually, simply appending new messages to the history list is cleaner logic 
+        # but we need to pass a single string to generate_text.
+        
+        # Optimized Revision Prompt:
+        # We define a new prompt that references the *previous output* implicitly 
+        # OR we just feed the last assistant message + instructions.
+        
+        last_draft_content = self.history[-2]["content"] # Assistant's last response
+        
+        combined_prompt = f"""
+ORIGINAL REQUEST CONTEXT:
+(See blueprint provided earlier)
+
+YOUR PREVIOUS DRAFT:
+{last_draft_content}
+
+FEEDBACK:
+{feedback}
+
+TASK:
+Rewrite the draft to address the feedback. Return ONLY valid JSON.
+"""
+        response_text = await self.client.generate_text(combined_prompt, model=self.model)
+        self.history.append({"role": "assistant", "content": response_text})
+        
+        return _parse_draft_response(response_text)
+
+
+def _parse_draft_response(result_json_str: str) -> EmailDraft:
+    """Shared parsing logic."""
     try:
         cleaned_json = _clean_json_string(result_json_str)
         data = json.loads(cleaned_json)
@@ -103,21 +233,21 @@ def _construct_full_email_text(data: Dict[str, Any]) -> str:
     return f"""
 SUBJECT: {data.get('subject')}
 PREVIEW: {data.get('preview')}
+HERO IMAGE: {data.get('hero_image_description')}
+HERO TITLE: {data.get('hero_title')}
+HERO SUBTITLE: {data.get('hero_subtitle')}
+CTA: {data.get('hero_cta_text')}
 
-=== HERO ===
-Title: {data.get('hero_title')}
-Subtitle: {data.get('hero_subtitle')}
-CTA: {data.get('cta_hero')}
+--- DESCRIPTIVE BLOCK ---
+TITLE: {data.get('descriptive_block_title')}
+CONTENT: {data.get('descriptive_block_content')}
 
-=== {data.get('descriptive_block_title')} ===
-{data.get('descriptive_block_subtitle')}
-
-{data.get('descriptive_block_content')}
-
-=== PRODUCT: {data.get('product_block_title')} ===
-{data.get('product_block_subtitle')}
-
+--- PRODUCTS ---
 {products_list}
+CTA: {data.get('product_block_cta_text')}
 
-CTA: {data.get('cta_product')}
+--- FOOTER ---
+{data.get('footer_text')}
 """
+
+

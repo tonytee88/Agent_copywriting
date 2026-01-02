@@ -209,7 +209,13 @@ REVISION RULES:
 4. Return the full updated CampaignPlan JSON.
 """
         response_text = await self._send_message(prompt)
-        return self._parse_to_plan(response_text)
+        new_plan = self._parse_to_plan(response_text)
+        
+        # PRESERVE CONTEXT
+        if original_plan.campaign_context:
+            new_plan.campaign_context = original_plan.campaign_context
+            
+        return new_plan
 
     async def _send_message(self, text: str) -> str:
         """Helper to send message to runner and collect text response."""
