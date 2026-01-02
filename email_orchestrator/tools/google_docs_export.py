@@ -17,6 +17,7 @@ from datetime import datetime
 from google.oauth2 import service_account
 from googleapiclient.discovery import build
 from googleapiclient.errors import HttpError
+from email_orchestrator.tools.html_to_docs_parser import HtmlToDocsParser
 
 # Scopes required
 SCOPES = [
@@ -114,7 +115,7 @@ class GoogleDocsExporter:
         """
         try:
             # Create document title
-            subject = email_draft.get('subject', 'Untitled Email')
+            subject = email_draft.get('subject', 'Untitled Email').strip()
             timestamp = datetime.now().strftime('%Y%m%d_%H%M%S')
             doc_title = f"{brand_name} - {subject} - {timestamp}"
             
@@ -126,16 +127,8 @@ class GoogleDocsExporter:
             document_id = doc.get('documentId')
             print(f"[GoogleDocs] Created document: {doc_title}")
             
-            # Build formatted content
-            requests = self._build_email_content_requests(email_draft, structure_name, language)
-            
-            # Update document with content
-            if requests:
-                self.docs_service.documents().batchUpdate(
-                    documentId=document_id,
-                    body={'requests': requests}
-                ).execute()
-                print(f"[GoogleDocs] ✓ Content added to document")
+            # --- EXECUTE CONTENT ---
+            write_email_to_doc(self.docs_service, document_id, email_draft, structure_name, language)
             
             # Move to folder if specified
             if folder_id:
@@ -152,151 +145,329 @@ class GoogleDocsExporter:
             
         except HttpError as e:
             raise Exception(f"Google Docs API error: {e}")
+
+# --- REUSABLE WRITER FUNCTION ---
+def write_email_to_doc(docs_service, document_id: str, email_draft: Dict[str, Any], structure_name: str, language: str, header_text: Optional[str] = None):
+    """
+    Writes formatted email content (with HTML tables/lists) to the end of a Google Doc.
+    Reusable by Exporter and Compiler.
+    Uses aggressive flushing (Fetch-Insert-Fetch) to ensure perfect index tracking.
+    """
+    parser = HtmlToDocsParser()
+    requests_queue = []
     
-    def _build_email_content_requests(
-        self, 
-        email_draft: Dict[str, Any],
-        structure_name: str,
-        language: str
-    ) -> list:
-        """
-        Build Google Docs API requests to format the email content.
-        Parses <b>...</b> tags for inline bolding.
-        """
-        content_items = []
+    # 1. Get Initial End Index
+    doc = docs_service.documents().get(documentId=document_id).execute()
+    curr_doc_end_index = doc.get('body').get('content')[-1].get('endIndex') - 1
+    
+    def flush_and_refresh():
+        nonlocal requests_queue
+        nonlocal curr_doc_end_index
+        if requests_queue:
+            docs_service.documents().batchUpdate(
+                documentId=document_id,
+                body={'requests': requests_queue}
+            ).execute()
+            requests_queue = []
         
-        def add(text, bold=False, h1=False):
-            if not text: return
-            content_items.append({"text": str(text), "bold": bold, "h1": h1})
-        def add_br():
-            content_items.append({"text": "\n", "bold": False, "h1": False})
+        # Always refresh index to be safe
+        doc = docs_service.documents().get(documentId=document_id).execute()
+        curr_doc_end_index = doc.get('body').get('content')[-1].get('endIndex') - 1
 
-        # --- CONTENT CONSTRUCTION ---
-        add("Email Draft", h1=True) 
-        add_br()
-        add("##########")
-        add_br()
-        add_br()
-        add("LANGUAGE: ")
-        add(language.upper())
-        add_br()
-        add_br()
-        add("Subject Line : ", bold=True)
-        add(email_draft.get('subject', ''))
-        add_br()
-        add("Preview Text : ", bold=True)
-        add(email_draft.get('preview', ''))
-        add_br()
-        add_br()
-        add("Hero Banner Title : ", bold=True)
-        add(email_draft.get('hero_title', ''))
-        add_br()
-        add("Hero Banner Subtitle : ", bold=True)
-        add(email_draft.get('hero_subtitle', ''))
-        add_br()
-        add("CTA : ", bold=True)
-        add(email_draft.get('cta_hero', ''))
-        add_br() 
-        add_br()
-        add("Descriptive Block Title : ", bold=True)
-        add(email_draft.get('descriptive_block_title', ''))
-        add_br()
-        add("Sub-title : ", bold=True)
-        add(email_draft.get('descriptive_block_subtitle', ''))
-        add_br()
-        add_br()
-        add(f"[[{structure_name}]]")
-        add_br()
-        add(email_draft.get('descriptive_block_content', ''))
-        add_br()
-        add_br()
-        add("CTA : ", bold=True)
-        add(email_draft.get('cta_hero', '')) 
-        add_br()
-        add_br()
-        add("Product Block Title : ", bold=True)
-        add(email_draft.get('product_block_title', 'Shop the Collection')) 
-        add_br()
-        add("Product Block Subtitle : ", bold=True)
-        add(email_draft.get('product_block_subtitle', ''))
-        add_br()
-        add_br()
-        products = email_draft.get('products', [])
-        if not products and email_draft.get('product_block_content'):
-             add(email_draft.get('product_block_content'))
-             add_br()
-        else:
-             for prod in products:
-                 add(prod)
-                 add_br()
-        add("CTA : ", bold=True)
-        add(email_draft.get('cta_product', ''))
-        add_br()
-        add("##########")
-        add_br()
-
-        # --- PARSE & EXECUTE ---
-        full_text = ""
-        style_requests = []
-        current_idx = 1
+    # Helper: Add Text Block (Auto-Flushes)
+    def add_text_block(text: str, bold: bool = False, h1: bool = False, bullets: bool = False, styles_override: List[Dict] = None):
+        """
+        Inserts a block of text and applies styles.
+        styles_override: List of {'start': int (relative), 'end': int, 'bold': bool} for mixed styling.
+        """
+        nonlocal curr_doc_end_index
+        if not text: return
         
-        for item in content_items:
-            text = item['text']
-            is_static_bold = item['bold']
-            is_h1 = item['h1']
-
-            # Parse <b> tags for inline bolding
-            parts = re.split(r'(<b>.*?</b>)', text, flags=re.DOTALL)
-            
-            for part in parts:
-                if part.startswith('<b>') and part.endswith('</b>'):
-                    clean_part = part[3:-4]
-                    start = current_idx
-                    full_text += clean_part
-                    end = current_idx + len(clean_part)
-                    style_requests.append({'startIndex': start, 'endIndex': end, 'bold': True})
-                    current_idx = end
-                else:
-                    start = current_idx
-                    full_text += part
-                    end = current_idx + len(part)
-                    if is_static_bold:
-                        style_requests.append({'startIndex': start, 'endIndex': end, 'bold': True})
-                    current_idx = end
-            
-            if is_h1:
-                # Approximate H1 range
-                style_requests.append({'startIndex': current_idx - len(text), 'endIndex': current_idx, 'h1': True})
-
-        requests = []
-        # 1. Insert Text
-        requests.append({
+        # 1. Insert
+        requests_queue.append({
             'insertText': {
-                'location': {'index': 1},
-                'text': full_text
+                'location': {'index': curr_doc_end_index},
+                'text': text
             }
         })
-        # 2. Apply Formatting
-        for style in style_requests:
-            if style.get('bold'):
-                requests.append({
-                    'updateTextStyle': {
-                        'range': {'startIndex': style['startIndex'], 'endIndex': style['endIndex']},
-                        'textStyle': {'bold': True},
-                        'fields': 'bold'
-                    }
-                })
-            if style.get('h1'):
-                requests.append({
-                    'updateParagraphStyle': {
-                        'range': {'startIndex': style['startIndex'], 'endIndex': style['endIndex']},
-                        'paragraphStyle': {'namedStyleType': 'HEADING_1'},
-                        'fields': 'namedStyleType'
-                    }
-                })
+        
+        start = curr_doc_end_index
+        end = start + len(text)
+        
+        # 2. Styling (Base)
+        if styles_override:
+            # 2a. SAFE RESET: Force 'Normal' style first to prevent inheritance
+            # This ensures "bold" from previous block doesn't bleed in.
+            requests_queue.append({
+                'updateTextStyle': {
+                    'range': {'startIndex': start, 'endIndex': end},
+                    'textStyle': {'bold': False, 'italic': False, 'underline': False},
+                    'fields': 'bold,italic,underline'
+                }
+            })
+            
+            # 2b. Apply mixed styles
+            for s in styles_override:
+                # relative to start
+                s_start = start + s.get('start', 0)
+                s_end = start + s.get('end', 0)
                 
-        return requests
+                style_type = s.get('type', 'bold') # Default to bold for back-compat
+                
+                if style_type == 'bold' or s.get('bold'): # Handle legacy dict key 'bold': True
+                    requests_queue.append({
+                        'updateTextStyle': {
+                            'range': {'startIndex': s_start, 'endIndex': s_end},
+                            'textStyle': {'bold': True},
+                            'fields': 'bold'
+                        }
+                    })
+                elif style_type == 'italic':
+                     requests_queue.append({
+                        'updateTextStyle': {
+                            'range': {'startIndex': s_start, 'endIndex': s_end},
+                            'textStyle': {'italic': True},
+                            'fields': 'italic'
+                        }
+                    })
+                elif style_type == 'underline':
+                     requests_queue.append({
+                        'updateTextStyle': {
+                            'range': {'startIndex': s_start, 'endIndex': s_end},
+                            'textStyle': {'underline': True},
+                            'fields': 'underline'
+                        }
+                    })
+        else:
+            # Apply uniform style (Explicit reset)
+            text_style_mask = {'bold': True} if bold else {'bold': False}
+            requests_queue.append({
+                'updateTextStyle': {
+                    'range': {'startIndex': start, 'endIndex': end},
+                    'textStyle': text_style_mask,
+                    'fields': 'bold'
+                }
+            })
+
+        if h1:
+            requests_queue.append({
+                'updateParagraphStyle': {
+                    'range': {'startIndex': start, 'endIndex': end},
+                    'paragraphStyle': {'namedStyleType': 'HEADING_1'},
+                    'fields': 'namedStyleType'
+                }
+            })
+            
+        if bullets:
+             requests_queue.append({
+                'createParagraphBullets': {
+                    'range': {'startIndex': start, 'endIndex': end},
+                    'bulletPreset': 'BULLET_DISC_CIRCLE_SQUARE'
+                }
+            })
+        
+        # 3. Synchronize
+        flush_and_refresh()
+
+    # --- CONTENT CONSTRUCTION ---
+    if header_text:
+        add_text_block(f"{header_text}\n", h1=True)
+        add_text_block("##########\n\n")
+
+    add_text_block(f"SUBJECT: {email_draft.get('subject', '')}\n", bold=True)
+    add_text_block(f"PREVIEW: {email_draft.get('preview', '')}\n", bold=False)
+    add_text_block("##########\n\n")
+    add_text_block(f"LANGUAGE: {language.upper()}\n\n")
     
+    add_text_block("Hero Banner Title : ", bold=True)
+    add_text_block(f"{email_draft.get('hero_title', '')}\n")
+    add_text_block("Hero Banner Subtitle : ", bold=True)
+    add_text_block(f"{email_draft.get('hero_subtitle', '')}\n")
+    add_text_block("CTA : ", bold=True)
+    add_text_block(f"{email_draft.get('cta_hero', '')}\n\n")
+    
+    add_text_block("Descriptive Block Title : ", bold=True)
+    add_text_block(f"{email_draft.get('descriptive_block_title', '')}\n")
+    add_text_block("Sub-title : ", bold=True)
+    add_text_block(f"{email_draft.get('descriptive_block_subtitle', '')}\n\n")
+    
+    add_text_block(f"[[{structure_name}]]\n")
+    
+    # HTML BLOCK
+    html_content = email_draft.get('descriptive_block_content', '')
+    ops = parser.parse_to_ops(html_content)
+    
+    for op in ops:
+        if op['type'] == 'text':
+            # Use add_text_block with complex styles
+            data = op['data']
+            add_text_block(data['text'], styles_override=data['styles'])
+            
+        elif op['type'] == 'list':
+            # Construct full list text
+            full_list_text = ""
+            combined_styles = []
+            
+            for item_data in op['items']:
+                # The text for this item
+                txt = item_data['text'] + "\n"
+                
+                # Adjust styles for this chunk to be relative to the full block start
+                offset = len(full_list_text)
+                for s in item_data['styles']:
+                    combined_styles.append({
+                        'start': offset + s['start'],
+                        'end': offset + s['end'],
+                        'bold': True
+                    })
+                
+                full_list_text += txt
+            
+            add_text_block(full_list_text, bullets=True, styles_override=combined_styles)
+            
+        elif op['type'] == 'table':
+            # TABLE HANDLING
+            insert_idx = curr_doc_end_index
+            docs_service.documents().batchUpdate(
+                documentId=document_id,
+                body={'requests': [{
+                    'insertTable': {
+                        'rows': op['rows'],
+                        'columns': op['columns'],
+                        'location': {'index': insert_idx}
+                    }
+                }]}
+            ).execute()
+            
+            # Refresh to find table
+            flush_and_refresh() # This updates curr_doc_end_index, but we need to find the table element
+            
+            # Logic to find table (heuristic: last structure with table)
+            doc = docs_service.documents().get(documentId=document_id).execute()
+            body_content = doc.get('body', {}).get('content', [])
+            validation_table = None
+            for element in reversed(body_content):
+                if 'table' in element and element['startIndex'] >= insert_idx:
+                    validation_table = element['table']
+                    break
+            
+            if validation_table:
+                cell_requests = []
+                rows = validation_table.get('tableRows', [])
+                op_cells = op['cells']
+                
+                # Iterate in REVERSE to prevent index shifting issues during batch insertion
+                # If we insert Text A (len 10) at Index 100, then Text B at Index 200...
+                # If we do Index 200 first, it's at 200. Index 100 is still at 100.
+                # If we do Index 100 first, Index 200 shifts to 210.
+                
+                # Use strict reversed iteration
+                for r_idx in reversed(range(len(rows))):
+                    if r_idx >= len(op_cells): continue
+                    
+                    row = rows[r_idx]
+                    row_cells = row.get('tableCells', [])
+                    op_row = op_cells[r_idx]
+                    
+                    for c_idx in reversed(range(len(row_cells))):
+                        if c_idx >= len(op_row): continue
+                        
+                        cell = row_cells[c_idx]
+                        
+                        # Find insertion point in cell
+                        cell_content_nodes = cell.get('content', [])
+                        if not cell_content_nodes: continue
+                        
+                        cell_insert_index = cell_content_nodes[0].get('startIndex')
+                        
+                        cell_data = op_row[c_idx]
+                        if not cell_data['text']: continue
+                        
+                        # 1. Style Text (Applied after insert in queue, but indices are relative)
+                        # Actually, Insert shifts content.
+                        # If we mix Insert and Style in one batch:
+                        # Request N: Insert at X
+                        # Request N+1: Style at Range [X, X+Len] (using pre-batch indices?? or post?)
+                        # Docs API: "The index is relative to the document state at the start of the batch EXCEPT for insertions within the same batch which shift subsequent indices."
+                        # Wait, "The indices are technically relative to start of batch, but insertions affect subsequent commands."
+                        # Actually, safest is to calculate Style Range based on Insertion.
+                        # And since we go Reverse, Insert at late index doesn't affect early index.
+                        
+                        # BUT! We insert at X. Then Style at [X, X+Len].
+                        # In the SAME batch (cell_requests).
+                        # Docs order in batch matters.
+                        # We append [Insert, Style].
+                        # Since we go Reverse Cells, we do Cell Z, then Cell Y.
+                        # Cell Z Insert/Style doesn't affect Cell Y indices.
+                        
+                        text_len = len(cell_data['text'])
+                        
+                        # Insert
+                        cell_requests.append({
+                            'insertText': {
+                                'location': {'index': cell_insert_index},
+                                'text': cell_data['text']
+                            }
+                        })
+                        
+                        # Style (Must match the inserted text)
+                        # Since we process this cell "first" in our queue (actually last in document), 
+                        # subsequent requests (previous cells) won't be shifted by this one?
+                        # Wait. requests in batch are executed in order.
+                        # If we append Z, then Y.
+                        # Execution:
+                        # 1. Insert Z (at 200). Doc len += 5.
+                        # 2. Style Z (at 200).
+                        # 3. Insert Y (at 100). Valid? Yes, 100 is still 100.
+                        # CORRECT using Reverse Iteration + Sequential Append.
+                        
+                        for s in cell_data['styles']:
+                            # relative to cell_insert_index because we insert at START of cell
+                            # Paragraph stub moves forward.
+                            s_start = cell_insert_index + s.get('start', 0)
+                            s_end = cell_insert_index + s.get('end', 0)
+                            
+                            style_type = s.get('type', 'bold')
+                            
+                            style_mask = {}
+                            fields = ''
+                            
+                            if style_type == 'bold' or s.get('bold'):
+                                style_mask = {'bold': True}
+                                fields = 'bold'
+                            elif style_type == 'italic':
+                                style_mask = {'italic': True}
+                                fields = 'italic'
+                            elif style_type == 'underline':
+                                style_mask = {'underline': True}
+                                fields = 'underline'
+                            
+                            if fields:
+                                cell_requests.append({
+                                    'updateTextStyle': {
+                                        'range': {'startIndex': s_start, 'endIndex': s_end},
+                                        'textStyle': style_mask,
+                                        'fields': fields
+                                    }
+                                })
+                
+                # Execute Cell Updates
+                if cell_requests:
+                    docs_service.documents().batchUpdate(documentId=document_id, body={'requests': cell_requests}).execute()
+            
+            # Final refresh after table
+            flush_and_refresh()
+    
+    # Footer
+    add_text_block("\n\n")
+    add_text_block("Product Block: ", bold=True)
+    add_text_block(f"{email_draft.get('product_block_title', '')}\n")
+    products = email_draft.get('products', [])
+    for prod in products:
+         add_text_block(f"- {prod}\n")
+    add_text_block(f"CTA: {email_draft.get('cta_product', '')}\n")
+    add_text_block("="*30 + "\n\n")
+
     def share_document(self, document_id: str, email: str, role: str = 'writer'):
         """
         Share document with a specific email address.
@@ -318,6 +489,22 @@ class GoogleDocsExporter:
             
         except HttpError as e:
             print(f"[GoogleDocs] Warning: Could not share document: {e}")
+
+# Convenience function
+def export_email_to_google_docs(
+    email_draft: Dict[str, Any],
+    brand_name: str,
+    folder_id: Optional[str] = None,
+    share_with: Optional[str] = None,
+    structure_name: str = "Unknown Structure",
+    language: str = "English"
+) -> Dict[str, str]:
+    """
+    Export an email draft to Google Docs.
+    """
+    exporter = GoogleDocsExporter()
+    return exporter.create_email_doc(email_draft, brand_name, folder_id, structure_name, language)
+
 
 # Convenience function
 def export_email_to_google_docs(

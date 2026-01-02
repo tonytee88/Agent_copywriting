@@ -12,6 +12,7 @@ from email_orchestrator.tools.brand_scraper_tool import analyze_brand
 from email_orchestrator.subagents.campaign_plan_verifier_agent import campaign_plan_verifier_agent
 from email_orchestrator.subagents.strategist_agent import strategist_agent
 from email_orchestrator.subagents.drafter_agent import drafter_agent
+from email_orchestrator.subagents.stylist_agent import StylistAgent
 from email_orchestrator.tools.campaign_planner_tools import optimize_plan_transformations
 from email_orchestrator.subagents.verifier_agent import verifier_agent
 from email_orchestrator.tools.deterministic_verifier import DeterministicVerifier
@@ -209,6 +210,7 @@ async def generate_email_campaign(
     
     print(f"\n--- EXECUTING CAMPAIGN: {plan.campaign_name} ({len(plan.email_slots)} emails) ---")
     
+    stylist = StylistAgent()
     results = []
     
     # 2. Iterate Slots
@@ -281,7 +283,26 @@ async def generate_email_campaign(
                 # We still proceed to LLM QA but it will likely fail too. Or we could raise/skip.
                 # For now, let's proceed with the best we have.
     
-            # 2. LLM QA LOOP (One-Pass)
+            # 2. [NEW] STYLIST AGENT (Tactical Formatting)
+            # Runs on the draft (either perfected or best-effort) before final LLM QA
+            print(f"[Email #{slot.slot_number}-{lang}] Passing to Stylist for tactical formatting...")
+            try:
+                # draft is an EmailDraft Pydantic object, accessed via dot notation
+                raw_desc = getattr(draft, 'descriptive_block_content', '')
+                if raw_desc:
+                    styled_desc = await stylist.style_content(
+                        content=raw_desc, 
+                        structure_id=blueprint.structure_id,
+                        brand_voice=brand_bio.brand_voice, 
+                        language=lang
+                    )
+                    # Update the Pydantic model directly
+                    draft.descriptive_block_content = styled_desc
+                    print(f"[Email #{slot.slot_number}-{lang}] Stylist applied formatting.")
+            except Exception as e:
+                 print(f"[Email #{slot.slot_number}-{lang}] Stylist failed, keeping raw draft: {e}")
+
+            # 3. LLM QA LOOP (One-Pass)
             print(f"[Email #{slot.slot_number}-{lang}] Proceeding to LLM QA...")
             # Todo: Verifier should ideally know language too, but English feedback is usually fine for general structure checks.
             # Assuming Verifier is Language-Agnostic or defaults to EN analysis which works ok for structure.

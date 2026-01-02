@@ -55,6 +55,7 @@ from email_orchestrator.tools.google_sheets_importer import import_plan_from_she
 from email_orchestrator.tools.campaign_plan_manager import CampaignPlanManager
 from email_orchestrator.tools.campaign_compiler import compile_campaign_doc
 from datetime import datetime
+from email_orchestrator.config import CAMPAIGN_OUTPUT_FOLDER_ID
 
 async def run_execute(args):
     """Executes the EXECUTION phase (Phase 2)."""
@@ -153,7 +154,7 @@ async def run_execute(args):
             campaign_id=plan.campaign_id,
             target_month=target_month,
             drafts=drafts,
-            folder_id=plan.drive_folder_id # Use folder ID from plan
+            folder_id=CAMPAIGN_OUTPUT_FOLDER_ID # Enforce user-defined folder
         )
         
         print("\n" + "="*50)

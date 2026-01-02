@@ -12,6 +12,7 @@ from google.oauth2 import service_account
 from googleapiclient.discovery import build
 from google.oauth2.credentials import Credentials
 from google.auth.transport.requests import Request
+from email_orchestrator.tools.google_docs_export import write_email_to_doc
 
 SCOPES = ['https://www.googleapis.com/auth/documents', 'https://www.googleapis.com/auth/drive']
 DEFAULT_CREDENTIALS_PATH = Path(__file__).parent.parent.parent / "google_credentials.json"
@@ -55,7 +56,7 @@ class CampaignCompiler:
         Creates ONE Google Doc with all drafts.
         File Name: BRAND-MONTH-CAMPAIGN ID_Drafts
         """
-        doc_title = f"{brand_name}-{target_month}-{campaign_id}_Drafts"
+        doc_title = f"{brand_name}-{target_month}-{campaign_id}"
         
         # 1. Create Doc
         doc = self.docs_service.documents().create(body={'title': doc_title}).execute()
@@ -95,146 +96,17 @@ class CampaignCompiler:
         sorted_drafts = sorted(drafts, key=lambda x: x.get('slot_number', 0))
         
         for draft in sorted_drafts:
-            # We want to use the EXACT logic from _build_email_content_requests
-            # Let's inline a simplified version of that helper here
+            # Use shared exporter logic to write formatted content (Tables, Lists, etc.)
+            structure = draft.get('structure_id', 'Unknown')
+            lang = draft.get('language', 'English')
             
-            slot_num = draft.get('slot_number')
-            
-            # Helper to add to our local list
-            def add(text, bold=False, h1=False):
-                if not text: return
-                content_items.append({"text": str(text), "bold": bold, "h1": h1})
-            def add_br():
-                content_items.append({"text": "\n", "bold": False, "h1": False})
-
-            add(f"--- EMAIL #{slot_num} ---", h1=True) 
-            add_br()
-            add("##########")
-            add_br()
-            add_br()
-            add(f"LANGUAGE: {draft.get('language', 'English')}")
-            add_br()
-            add_br()
-            add("Subject Line : ", bold=True)
-            add(draft.get('subject', ''))
-            add_br()
-            add("Preview Text : ", bold=True)
-            add(draft.get('preview', ''))
-            add_br()
-            add_br()
-            add("Hero Banner Title : ", bold=True)
-            add(draft.get('hero_title', ''))
-            add_br()
-            add("Hero Banner Subtitle : ", bold=True)
-            add(draft.get('hero_subtitle', ''))
-            add_br()
-            add("CTA : ", bold=True)
-            add(draft.get('cta_hero', ''))
-            add_br() 
-            add_br()
-            add("Descriptive Block Title : ", bold=True)
-            add(draft.get('descriptive_block_title', ''))
-            add_br()
-            add("Sub-title : ", bold=True)
-            add(draft.get('descriptive_block_subtitle', ''))
-            add_br()
-            add_br()
-            add(f"[[{draft.get('structure_id', 'Unknown Pattern')}]]")
-            add_br()
-            add(draft.get('descriptive_block_content', ''))
-            add_br()
-            add_br()
-            add("CTA : ", bold=True)
-            add(draft.get('cta_hero', ''))  # Legacy used cta_hero again here? Checking legacy code. Yes.
-            add_br()
-            add_br()
-            add("Product Block Title : ", bold=True)
-            add(draft.get('product_block_title', 'Shop the Collection')) 
-            add_br()
-            add("Product Block Subtitle : ", bold=True)
-            add(draft.get('product_block_subtitle', ''))
-            add_br()
-            add_br()
-            products = draft.get('products', [])
-            if not products and draft.get('product_block_content'):
-                 add(draft.get('product_block_content'))
-                 add_br()
-            else:
-                 for prod in products:
-                     add(prod)
-                     add_br()
-            add("CTA : ", bold=True)
-            add(draft.get('cta_product', ''))
-            add_br()
-            add("##########")
-            add_br()
-            add_br()
-            add("="*30) # Separator between emails
-            add_br()
-            add_br()
-            
-        # --- PARSE & EXECUTE (Legacy Logic Adapted) ---
-        import re
-        full_text = ""
-        style_requests = []
-        current_idx = 1
-        
-        for item in content_items:
-            text = item['text']
-            is_static_bold = item['bold']
-            is_h1 = item['h1']
-
-            # Parse <b> tags for inline bolding
-            parts = re.split(r'(<b>.*?</b>)', text, flags=re.DOTALL)
-            
-            for part in parts:
-                if part.startswith('<b>') and part.endswith('</b>'):
-                    clean_part = part[3:-4]
-                    start = current_idx
-                    full_text += clean_part
-                    end = current_idx + len(clean_part)
-                    style_requests.append({'startIndex': start, 'endIndex': end, 'bold': True})
-                    current_idx = end
-                else:
-                    start = current_idx
-                    full_text += part
-                    end = current_idx + len(part)
-                    if is_static_bold:
-                        style_requests.append({'startIndex': start, 'endIndex': end, 'bold': True})
-                    current_idx = end
-            
-            if is_h1:
-                # Approximate H1 range
-                style_requests.append({'startIndex': current_idx - len(text), 'endIndex': current_idx, 'h1': True})
-
-        requests = []
-        # 1. Insert Text
-        requests.append({
-            'insertText': {
-                'location': {'index': 1},
-                'text': full_text
-            }
-        })
-        # 2. Apply Formatting
-        for style in style_requests:
-            if style.get('bold'):
-                requests.append({
-                    'updateTextStyle': {
-                        'range': {'startIndex': style['startIndex'], 'endIndex': style['endIndex']},
-                        'textStyle': {'bold': True},
-                        'fields': 'bold'
-                    }
-                })
-            if style.get('h1'):
-                requests.append({
-                    'updateParagraphStyle': {
-                        'range': {'startIndex': style['startIndex'], 'endIndex': style['endIndex']},
-                        'paragraphStyle': {'namedStyleType': 'HEADING_1'},
-                        'fields': 'namedStyleType'
-                    }
-                })
-        
-        self.docs_service.documents().batchUpdate(documentId=doc_id, body={'requests': requests}).execute()
+            try:
+                # Add Header text e.g. "--- EMAIL #1 ---"
+                slot_header = f"--- EMAIL #{draft.get('slot_number', '?')} ---"
+                write_email_to_doc(self.docs_service, doc_id, draft, structure, lang, header_text=slot_header)
+            except Exception as e:
+                print(f"[Compiler] Error writing draft {draft.get('slot_number')}: {e}")
+                # Continue to next draft
         
         doc_url = f"https://docs.google.com/document/d/{doc_id}/edit"
         print(f"[Compiler] Created Compiled Doc: {doc_url}")

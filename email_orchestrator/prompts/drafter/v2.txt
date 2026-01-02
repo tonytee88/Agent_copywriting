@@ -21,10 +21,29 @@ Your goal is to write a high-converting "Type #1" email by strictly following th
 4. **Internal Repetition**: Ensure `hero_title`, `hero_subtitle`, `descriptive_block_title`, and `descriptive_block_subtitle` are ALL UNIQUE. 
 5. **Follow the Structure Map**: The Blueprint defines specific goals for each block.
    - 🎯 **CONTENT DISTRIBUTION**: Ensure the **Promotional Offer**, **Urgency**, and **Angle** are distributed across the blocks. 
-   - **NUANCE**: If the Blueprint defines an **"Educational"** purpose, you do NOT need to include an Offer or Urgency. Focus purely on value and transformation.
+   - **NUANCE (Educational/Nurture)**:
+     - **PRIMARY FOCUS**: 90% on Value/Transformation/Education. The reader must feel they learned something valuable.
+     - **SECONDARY**: The product is strictly a "tool" to help achieve the result.
+     - **PROMO RULE**: Do NOT mention the Discount/Sale in the Hero or Descriptive block. Relegate it to a subtle P.S. or the Product Block purely as a "bonus".
+     - **GOAL**: Build trust, not drive a transaction.
    - 🎯 **EMOJI PACING**: If the Blueprint requests an emoji in the subject, provide exactly ONE.
+
+   - 🏗️ **STRICT LEVERAGE OF STRUCTURE ID** (Formatted in `descriptive_block_content`):
+     - **STRUCT_NARRATIVE_PARAGRAPH**: Plain text `<p>`. One fluid, evocative paragraph (3-4 lines). No bullets.
+     - **STRUCT_EMOJI_CHECKLIST**: `<ul>` list. `<li>✨ <b>Benefit</b>: Short desc</li>`. 3-5 items.
+     - **STRUCT_5050_SPLIT**: Two paragraphs `<p>` separated by `<br><br>`. Context first, solution second.
+     - **STRUCT_MEDIA_LEFT_OFFSET**: `<ul>` list. `<li><strong>Feature Name:</strong> Short explanation</li>`.
+     - **STRUCT_SPOTLIGHT_BOX**: Singe-cell `<table>` with centered text, border `1px solid #000`, and UPPERCASE key phrases.
+     - **STRUCT_STAT_ATTACK**: `<table>` row. `<tr><td><strong>BIG STAT</strong><br>Small desc</td>...</tr>`.
+     - **STRUCT_STEP_BY_STEP**: `<table>` with rows. `<tr><td><strong>Step 1</strong></td><td>Action</td></tr>`.
+     - **STRUCT_MINI_GRID**: `<table>` with 2 cols. `<tr><td><strong>Item 1</strong><br>Desc</td><td><strong>Item 2</strong><br>Desc</td></tr>`.
+     - **STRUCT_SOCIAL_PROOF_QUOTE**: `<blockquote>` style or `<i>"Quote"</i><br>— <b>Name</b>`.
+     - **STRUCT_GIF_PREVIEW**: Single line caption `<p>`. "Watch how [Product] transforms [Problem]."
 6. **Adopt the Persona**: Use the voice/tone defined by the Persona Description.
-7. **Commercial CTAs ONLY**: NEVER use "Learn More". Use "Shop Now", "Get Yours". Keep them SHORT (Max 13 chars).
+7. **CTA Strategy (Context-Aware)**:
+   - **Promotional**: "Shop Now", "Get Yours".
+   - **Educational/Nurture**: "Discover", "View Collection", "See the Solution".
+   - **BANNED**: NEVER use "Learn More", "Read More" (We do not have a blog).
 8. **JSON OUTPUT ONLY**.
 9. **PATCHING MINDSET (IF REVISION)**: If `REVISION FEEDBACK` is provided, do NOT restart. KEEP the good parts of the draft and only PATCH/FIX the specific issues requested. Enhance the existing copy rather than replacing it entirely unless instructed.
 
@@ -47,11 +66,11 @@ Return valid JSON:
   "product_block_title": "Max 36 chars. Bridge angle to products.",
   "product_block_subtitle": "Max 72 chars. Theme extension.",
   "products": [
-    "Product Name 1 (Output ONLY the name, exactly as in Brand Bio)",
-    "Product Name 2 (Output ONLY the name)",
-    "Product Name 3 (Output ONLY the name)"
+    "Product Name 1 (Output ONLY the name. For Educational: Recommend relevant tools)",
+    "Product Name 2",
+    "Product Name 3"
   ],
-  "cta_product": "Simple, direct, action-focused (e.g., Shop Now)"
+  "cta_product": "Context-aware action (e.g., 'Shop Now' for Promo, 'View Collection' for Edu)"
 }}
 ```
 

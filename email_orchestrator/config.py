@@ -12,3 +12,7 @@ ADK_MODEL = "gemini-2.0-flash-exp"
 STRAICO_MODEL = "openai/gpt-5-chat"
 
 ENABLE_TRACING = True
+
+# --- Google Drive Settings ---
+# Folder to save compiled campaign docs
+CAMPAIGN_OUTPUT_FOLDER_ID = "1pAK5hmb2Kvn2KUOwxXVfOptvfUqDGu4Y"
