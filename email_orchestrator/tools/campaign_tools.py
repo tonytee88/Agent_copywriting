@@ -227,9 +227,14 @@ async def generate_email_campaign(
             print(f"   > [Language: {lang}]")
             
             # A. Strategist (Create Blueprint using Slot Directives)
+            # STRICT RULE: If Educational/Nurture, HIDE the offer to prevent leakage
+            effective_offer = slot.offer_details or "General Brand Awareness"
+            if slot.email_purpose in ["educational", "nurture", "storytelling"]:
+                effective_offer = "NONE (Focus purely on value/content)"
+            
             request = CampaignRequest(
                 brand_name=plan.brand_name,
-                offer=slot.offer_details or "General Brand Awareness",
+                offer=effective_offer,
                 theme_angle=slot.theme,
                 target_audience=brand_bio.target_audience
             )
@@ -372,6 +377,7 @@ async def generate_email_campaign(
             # Ensure final_draft connects to 'draft' if no revision occurred
             if not final_draft:
                 final_draft = draft
+                
             log_entry = CampaignLogEntry(
                 campaign_id=campaign_id,
                 timestamp=datetime.now().isoformat(),

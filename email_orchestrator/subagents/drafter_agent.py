@@ -165,24 +165,40 @@ INSTRUCTIONS:
         # actually, simply appending new messages to the history list is cleaner logic 
         # but we need to pass a single string to generate_text.
         
-        # Optimized Revision Prompt:
-        # We define a new prompt that references the *previous output* implicitly 
-        # OR we just feed the last assistant message + instructions.
+        # Optimized Revision Prompt with FULL CONTEXT (Amnesia Fix):
         
+        # 1. Re-fetch Format Guide (Context persistence)
+        format_guide = self.knowledge_reader.get_document_content("Email instructions type #1.pdf")
+        if not format_guide:
+            format_guide = "Ensure strict Type #1 format: Hero, Descriptive Block, Product Block."
+            
         last_draft_content = self.history[-2]["content"] # Assistant's last response
         
         combined_prompt = f"""
 ORIGINAL REQUEST CONTEXT:
-(See blueprint provided earlier)
+=== BLUEPRINT ===
+{self.blueprint.model_dump_json(indent=2)}
 
-YOUR PREVIOUS DRAFT:
+=== BRAND BIO ===
+{self.brand_bio.model_dump_json(indent=2)}
+
+=== FORMAT GUIDE ===
+{format_guide}
+
+CAMPAIGN CONTEXT:
+{self.campaign_context or 'None'}
+
+### YOUR PREVIOUS DRAFT:
 {last_draft_content}
 
-FEEDBACK:
+### CRITICAL FEEDBACK (MUST FIX):
 {feedback}
 
-TASK:
-Rewrite the draft to address the feedback. Return ONLY valid JSON.
+### TASK:
+Rewrite the draft to address the feedback strictly.
+1. Maintain the Persona and Tone defined in Brand Bio.
+2. Adhere to ALL constraints in the Format Guide (No dashes, numeric digits, etc.).
+3. Return ONLY the FULL updated JSON.
 """
         response_text = await self.client.generate_text(combined_prompt, model=self.model)
         self.history.append({"role": "assistant", "content": response_text})

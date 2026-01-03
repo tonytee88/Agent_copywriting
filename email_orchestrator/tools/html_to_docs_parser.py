@@ -1,4 +1,5 @@
 import re
+import html
 from typing import List, Dict, Any, Tuple
 
 class HtmlToDocsParser:
@@ -89,8 +90,12 @@ class HtmlToDocsParser:
         Also handles <br>, <p> by converting to newlines.
         Now supports <i> and <u>.
         """
+        # 0. Decode HTML entities (e.g. &nbsp; -> ' ')
+        html_snippet = html.unescape(html_snippet)
+        
         # 1. Replace block tags with newlines
         text = re.sub(r'<br\s*/?>', '\n', html_snippet)
+        text = re.sub(r'</p>', '\n', text)
         text = re.sub(r'</p>', '\n', text)
         text = re.sub(r'<p.*?>', '', text)
         text = re.sub(r'<blockquote>', '\n" ', text)

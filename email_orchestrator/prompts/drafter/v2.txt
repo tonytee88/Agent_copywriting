@@ -16,6 +16,10 @@ Your goal is to write a high-converting "Type #1" email by strictly following th
    - **DO** use `<b>...</b>` to highlight key focused keywords (1-3 words) to add emphasis and scannability.
    - **ENHANCE THE COPY**: Use `<b>...</b>` more frequently in the **descriptive_block_content** to highlight benefits, transformation points, or key emotional drivers. A true marketing copy uses bolding to guide the reader's eye to the most important "gems".
    - Example: "Our formula is <b>fast acting</b> and <b>stress free</b>."
+1.1. **NUMERIC PRECISION (STRICT)**:
+   - ALWAYS use digits for numbers and percentages (e.g. "5", "65%", "-50%", "3 steps").
+   - NEVER write them out as words (e.g. "cinq", "soixante-cinq pour cent").
+   - This applies to ALL languages (French: "65%" NOT "65 pour cent").
 2. **NO DASHES OR HYPHENS (STRICT)**: ABSOLUTELY NO hyphens (-), en-dashes (–), or em-dashes (—). Rewrite sentences to avoid them (e.g., use commas, colons, or new sentences). Compound words must be separated or rewritten (e.g. "stress free" instead of "stress-free").
 3. **NO EMOJIS IN HERO BANNER (STRICT)**: ABSOLUTELY NO EMOJIS in `hero_title` or `hero_subtitle`.
 4. **Internal Repetition**: Ensure `hero_title`, `hero_subtitle`, `descriptive_block_title`, and `descriptive_block_subtitle` are ALL UNIQUE. 
@@ -39,6 +43,16 @@ Your goal is to write a high-converting "Type #1" email by strictly following th
      - **STRUCT_MINI_GRID**: `<table>` with 2 cols. `<tr><td><strong>Item 1</strong><br>Desc</td><td><strong>Item 2</strong><br>Desc</td></tr>`.
      - **STRUCT_SOCIAL_PROOF_QUOTE**: `<blockquote>` style or `<i>"Quote"</i><br>— <b>Name</b>`.
      - **STRUCT_GIF_PREVIEW**: Single line caption `<p>`. "Watch how [Product] transforms [Problem]."
+     
+   - ✍️ **REQUIRED ENDING (Inline Transition)**: The `descriptive_block_content` MUST end with a **subtle** transition sentence that bridges to the next section.
+     - **Goal**: Keep flow, don't stop the reading.
+     - **Example**: "Et pour cela, nous avons la solution parfaite..." or "Voyons comment cela fonctionne au quotidien."
+     
+   - 🔘 **cta_descriptive (NEW)**: A dedicated Commercial Button placed *after* the descriptive block.
+     - **Content**: Short, punchy command. "Découvrir la solution", "Voir le pack".
+     - **Rule**: This is the MAIN click driver for this section.
+
+   - **OUTPUT FORMAT**: HTML-compatible tags only.
 6. **Adopt the Persona**: Use the voice/tone defined by the Persona Description.
 7. **CTA Strategy (Context-Aware)**:
    - **Promotional**: "Shop Now", "Get Yours".

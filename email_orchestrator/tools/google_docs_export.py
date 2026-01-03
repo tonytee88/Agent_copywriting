@@ -274,8 +274,11 @@ def write_email_to_doc(docs_service, document_id: str, email_draft: Dict[str, An
         add_text_block(f"{header_text}\n", h1=True)
         add_text_block("##########\n\n")
 
-    add_text_block(f"SUBJECT: {email_draft.get('subject', '')}\n", bold=False)
-    add_text_block(f"PREVIEW: {email_draft.get('preview', '')}\n", bold=False)
+    add_text_block("SUBJECT: ", bold=True)
+    add_text_block(f"{email_draft.get('subject', '')}\n", bold=False)
+    
+    add_text_block("PREVIEW: ", bold=True)
+    add_text_block(f"{email_draft.get('preview', '')}\n", bold=False)
     add_text_block("##########\n\n")
     add_text_block(f"LANGUAGE: {language.upper()}\n\n")
     
@@ -457,8 +460,15 @@ def write_email_to_doc(docs_service, document_id: str, email_draft: Dict[str, An
                     docs_service.documents().batchUpdate(documentId=document_id, body={'requests': cell_requests}).execute()
             
             # Final refresh after table
+            # Final refresh after table
             flush_and_refresh()
     
+    # NEW: Render Descriptive CTA Button (After HTML Block)
+    cta_descriptive = email_draft.get('cta_descriptive')
+    if cta_descriptive:
+        add_text_block(f"\nCTA : ", bold=True)
+        add_text_block(f"{cta_descriptive}\n")
+
     # Footer
     add_text_block("\n\n")
     add_text_block("Product Block: ", bold=True)

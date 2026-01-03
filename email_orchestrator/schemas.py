@@ -89,6 +89,7 @@ class EmailDraft(BaseModel):
     descriptive_block_title: str
     descriptive_block_subtitle: str
     descriptive_block_content: str # The main body
+    cta_descriptive: Optional[str] = None # New dedicated CTA button for this block
     
     # Reworked Product Block
     product_block_title: str = Field(default="Shop the Collection")
