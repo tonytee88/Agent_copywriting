@@ -9,7 +9,7 @@ ADK_MODEL = "gemini-2.0-flash-exp"
 
 # --- Straico Agents (Strategist, Verifier, Drafter, etc.) ---
 # Supported: "openai/gpt-4o-2024-11-20", "openai/gpt-5-chat", "openai/gpt-3.5-turbo", "anthropic/claude-3-5-sonnet-20240620"
-STRAICO_MODEL = "openai/gpt-5-chat"
+STRAICO_MODEL = "openai/gpt-4o-2024-11-20"
 
 ENABLE_TRACING = True
 

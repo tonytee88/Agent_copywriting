@@ -85,49 +85,49 @@ class HtmlToDocsParser:
 
     def _clean_text_content(self, html_snippet: str) -> Dict[str, Any]:
         """
-        Converts 'Hello <b>World</b>' into:
-        {'text': 'Hello World', 'styles': [{'start': 6, 'end': 11, 'bold': True}]}
-        Also handles <br>, <p> by converting to newlines.
-        Now supports <i> and <u>.
+        Robust text cleaner.
+        1. Handle Lists/Tables/BR to newlines.
+        2. Strip unknown tags.
+        3. Collapse whitespace.
+        4. Parse Bold/Italic/Underline.
         """
-        # 0. Decode HTML entities (e.g. &nbsp; -> ' ')
-        html_snippet = html.unescape(html_snippet)
+        # 0. Decode HTML entities
+        text = html.unescape(html_snippet)
         
-        # 1. Replace block tags with newlines
-        text = re.sub(r'<br\s*/?>', '\n', html_snippet)
-        text = re.sub(r'</p>', '\n', text)
-        text = re.sub(r'</p>', '\n', text)
-        text = re.sub(r'<p.*?>', '', text)
-        text = re.sub(r'<blockquote>', '\n" ', text)
-        text = re.sub(r'</blockquote>', ' "\n', text)
+        # 1. Normalize line breaks and spaces
+        # Replace explicit block tags with placeholders
+        text = re.sub(r'<br\s*/?>', '__BR__', text, flags=re.IGNORECASE)
+        text = re.sub(r'</p>', '__BR__', text, flags=re.IGNORECASE)
+        text = re.sub(r'</div>', '__BR__', text, flags=re.IGNORECASE)
+        text = re.sub(r'<li.*?>', '__LI__', text, flags=re.IGNORECASE)
+        text = re.sub(r'</li>', '__BR__', text, flags=re.IGNORECASE)
+        text = re.sub(r'</blockquote>', '__BR__', text, flags=re.IGNORECASE)
+        text = re.sub(r'</tr>', '__BR__', text, flags=re.IGNORECASE) # Just in case
+
+        # 2. Strip all tags EXCEPT formatting (b, i, u, strong, em)
+        # Use a negative lookahead regex
+        text = re.sub(r'<(?!/?(b|i|u|strong|em)\b).*?>', '', text, flags=re.IGNORECASE)
         
-        # 2. Extract Styles (Bold, Italic, Underline)
-        # We need a robust state machine or strict regex replacement to handle multiple tags
-        # For simplicity (and since Stylist is instructed to use simple tags), we track tags by index.
-        # But regex split is tricky for multiple types.
+        # 3. Collapse multiple spaces/tabs into single space (but keep placeholders)
+        # We replace any sequence of whitespace chars with a single space
+        text = re.sub(r'\s+', ' ', text)
         
-        # Strategy: Use a simple state parser or perform multiple passes?
-        # Multiple passes is hard because indices shift.
-        # Better: Tokenize by ANY tag.
+        # 4. Restore Placeholders
+        text = text.replace('__BR__', '\n')
+        text = text.replace('__LI__', '\n• ') # Fake bullet for table cells
         
+        # 5. Fix double newlines and trim
+        text = re.sub(r'\n\s*\n', '\n', text)
+        text = text.strip()
+
+        # 6. Extract Styles (Bold, Italic, Underline)
         final_text = ""
         styles = []
         
-        # Split by any tag
+        # Split by known tags
         tokens = re.split(r'(</?[biuBIU].*?>|<strong>|</strong>|<em>|</em>)', text)
         
-        # Stack for active styles: {'bold': bool, 'italic': bool, 'underline': bool}
         current_style = {'bold': False, 'italic': False, 'underline': False}
-        
-        # We need to track where styles START
-        # style_starts = {'bold': None, 'italic': None, 'underline': None}
-        # But this doesn't handle nesting well if we just blindly append ranges.
-        # Actually, flattening styles to ranges is fine.
-        
-        # Easier: Process token by token. If content, append to final_text and record current VALID styles.
-        # But we need "Ranges".
-        # So if we are in 'bold' mode, and we add text of len 5, we add range [curr, curr+5, bold=True]
-        
         curr_idx = 0
         
         for token in tokens:
@@ -136,31 +136,31 @@ class HtmlToDocsParser:
             lower = token.lower()
             
             # Start Tags
-            if lower in ['<b>', '<strong>']:
+            if re.match(r'<b\b|<strong>', lower):
                 current_style['bold'] = True
-            elif lower in ['<i>', '<em>']:
+            elif re.match(r'<i\b|<em>', lower):
                 current_style['italic'] = True
-            elif lower in ['<u>']:
+            elif re.match(r'<u\b', lower):
                 current_style['underline'] = True
                 
             # End Tags
-            elif lower in ['</b>', '</strong>']:
+            elif re.match(r'</b>|</strong>', lower):
                 current_style['bold'] = False
-            elif lower in ['</i>', '</em>']:
+            elif re.match(r'</i>|</em>', lower):
                 current_style['italic'] = False
-            elif lower in ['</u>']:
+            elif re.match(r'</u>', lower):
                 current_style['underline'] = False
                 
             # Content
-            elif not re.match(r'<.*?>', token):
-                # Clean any other rogue tags inside token (unlikely with split, but possible)
-                content = token # re.sub(r'<.*?>', '', token) # Should be clean
-                length = len(content)
-                if length > 0:
+            else:
+                # It's text content. 
+                # Since we already stripped unknown tags in step 2, this is pure text.
+                content = token
+                if content:
+                    length = len(content)
                     start = curr_idx
                     end = curr_idx + length
                     
-                    # Record styles for this chunk
                     if current_style['bold']:
                         styles.append({'start': start, 'end': end, 'type': 'bold'})
                     if current_style['italic']:

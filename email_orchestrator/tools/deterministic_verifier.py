@@ -167,6 +167,29 @@ class DeterministicVerifier:
                     rationale="Strategic Bolding Rule: Never bold the entire line. Use <b>...</b> only for specific focused words to add emphasis."
                 ))
 
+        # D. No HTML in Headers (STRICT)
+        # Rule: Headers must be plain text. HTML tags cause rendering issues or look ugly in previews.
+        header_fields_no_html = [
+             ("Subject", draft.subject),
+             ("Preview", draft.preview),
+             ("Hero Title", draft.hero_title),
+             ("Hero Subtitle", draft.hero_subtitle),
+             ("Descriptive Block Title", draft.descriptive_block_title),
+             ("Descriptive Block Subtitle", draft.descriptive_block_subtitle),
+             ("Product Block Title", draft.product_block_title),
+             ("Product Block Subtitle", draft.product_block_subtitle)
+        ]
+        for name, text in header_fields_no_html:
+             if self._contains_html_tags(text):
+                 issues.append(Issue(
+                    type="formatting",
+                    severity="P1",
+                    scope="email",
+                    field=name.lower().replace(" ", "_"),
+                    problem=f"{name} contains HTML tags.",
+                    rationale="Strict Rule: Headers and Subtitles must be PLAIN TEXT. remove <b>, <i>, etc."
+                ))
+
         # D. Emoji Pacing (History Aware)
         # Rule: Exactly 1 emoji per campaign. Target 1 every 4 emails overall.
         if history:
@@ -267,6 +290,12 @@ class DeterministicVerifier:
             "\u203c-\u2049"          # Double exclamation, etc
             "]+", flags=re.UNICODE)
         return bool(emoji_pattern.search(text))
+
+    def _contains_html_tags(self, text: str) -> bool:
+        """Checks for presence of basic HTML tags like <b>, <i>, <u>, <br>."""
+        if not text: return False
+        # Simple regex for tag-like structures
+        return bool(re.search(r"</?[a-z][\s\S]*?>", text, re.IGNORECASE))
 
     def verify_plan(self, plan: CampaignPlan, history: List[Dict]) -> List[Issue]:
         """Runs deterministic checks on a campaign plan."""

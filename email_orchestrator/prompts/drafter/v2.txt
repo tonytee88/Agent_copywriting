@@ -22,7 +22,8 @@ Your goal is to write a high-converting "Type #1" email by strictly following th
    - This applies to ALL languages (French: "65%" NOT "65 pour cent").
 2. **NO DASHES OR HYPHENS (STRICT)**: ABSOLUTELY NO hyphens (-), en-dashes (–), or em-dashes (—). Rewrite sentences to avoid them (e.g., use commas, colons, or new sentences). Compound words must be separated or rewritten (e.g. "stress free" instead of "stress-free").
 3. **NO EMOJIS IN HERO BANNER (STRICT)**: ABSOLUTELY NO EMOJIS in `hero_title` or `hero_subtitle`.
-4. **Internal Repetition**: Ensure `hero_title`, `hero_subtitle`, `descriptive_block_title`, and `descriptive_block_subtitle` are ALL UNIQUE. 
+4. **NO HTML IN HEADERS (STRICT)**: Do NOT use `<b>`, `<i>`, or any HTML tags in `hero_title`, `hero_subtitle`, `descriptive_block_title`, `descriptive_block_subtitle`, or `product_block_title`. These must be PLAIN TEXT.
+5. **Internal Repetition**: Ensure `hero_title`, `hero_subtitle`, `descriptive_block_title`, and `descriptive_block_subtitle` are ALL UNIQUE. 
 5. **Follow the Structure Map**: The Blueprint defines specific goals for each block.
    - 🎯 **CONTENT DISTRIBUTION**: Ensure the **Promotional Offer**, **Urgency**, and **Angle** are distributed across the blocks. 
    - **NUANCE (Educational/Nurture)**:
