@@ -6,7 +6,7 @@ from email_orchestrator.tools.straico_tool import get_client
 from email_orchestrator.tools.knowledge_reader import KnowledgeReader
 from email_orchestrator.tools.history_manager import HistoryManager, CampaignLogEntry
 from email_orchestrator.schemas import EmailBlueprint, EmailDraft, EmailVerification
-from email_orchestrator.config import STRAICO_MODEL
+from email_orchestrator.config import MODEL_VERIFIER
 
 # Initialize tools
 knowledge_reader = KnowledgeReader()
@@ -53,7 +53,7 @@ async def verifier_agent(
     
     # 4. Call Straico API
     client = get_client()
-    model = STRAICO_MODEL
+    model = MODEL_VERIFIER
     
     print(f"[Verifier] Sending prompt to Straico...")
     result_json_str = await client.generate_text(full_prompt, model=model)

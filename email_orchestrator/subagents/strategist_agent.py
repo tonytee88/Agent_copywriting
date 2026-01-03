@@ -7,7 +7,7 @@ from email_orchestrator.tools.straico_tool import get_client
 from email_orchestrator.tools.history_manager import HistoryManager, CampaignLogEntry
 from email_orchestrator.tools.catalog_manager import get_catalog_manager
 from email_orchestrator.schemas import CampaignRequest, BrandBio, EmailBlueprint
-from email_orchestrator.config import STRAICO_MODEL
+from email_orchestrator.config import MODEL_STRATEGIST
 
 # Initialize tools
 history_manager = HistoryManager()
@@ -75,7 +75,7 @@ Context:
     
     # 5. Call Straico API
     client = get_client()
-    model = STRAICO_MODEL 
+    model = MODEL_STRATEGIST 
     
     print(f"[Strategist] Sending prompt to Straico...")
     result_json_str = await client.generate_text(full_prompt, model=model)

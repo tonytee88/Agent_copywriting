@@ -5,7 +5,7 @@ from typing import Dict, Any, Optional
 from email_orchestrator.tools.straico_tool import get_client
 from email_orchestrator.tools.knowledge_reader import KnowledgeReader
 from email_orchestrator.schemas import EmailBlueprint, BrandBio, EmailDraft
-from email_orchestrator.config import STRAICO_MODEL
+from email_orchestrator.config import MODEL_DRAFTER
 
 # Initialize tools
 knowledge_reader = KnowledgeReader()
@@ -60,7 +60,7 @@ async def drafter_agent(
     
     # 4. Call Straico API
     client = get_client()
-    model = STRAICO_MODEL 
+    model = MODEL_DRAFTER 
     
     print(f"[Drafter] Sending prompt to Straico...")
     result_json_str = await client.generate_text(full_prompt, model=model)
@@ -80,7 +80,7 @@ class DraftingSession:
         self.campaign_context = campaign_context
         self.history = [] # List of {"role": "user"|"assistant", "content": str}
         self.client = get_client()
-        self.model = STRAICO_MODEL
+        self.model = MODEL_DRAFTER
         self.knowledge_reader = KnowledgeReader()
 
     async def start(self) -> EmailDraft:

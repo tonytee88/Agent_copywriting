@@ -3,7 +3,8 @@ import os
 from typing import Dict, Any, Optional
 
 from email_orchestrator.tools.straico_tool import StraicoAPIClient
-from email_orchestrator.config import STRAICO_MODEL
+from email_orchestrator.tools.straico_tool import StraicoAPIClient
+from email_orchestrator.config import MODEL_STYLIST
 
 class StylistAgent:
     """
@@ -11,7 +12,7 @@ class StylistAgent:
     of an email to maximize readability and conversion using tactical formatting.
     """
 
-    def __init__(self, model: str = STRAICO_MODEL):
+    def __init__(self, model: str = MODEL_STYLIST):
         self.client = StraicoAPIClient()
         self.model = model
 

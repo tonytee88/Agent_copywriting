@@ -6,7 +6,8 @@ from email_orchestrator.tools.straico_tool import get_client
 from email_orchestrator.tools.history_manager import HistoryManager, CampaignLogEntry
 from email_orchestrator.tools.catalog_manager import get_catalog_manager
 from email_orchestrator.schemas import BrandBio, CampaignPlan, CampaignPlanVerification, BlockingIssue
-from email_orchestrator.config import STRAICO_MODEL
+from email_orchestrator.schemas import BrandBio, CampaignPlan, CampaignPlanVerification, BlockingIssue
+from email_orchestrator.config import MODEL_VERIFIER
 
 # Initialize tools
 history_manager = HistoryManager()
@@ -49,7 +50,8 @@ async def campaign_plan_verifier_agent(
     
     # 4. Call Straico API
     client = get_client()
-    model = STRAICO_MODEL
+    client = get_client()
+    model = MODEL_VERIFIER
     
     print(f"[Campaign Plan Verifier] Sending prompt to Straico...")
     result_json_str = await client.generate_text(full_prompt, model=model)
