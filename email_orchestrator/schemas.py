@@ -52,7 +52,7 @@ class EmailBlueprint(BaseModel):
     
     # Step 6: Offer & CTAs
     offer_details: str
-    offer_placement: Literal["Hero", "Story", "Product", "Descriptive", "N/A", "N/a", "n/a", "Not applicable", "Aucun"] = "Hero"
+    offer_placement: str = Field(default="Hero", description="Placement of the offer (e.g., Hero, Descriptive, Product, or 'None')")
     cta_description: Optional[str] = Field(None, description="Free-text description of the CTA style")
     cta_style_id: Optional[str] = Field(None, description="Legacy Catalog ID")
     

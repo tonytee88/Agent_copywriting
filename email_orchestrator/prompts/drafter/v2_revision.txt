@@ -58,6 +58,9 @@ Language: {language}
 Brand Voice: {brand_voice}
 Campaign Context: {campaign_context}
 
+=== BLUEPRINT ===
+{blueprint}
+
 === ORIGINAL DRAFT ===
 {last_draft}
 
@@ -66,6 +69,7 @@ Campaign Context: {campaign_context}
 
 === INSTRUCTION ===
 Refine the draft to solve the feedback issues. 
-Do NOT rewrite valid sections unless necessary. 
-ENSURE STRICT ADHERENCE TO LENGTH LIMITS AND 'NO DASH' RULE.
-Output ONLY JSON.
+1. **INTEGRITY**: You MUST return the COMPLETE JSON object with ALL fields (even those you didn't change). Do NOT return a partial diff.
+2. **CONTEXT**: Use the Blueprint to ensure your edits align with the Persona and Goal.
+3. **STRICT LIMITS**: Adhere strictly to character limits and the 'No Dash' rule.
+4. **OUTPUT**: Output ONLY the raw JSON string. No markdown, no conversation.

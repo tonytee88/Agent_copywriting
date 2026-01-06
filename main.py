@@ -89,15 +89,21 @@ async def run_execute(args):
     # 2. GENERATE
     print(f"\n[Execution] Generating emails for Campaign: {args.campaign_id}")
     
+    # Parse target slots if provided
+    target_slots = None
+    if args.slots:
+        try:
+            target_slots = [int(s.strip()) for s in args.slots.split(',')]
+            print(f"[Execution] Filtering for slots: {target_slots}")
+        except ValueError:
+            print(f"[Error] Invalid slots format: {args.slots}. Expected comma-separated integers (e.g. '1,3')")
+            sys.exit(1)
+    
     # We call generate_email_campaign (which now returns JSON with content)
     import json
     json_result = await generate_email_campaign(
         campaign_id=args.campaign_id,
-        # TODO: Add logic for specific slots if needed. Current implementation runs all or one. 
-        # Support for list of slots requires refactoring generate loop in tools.
-        # For Minimum Viable Phase 2: We iterate in CLI or just run all.
-        # Let's run all for now as 'slots' argument support in tools is 'Optional[int]' (single).
-        # Improving this is a "Refactoring" task for later.
+        target_slots=target_slots
     )
     
     try:
@@ -121,11 +127,7 @@ async def run_execute(args):
                 except Exception as e:
                     print(f"[Cleanup] Failed to delete {old_file.name}: {e}")
         
-        # Filter if slots argument was provided (post-generation filter if we can't pre-filter)
-        # Note: This is inefficient but functional for now.
-        if args.slots:
-            target_slots = [int(s.strip()) for s in args.slots.split(',')]
-            drafts = [d for d in drafts if d.get('slot_number') in target_slots]
+        # (Post-gen filter removed as we filter at source now)
             
         if not drafts:
             print("No drafts generated.")

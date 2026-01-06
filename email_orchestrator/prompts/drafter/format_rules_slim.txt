@@ -1,0 +1,15 @@
+## CORE LAYOUT (TYPE #1)
+1. **HERO BLOCK**: Title + Subtitle + CTA. Must be punchy. No Emojis.
+2. **DESCRIPTIVE BLOCK**: Title + Subtitle + Content. This is the "Meat" (Value/Transformation). Ends with `cta_descriptive`.
+3. **PRODUCT BLOCK**: Title + Subtitle + List of Products + CTA.
+
+## GLOBAL STYLE RULES (STRICT)
+1. **NO INTRO/OUTRO**: Start immediately with the Subject/Hero. Do NOT write "Hi [Name]", "Best regards", or "Cheers".
+2. **NO DASHES**: ABSOLUTELY NO hyphens (-), en-dashes (–), or em-dashes (—). Rewrite sentences to avoid them.
+3. **BOLDING**: Use `<b>` for *keywords* only (1-3 words). NEVER bold an entire line.
+4. **NUMBERS**: Always use digits (5, 65%), never words (five).
+
+## CTA RULES
+- **Promotional**: "Shop Now", "Get Yours"
+- **Educational**: "View Tools", "See Collection"
+- **BANNED**: "Learn More", "Read More"

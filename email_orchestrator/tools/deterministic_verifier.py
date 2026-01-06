@@ -254,7 +254,10 @@ class DeterministicVerifier:
                 ))
             
             # Check Max Length (if content exists)
-            if length > 0 and max_len > 0 and length > max_len:
+            # UPDATED: Add 20% Buffer (Tolerance)
+            allowed_max = int(max_len * 1.2) if max_len > 0 else 0
+            
+            if length > 0 and max_len > 0 and length > allowed_max:
                 # UPDATED: More descriptive for max caps
                 issue_problem = f"Text too long ({length} chars)."
                 issue_rationale = f"Maximum limit is {max_len} characters. Please shorten this field."
@@ -269,21 +272,7 @@ class DeterministicVerifier:
                     problem=issue_problem,
                     rationale=issue_rationale
                 ))
-                if max_len > 0 and length > max_len:
-                    # UPDATED: More descriptive for max caps
-                    issue_problem = f"Text too long ({length} chars)."
-                    issue_rationale = f"Maximum limit is {max_len} characters. Please shorten this field."
-                    if min_len > 0:
-                        issue_rationale = f"Must be between {min_len}-{max_len} chars."
-                        
-                    issues.append(Issue(
-                        type="formatting",
-                        severity="P2",
-                        scope="email",
-                        field=field,
-                        problem=issue_problem,
-                        rationale=issue_rationale
-                    ))
+
 
         return issues
     

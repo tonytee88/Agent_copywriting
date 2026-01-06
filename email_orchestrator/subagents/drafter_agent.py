@@ -87,10 +87,15 @@ class DraftingSession:
         """Generates the initial draft."""
         print(f"[DraftingSession] Starting new session for {self.blueprint.brand_name}...")
         
-        # 1. Fetch Context
-        format_guide = self.knowledge_reader.get_document_content("Email instructions type #1.pdf")
-        if not format_guide:
-            format_guide = "Ensure strict Type #1 format: Hero, Descriptive Block, Product Block."
+        # 1. Fetch Context (Optimized)
+        slim_rules_path = Path(__file__).parent.parent / "prompts" / "drafter" / "format_rules_slim.txt"
+        try:
+            format_guide = slim_rules_path.read_text(encoding="utf-8")
+        except FileNotFoundError:
+            print("[Drafter] Warning: format_rules_slim.txt not found. Falling back to PDF.")
+            format_guide = self.knowledge_reader.get_document_content("Email instructions type #1.pdf")
+            if not format_guide:
+                format_guide = "Ensure strict Type #1 format: Hero, Descriptive Block, Product Block."
 
         # 2. Load Prompt
         prompt_path = Path(__file__).parent.parent / "prompts" / "drafter" / "v2.txt"
@@ -161,22 +166,79 @@ class DraftingSession:
             feedback=feedback,
             language=self.language,
             brand_voice=self.brand_bio.brand_voice,
-            campaign_context=self.campaign_context or "None"
+            campaign_context=self.campaign_context or "None",
+            blueprint=self.blueprint.model_dump_json(indent=2)
         )
         
+        try:
+            response_text = await self.client.generate_text(combined_prompt, model=self.model)
+            
+            # Append to history for continuity (though we skipped the full context in this turn)
+            self.history.append({"role": "user", "content": f"Feedback: {feedback}"})
+            self.history.append({"role": "assistant", "content": response_text})
+            
+            return _parse_draft_response(response_text)
+        except Exception as e:
+            print(f"[Drafter] Optimized revision failed ({e}). Falling back to Legacy (Full Context).")
+            return await self._legacy_revise(feedback)
+
+    async def _legacy_revise(self, feedback: str) -> EmailDraft:
+        """Legacy revision method (Backup) - Uses Full Context."""
+        print(f"[DraftingSession] Legacy Revision (Full Context)...")
+        
+        # 1. Re-fetch Format Guide (Context persistence)
+        format_guide = self.knowledge_reader.get_document_content("Email instructions type #1.pdf")
+        if not format_guide:
+            format_guide = "Ensure strict Type #1 format: Hero, Descriptive Block, Product Block."
+            
+        # 2. Get previous draft (Last Assistant Message)
+        last_draft_content = ""
+        for msg in reversed(self.history):
+            if msg["role"] == "assistant":
+                last_draft_content = msg["content"]
+                break
+        
+        combined_prompt = f"""
+ORIGINAL REQUEST CONTEXT:
+=== BLUEPRINT ===
+{self.blueprint.model_dump_json(indent=2)}
+
+=== BRAND BIO ===
+{self.brand_bio.model_dump_json(indent=2)}
+
+=== FORMAT GUIDE ===
+{format_guide}
+
+CAMPAIGN CONTEXT:
+{self.campaign_context or 'None'}
+
+### YOUR PREVIOUS DRAFT:
+{last_draft_content}
+
+### CRITICAL FEEDBACK (MUST FIX):
+{feedback}
+
+### TASK:
+Rewrite the draft to address the feedback strictly.
+1. Maintain the Persona and Tone defined in Brand Bio.
+2. Adhere to ALL constraints in the Format Guide (No dashes, numeric digits, etc.).
+3. Return ONLY the FULL updated JSON.
+"""
         response_text = await self.client.generate_text(combined_prompt, model=self.model)
         
-        # Append to history for continuity (though we skipped the full context in this turn)
+        # We assume history was already appended by the caller or we handle it here?
+        # In 'revise', we appended history *after* success.
+        # But if we fallback, we shouldn't append the *failed* slim attempt?
+        # Actually, if we are in fallback, we should append the Legacy attempt.
+        # Note: 'revise' didn't append User message before Try block?
+        # No, 'revise' does NOT append User message until AFTER response?
+        # Wait, prompt construction is local variable.
+        # Correct.
+        
         self.history.append({"role": "user", "content": f"Feedback: {feedback}"})
         self.history.append({"role": "assistant", "content": response_text})
         
         return _parse_draft_response(response_text)
-
-    async def _legacy_revise(self, feedback: str) -> EmailDraft:
-        """Legacy revision method (Backup)."""
-        # ... (Original Logic if needed, or just fail)
-        # For now, just simplistic fallback or raising error
-        pass
 
 
 

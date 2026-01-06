@@ -184,7 +184,7 @@ async def plan_campaign(
 async def generate_email_campaign(
     campaign_id: str,
     drive_folder_id: Optional[str] = POPBRUSH_FOLDER_ID,
-    slot_number: Optional[int] = None
+    target_slots: Optional[List[int]] = None
 ) -> str:
     """
     Orchestrates the Execution Phase (Writing Emails).
@@ -192,9 +192,8 @@ async def generate_email_campaign(
     Args:
         campaign_id (str): The ID of the campaign plan created via plan_campaign.
         drive_folder_id (str, optional): The Google Drive folder ID to export results to.
-        slot_number (int, optional): The specific email slot number to generate (idx, e.g. 1). 
-                                     If provided, ONLY this slot is generated. 
-                                     If omitted, ALL slots in the plan are generated.
+        target_slots (List[int], optional): Specific email slot numbers to generate. 
+                                            If omitted, ALL slots in the plan are generated.
     """
     tracker = get_token_tracker()
     tracker.reset()
@@ -217,8 +216,8 @@ async def generate_email_campaign(
     target_languages = plan.languages or ["FR"]
 
     for slot in plan.email_slots:
-        # FILTER: If slot_number is provided, skip others
-        if slot_number is not None and slot.slot_number != slot_number:
+        # FILTER: If target_slots is provided, skip others
+        if target_slots and slot.slot_number not in target_slots:
             continue
             
         print(f"\n>>> PROCESSING EMAIL #{slot.slot_number} ({slot.email_purpose}) <<<")
