@@ -101,6 +101,14 @@ def calculate_send_schedule(
                     is_send_day = True
             
             if is_send_day:
+                import random
+                # Randomize time for weekdays (Mon-Sat)
+                # Sunday is fixed 7:00 PM per rule above (weekday == 6 logic)
+                if weekday != 6:
+                    hour = random.randint(6, 9)
+                    minute = random.choice(["00", "15", "30", "45"])
+                    time = f"{hour}:{minute} AM"
+
                 temp_schedule.append({
                     "email_num": temp_email_count + 1,
                     "day": day_name,

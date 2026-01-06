@@ -159,10 +159,15 @@ def write_email_to_doc(docs_service, document_id: str, email_draft: Dict[str, An
     # 1. Get Initial End Index
     doc = docs_service.documents().get(documentId=document_id).execute()
     curr_doc_end_index = doc.get('body').get('content')[-1].get('endIndex') - 1
+    virtual_cursor_index = curr_doc_end_index
+    
+    # State tracking to prevent style bleeding and overwrites
+    is_at_start_of_paragraph = True
     
     def flush_and_refresh():
         nonlocal requests_queue
         nonlocal curr_doc_end_index
+        nonlocal virtual_cursor_index
         if requests_queue:
             docs_service.documents().batchUpdate(
                 documentId=document_id,
@@ -173,31 +178,67 @@ def write_email_to_doc(docs_service, document_id: str, email_draft: Dict[str, An
         # Always refresh index to be safe
         doc = docs_service.documents().get(documentId=document_id).execute()
         curr_doc_end_index = doc.get('body').get('content')[-1].get('endIndex') - 1
+        virtual_cursor_index = curr_doc_end_index
+
+    def get_utf16_len(s: str) -> int:
+        """Returns length of string in UTF-16 code units (for Google Docs Indexing)"""
+        return len(s.encode('utf-16-le')) // 2
 
     # Helper: Add Text Block (Auto-Flushes)
     def add_text_block(text: str, bold: bool = False, h1: bool = False, bullets: bool = False, styles_override: List[Dict] = None):
         """
-        Inserts a block of text and applies styles.
-        styles_override: List of {'start': int (relative), 'end': int, 'bold': bool} for mixed styling.
+        Inserts a block of text and applies styles using DYNAMIC indexing.
         """
-        nonlocal curr_doc_end_index
+        nonlocal virtual_cursor_index
+        nonlocal is_at_start_of_paragraph
+        
         if not text: return
         
-        # 1. Insert
+        # 1. Insert at current virtual tip
         requests_queue.append({
             'insertText': {
-                'location': {'index': curr_doc_end_index},
+                'location': {'index': virtual_cursor_index},
                 'text': text
             }
         })
         
-        start = curr_doc_end_index
-        end = start + len(text)
+        start = virtual_cursor_index
+        text_len_utf16 = get_utf16_len(text)
+        end = start + text_len_utf16
         
-        # 2. Styling (Base)
+        # UPDATE CURSOR immediately
+        virtual_cursor_index += text_len_utf16
+        
+        # 2. Styling
+        
+        # 2a. PARAGRAPH STYLE (Structure)
+        # Only apply if we are H1 OR if we are at the start of a paragraph (reset to Normal).
+        # We do NOT apply Normal mid-paragraph because it wipes inline character styles (like Bold).
+        if h1:
+            requests_queue.append({
+                'updateParagraphStyle': {
+                    'range': {'startIndex': start, 'endIndex': end},
+                    'paragraphStyle': {'namedStyleType': 'HEADING_1'},
+                    'fields': 'namedStyleType'
+                }
+            })
+            # Heading implies we're setting a block.
+            # Usually headings end with newline? The inputs usually have \n.
+        else:
+             if is_at_start_of_paragraph:
+                # Explicitly reset to NORMAL_TEXT at the *start* of the paragraph
+                # to prevent H1 bleed from previous line.
+                requests_queue.append({
+                    'updateParagraphStyle': {
+                        'range': {'startIndex': start, 'endIndex': end},
+                        'paragraphStyle': {'namedStyleType': 'NORMAL_TEXT'},
+                        'fields': 'namedStyleType'
+                    }
+                })
+
+        # 2b. TEXT STYLE (Emphasis)
         if styles_override:
-            # 2a. SAFE RESET: Force 'Normal' style first to prevent inheritance
-            # This ensures "bold" from previous block doesn't bleed in.
+            # Safe reset for this block
             requests_queue.append({
                 'updateTextStyle': {
                     'range': {'startIndex': start, 'endIndex': end},
@@ -206,15 +247,15 @@ def write_email_to_doc(docs_service, document_id: str, email_draft: Dict[str, An
                 }
             })
             
-            # 2b. Apply mixed styles
+            # Apply mixed styles
             for s in styles_override:
-                # relative to start
+                # relative to start of THIS block
                 s_start = start + s.get('start', 0)
                 s_end = start + s.get('end', 0)
                 
-                style_type = s.get('type', 'bold') # Default to bold for back-compat
+                style_type = s.get('type', 'bold')
                 
-                if style_type == 'bold' or s.get('bold'): # Handle legacy dict key 'bold': True
+                if style_type == 'bold' or s.get('bold'):
                     requests_queue.append({
                         'updateTextStyle': {
                             'range': {'startIndex': s_start, 'endIndex': s_end},
@@ -239,22 +280,19 @@ def write_email_to_doc(docs_service, document_id: str, email_draft: Dict[str, An
                         }
                     })
         else:
-            # Apply uniform style (Explicit reset)
-            text_style_mask = {'bold': True} if bold else {'bold': False}
+            # Apply uniform style if requested
+            text_style_mask = {
+                'bold': True if bold else False,
+                'italic': False,
+                'underline': False
+            }
+            # Only apply if we actually need to set BOLD (or if we need to reset).
+            # Actually, safe to validly apply 'text_style_mask' on top.
             requests_queue.append({
                 'updateTextStyle': {
                     'range': {'startIndex': start, 'endIndex': end},
                     'textStyle': text_style_mask,
-                    'fields': 'bold'
-                }
-            })
-
-        if h1:
-            requests_queue.append({
-                'updateParagraphStyle': {
-                    'range': {'startIndex': start, 'endIndex': end},
-                    'paragraphStyle': {'namedStyleType': 'HEADING_1'},
-                    'fields': 'namedStyleType'
+                    'fields': 'bold,italic,underline'
                 }
             })
             
@@ -266,202 +304,267 @@ def write_email_to_doc(docs_service, document_id: str, email_draft: Dict[str, An
                 }
             })
         
-        # 3. Synchronize
-        flush_and_refresh()
+        # 3. State Update
+        # If text ends with newline, next block is start of paragraph.
+        if text.endswith('\n'):
+            is_at_start_of_paragraph = True
+        else:
+            is_at_start_of_paragraph = False
+        
+        # 4. Batch Control
+        if len(requests_queue) >= 30:
+            flush_and_refresh()
+            import time
+            time.sleep(1)
+
+    # --- CONTENT CONSTRUCTION ---
+    # Removed duplicate header/language block
+    # (Logic is handled at the end of the function)
+
+    # Helper: Process Ops (Shared for all rich text fields)
+    def process_html_ops(ops):
+        nonlocal curr_doc_end_index # Used in table logic
+        
+        for op in ops:
+            if op['type'] == 'text':
+                # Use add_text_block with complex styles
+                data = op['data']
+                add_text_block(data['text'], styles_override=data['styles'])
+                
+            elif op['type'] == 'list':
+                # Construct full list text
+                full_list_text = ""
+                combined_styles = []
+                
+                for item_data in op['items']:
+                    # The text for this item
+                    txt = item_data['text'] + "\n"
+                    
+                    # Adjust styles for this chunk to be relative to the full block start
+                    offset = len(full_list_text)
+                    for s in item_data['styles']:
+                        combined_styles.append({
+                            'start': offset + s['start'],
+                            'end': offset + s['end'],
+                            'bold': True # Default legacy
+                        })
+                        # Note: We rely on 'bold' key for bullets, but could expand
+                    
+                    full_list_text += txt
+                
+                add_text_block(full_list_text, bullets=True, styles_override=combined_styles)
+                
+            elif op['type'] == 'table':
+                # TABLE HANDLING
+                
+                # IMPORTANT: Flush any pending text requests (which use virtual_cursor)
+                # BEFORE inserting table. This ensures curr_doc_end_index is valid
+                flush_and_refresh() 
+                
+                insert_idx = curr_doc_end_index
+                docs_service.documents().batchUpdate(
+                    documentId=document_id,
+                    body={'requests': [{
+                        'insertTable': {
+                            'rows': op['rows'],
+                            'columns': op['columns'],
+                            'location': {'index': insert_idx}
+                        }
+                    }]}
+                ).execute()
+                
+                # Refresh to find table
+                flush_and_refresh() 
+                
+                # Logic to find table (heuristic: last structure with table)
+                doc = docs_service.documents().get(documentId=document_id).execute()
+                body_content = doc.get('body', {}).get('content', [])
+                validation_table = None
+                
+                # Improved Search: Find the LAST *EMPTY* table
+                # We assume the newly created table is empty (cells just have \n)
+                # while previous tables have content.
+                
+                def is_table_empty(t):
+                    # Checks if a table is effectively empty (just newlines)
+                    for row in t.get('tableRows', []):
+                        for cell in row.get('tableCells', []):
+                            content = cell.get('content', [])
+                            for elem in content:
+                                if 'paragraph' in elem:
+                                    for elem2 in elem['paragraph'].get('elements', []):
+                                        txt = elem2.get('textRun', {}).get('content', '')
+                                        if txt.strip(): # If it has non-whitespace text
+                                            return False
+                    return True
+
+                for element in reversed(body_content):
+                    if 'table' in element:
+                        potential_table = element['table']
+                        if is_table_empty(potential_table):
+                            validation_table = potential_table
+                            break
+                        # If not empty, it's likely an old table, keep searching (backward)
+                        # Wait, reversed means we see Last (Newest) first.
+                        # If the Newest is Empty, we take it.
+                        # If the Newest is NOT Empty, then... we have a problem?
+                        # No, if we just inserted a table, it SHOULD be the last one and it SHOULD be empty.
+                        # If for some reason the API hasn't updated, we might not see it at all.
+                        # If we see the *previous* table, it will NOT be empty.
+                        # So this filter prevents selecting the previous table.
+                
+                if not validation_table:
+                    print("[GoogleDocs] Warning: precise table target not found. Retrying fetch...")
+                    import time
+                    time.sleep(2)
+                    doc = docs_service.documents().get(documentId=document_id).execute()
+                    body_content = doc.get('body', {}).get('content', [])
+                    for element in reversed(body_content):
+                        if 'table' in element and is_table_empty(element['table']):
+                            validation_table = element['table']
+                            break
+                
+                if validation_table:
+                    cell_requests = []
+                    rows = validation_table.get('tableRows', [])
+                    op_cells = op['cells']
+                    
+                    # Iterate in REVERSE to prevent index shifting issues during batch insertion
+                    for r_idx in reversed(range(len(rows))):
+                        if r_idx >= len(op_cells): continue
+                        
+                        row = rows[r_idx]
+                        row_cells = row.get('tableCells', [])
+                        op_row = op_cells[r_idx]
+                        
+                        for c_idx in reversed(range(len(row_cells))):
+                            if c_idx >= len(op_row): continue
+                            
+                            cell = row_cells[c_idx]
+                            
+                            # Find insertion point in cell
+                            cell_content_nodes = cell.get('content', [])
+                            if not cell_content_nodes: continue
+                            
+                            cell_insert_index = cell_content_nodes[0].get('startIndex')
+                            
+                            cell_data = op_row[c_idx]
+                            if not cell_data['text']: continue
+                            
+                            text_len = len(cell_data['text'])
+                            
+                            # Insert
+                            cell_requests.append({
+                                'insertText': {
+                                    'location': {'index': cell_insert_index},
+                                    'text': cell_data['text']
+                                }
+                            })
+                            
+                            # Style (Must match the inserted text)
+                            
+                            # 0. SAFE RESET for Table Cell Content
+                            cell_requests.append({
+                                'updateTextStyle': {
+                                    'range': {'startIndex': cell_insert_index, 'endIndex': cell_insert_index + text_len},
+                                    'textStyle': {'bold': False, 'italic': False, 'underline': False},
+                                    'fields': 'bold,italic,underline'
+                                }
+                            })
+                            
+                            
+                            for s in cell_data['styles']:
+                                # relative to cell_insert_index because we insert at START of cell
+                                s_start = cell_insert_index + s.get('start', 0)
+                                s_end = cell_insert_index + s.get('end', 0)
+                                
+                                style_type = s.get('type', 'bold')
+                                
+                                style_mask = {}
+                                fields = ''
+                                
+                                if style_type == 'bold' or s.get('bold'):
+                                    style_mask = {'bold': True}
+                                    fields = 'bold'
+                                elif style_type == 'italic':
+                                    style_mask = {'italic': True}
+                                    fields = 'italic'
+                                elif style_type == 'underline':
+                                    style_mask = {'underline': True}
+                                    fields = 'underline'
+                                
+                                if fields:
+                                    cell_requests.append({
+                                        'updateTextStyle': {
+                                            'range': {'startIndex': s_start, 'endIndex': s_end},
+                                            'textStyle': style_mask,
+                                            'fields': fields
+                                        }
+                                    })
+                    
+                    # Execute Cell Updates
+                    if cell_requests:
+                        docs_service.documents().batchUpdate(documentId=document_id, body={'requests': cell_requests}).execute()
+                
+                # Final refresh after table
+                flush_and_refresh()
+
+    def render_rich_field(text: str):
+        """Safely renders text that might contain HTML tags (bold, etc.)"""
+        if not text: return
+        # Ensure newline if needed? add_text_block adds explicit newlines usually.
+        # But parser strips them.
+        # Let's clean it first.
+        # Use parser.
+        ops = parser.parse_to_ops(text)
+        process_html_ops(ops)
 
     # --- CONTENT CONSTRUCTION ---
     if header_text:
         add_text_block(f"{header_text}\n", h1=True)
         add_text_block("##########\n\n")
 
+    # Removed redundant LANGUAGE line
+    # add_text_block(f"LANGUAGE: {language.upper()}\n\n")
+
     add_text_block("SUBJECT: ", bold=True)
-    add_text_block(f"{email_draft.get('subject', '')}\n", bold=False)
+    render_rich_field(f"{email_draft.get('subject', '')}")
+    add_text_block("\n")
     
     add_text_block("PREVIEW: ", bold=True)
-    add_text_block(f"{email_draft.get('preview', '')}\n", bold=False)
-    add_text_block("##########\n\n")
-    add_text_block(f"LANGUAGE: {language.upper()}\n\n")
+    render_rich_field(f"{email_draft.get('preview', '')}")
+    add_text_block("\n")
+    add_text_block("\n") # Just a spacer
     
     add_text_block("Hero Banner Title : ", bold=True)
-    add_text_block(f"{email_draft.get('hero_title', '')}\n")
+    render_rich_field(f"{email_draft.get('hero_title', '')}")
+    add_text_block("\n")
+    
     add_text_block("Hero Banner Subtitle : ", bold=True)
-    add_text_block(f"{email_draft.get('hero_subtitle', '')}\n")
-    add_text_block("CTA : ", bold=True)
-    add_text_block(f"{email_draft.get('cta_hero', '')}\n\n")
+    render_rich_field(f"{email_draft.get('hero_subtitle', '')}")
+    add_text_block("\n")
+    
+    if email_draft.get('cta_hero'):
+        add_text_block("CTA : ", bold=True)
+        render_rich_field(f"{email_draft.get('cta_hero', '')}")
+        add_text_block("\n\n")
+    else:
+        add_text_block("\n")
     
     add_text_block("Descriptive Block Title : ", bold=True)
-    add_text_block(f"{email_draft.get('descriptive_block_title', '')}\n")
+    render_rich_field(f"{email_draft.get('descriptive_block_title', '')}")
+    add_text_block("\n")
+    
     add_text_block("Sub-title : ", bold=True)
-    add_text_block(f"{email_draft.get('descriptive_block_subtitle', '')}\n\n")
+    render_rich_field(f"{email_draft.get('descriptive_block_subtitle', '')}")
+    add_text_block("\n\n")
     
     add_text_block(f"[[{structure_name}]]\n")
     
     # HTML BLOCK
     html_content = email_draft.get('descriptive_block_content', '')
     ops = parser.parse_to_ops(html_content)
-    
-    for op in ops:
-        if op['type'] == 'text':
-            # Use add_text_block with complex styles
-            data = op['data']
-            add_text_block(data['text'], styles_override=data['styles'])
-            
-        elif op['type'] == 'list':
-            # Construct full list text
-            full_list_text = ""
-            combined_styles = []
-            
-            for item_data in op['items']:
-                # The text for this item
-                txt = item_data['text'] + "\n"
-                
-                # Adjust styles for this chunk to be relative to the full block start
-                offset = len(full_list_text)
-                for s in item_data['styles']:
-                    combined_styles.append({
-                        'start': offset + s['start'],
-                        'end': offset + s['end'],
-                        'bold': True
-                    })
-                
-                full_list_text += txt
-            
-            add_text_block(full_list_text, bullets=True, styles_override=combined_styles)
-            
-        elif op['type'] == 'table':
-            # TABLE HANDLING
-            insert_idx = curr_doc_end_index
-            docs_service.documents().batchUpdate(
-                documentId=document_id,
-                body={'requests': [{
-                    'insertTable': {
-                        'rows': op['rows'],
-                        'columns': op['columns'],
-                        'location': {'index': insert_idx}
-                    }
-                }]}
-            ).execute()
-            
-            # Refresh to find table
-            flush_and_refresh() # This updates curr_doc_end_index, but we need to find the table element
-            
-            # Logic to find table (heuristic: last structure with table)
-            doc = docs_service.documents().get(documentId=document_id).execute()
-            body_content = doc.get('body', {}).get('content', [])
-            validation_table = None
-            for element in reversed(body_content):
-                if 'table' in element and element['startIndex'] >= insert_idx:
-                    validation_table = element['table']
-                    break
-            
-            if validation_table:
-                cell_requests = []
-                rows = validation_table.get('tableRows', [])
-                op_cells = op['cells']
-                
-                # Iterate in REVERSE to prevent index shifting issues during batch insertion
-                # If we insert Text A (len 10) at Index 100, then Text B at Index 200...
-                # If we do Index 200 first, it's at 200. Index 100 is still at 100.
-                # If we do Index 100 first, Index 200 shifts to 210.
-                
-                # Use strict reversed iteration
-                for r_idx in reversed(range(len(rows))):
-                    if r_idx >= len(op_cells): continue
-                    
-                    row = rows[r_idx]
-                    row_cells = row.get('tableCells', [])
-                    op_row = op_cells[r_idx]
-                    
-                    for c_idx in reversed(range(len(row_cells))):
-                        if c_idx >= len(op_row): continue
-                        
-                        cell = row_cells[c_idx]
-                        
-                        # Find insertion point in cell
-                        cell_content_nodes = cell.get('content', [])
-                        if not cell_content_nodes: continue
-                        
-                        cell_insert_index = cell_content_nodes[0].get('startIndex')
-                        
-                        cell_data = op_row[c_idx]
-                        if not cell_data['text']: continue
-                        
-                        # 1. Style Text (Applied after insert in queue, but indices are relative)
-                        # Actually, Insert shifts content.
-                        # If we mix Insert and Style in one batch:
-                        # Request N: Insert at X
-                        # Request N+1: Style at Range [X, X+Len] (using pre-batch indices?? or post?)
-                        # Docs API: "The index is relative to the document state at the start of the batch EXCEPT for insertions within the same batch which shift subsequent indices."
-                        # Wait, "The indices are technically relative to start of batch, but insertions affect subsequent commands."
-                        # Actually, safest is to calculate Style Range based on Insertion.
-                        # And since we go Reverse, Insert at late index doesn't affect early index.
-                        
-                        # BUT! We insert at X. Then Style at [X, X+Len].
-                        # In the SAME batch (cell_requests).
-                        # Docs order in batch matters.
-                        # We append [Insert, Style].
-                        # Since we go Reverse Cells, we do Cell Z, then Cell Y.
-                        # Cell Z Insert/Style doesn't affect Cell Y indices.
-                        
-                        text_len = len(cell_data['text'])
-                        
-                        # Insert
-                        cell_requests.append({
-                            'insertText': {
-                                'location': {'index': cell_insert_index},
-                                'text': cell_data['text']
-                            }
-                        })
-                        
-                        # Style (Must match the inserted text)
-                        
-                        # 0. SAFE RESET for Table Cell Content
-                        cell_requests.append({
-                            'updateTextStyle': {
-                                'range': {'startIndex': cell_insert_index, 'endIndex': cell_insert_index + text_len},
-                                'textStyle': {'bold': False, 'italic': False, 'underline': False},
-                                'fields': 'bold,italic,underline'
-                            }
-                        })
-                        
-                        
-                        for s in cell_data['styles']:
-                            # relative to cell_insert_index because we insert at START of cell
-                            # Paragraph stub moves forward.
-                            s_start = cell_insert_index + s.get('start', 0)
-                            s_end = cell_insert_index + s.get('end', 0)
-                            
-                            style_type = s.get('type', 'bold')
-                            
-                            style_mask = {}
-                            fields = ''
-                            
-                            if style_type == 'bold' or s.get('bold'):
-                                style_mask = {'bold': True}
-                                fields = 'bold'
-                            elif style_type == 'italic':
-                                style_mask = {'italic': True}
-                                fields = 'italic'
-                            elif style_type == 'underline':
-                                style_mask = {'underline': True}
-                                fields = 'underline'
-                            
-                            if fields:
-                                cell_requests.append({
-                                    'updateTextStyle': {
-                                        'range': {'startIndex': s_start, 'endIndex': s_end},
-                                        'textStyle': style_mask,
-                                        'fields': fields
-                                    }
-                                })
-                
-                # Execute Cell Updates
-                if cell_requests:
-                    docs_service.documents().batchUpdate(documentId=document_id, body={'requests': cell_requests}).execute()
-            
-            # Final refresh after table
-            # Final refresh after table
-            flush_and_refresh()
+    process_html_ops(ops)
     
     # NEW: Render Descriptive CTA Button (After HTML Block)
     cta_descriptive = email_draft.get('cta_descriptive')
@@ -476,8 +579,12 @@ def write_email_to_doc(docs_service, document_id: str, email_draft: Dict[str, An
     products = email_draft.get('products', [])
     for prod in products:
          add_text_block(f"- {prod}\n")
-    add_text_block(f"CTA: {email_draft.get('cta_product', '')}\n")
+    add_text_block("CTA: ", bold=True)
+    add_text_block(f"{email_draft.get('cta_product', '')}\n")
     add_text_block("="*30 + "\n\n")
+
+    # Final Flush of any remaining text
+    flush_and_refresh()
 
     def share_document(self, document_id: str, email: str, role: str = 'writer'):
         """

@@ -48,14 +48,16 @@ You do NOT change the core meaning or the message. You ENHANCE it visually to gu
 4. **Structure Compliance**: 
    - If Structure is `STRUCT_EMOJI_CHECKLIST` or `STRUCT_MEDIA_LEFT_OFFSET`, ensure you return a `<ul>` list.
    - If Structure is `STRUCT_STAT_ATTACK` or `STRUCT_SPOTLIGHT_BOX` or `STRUCT_STEP_BY_STEP` or `STRUCT_MINI_GRID`, you MUST return a `<table>`.
+   - **STRUCT_MINI_GRID Special Rule**: The `<table>` must ONLY contain the items/content. Any "CTA" or closing sentence must be **OUTSIDE** and AFTER the table.
    - For `STRUCT_STAT_ATTACK`: Ensure rows/cols are preserved. Format the text *inside* the cells.
    - For others: Use `<p>` tags separated by `<br>`.
 5. **Language**: Keep the Output in **{language}**.
-6. **STRICT COMPLIANCE**:
+6. **STRICT COMPLIANCE** (Refusal to follow these = FAILURE):
    - **NO** emojis in the body text unless the Structure explicitly requires it.
    - **NO** em-dashes (—) or en-dashes (–). Use commas, periods, or ellipses (...) instead.
-   - **NO** hyphens (-) except for grammatical compound words.
+   - **Hyphens (-)** are ALLOWED for compound words.
    - **NO** hashtags.
+   - **NO** CTA Buttons inside tables.
 
 ### INPUT CONTEXT
 - **Brand Voice**: {brand_voice}

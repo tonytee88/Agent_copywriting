@@ -1,5 +1,5 @@
 from typing import List, Optional, Dict, Literal
-from pydantic import BaseModel, Field, model_validator
+from pydantic import BaseModel, Field, model_validator, field_validator
 
 # --- Brand & Context Schemas ---
 
@@ -52,7 +52,7 @@ class EmailBlueprint(BaseModel):
     
     # Step 6: Offer & CTAs
     offer_details: str
-    offer_placement: Literal["Hero", "Story", "Product", "Descriptive", "N/A", "Not applicable"] = "Hero"
+    offer_placement: Literal["Hero", "Story", "Product", "Descriptive", "N/A", "N/a", "n/a", "Not applicable", "Aucun"] = "Hero"
     cta_description: Optional[str] = Field(None, description="Free-text description of the CTA style")
     cta_style_id: Optional[str] = Field(None, description="Legacy Catalog ID")
     
@@ -76,6 +76,20 @@ class EmailBlueprint(BaseModel):
             self.cta_description = self.cta_style_id
         return self
 
+    @field_validator('offer_placement', mode='before')
+    @classmethod
+    def normalize_placement(cls, v):
+        if isinstance(v, str):
+            # Map lowercase to Title Case
+            if v.lower() == 'hero': return 'Hero'
+            if v.lower() == 'story': return 'Story'
+            if v.lower() == 'product': return 'Product'
+            if v.lower() == 'descriptive': return 'Descriptive'
+            normalized = v.capitalize()
+            # If normalized is in allowed list, return it. Otherwise Pydantic will handle validation.
+            return normalized
+        return v
+
 # --- Output & Logging ---
 
 class EmailDraft(BaseModel):
@@ -89,7 +103,7 @@ class EmailDraft(BaseModel):
     descriptive_block_title: str
     descriptive_block_subtitle: str
     descriptive_block_content: str # The main body
-    cta_descriptive: Optional[str] = None # New dedicated CTA button for this block
+    cta_descriptive: Optional[str] = None # New dedicated CTA button for this block (Required via Verifier)
     
     # Reworked Product Block
     product_block_title: str = Field(default="Shop the Collection")
@@ -142,7 +156,8 @@ class CampaignLogEntry(BaseModel):
 class EmailSlot(BaseModel):
     """A single email in the campaign plan."""
     slot_number: int
-    send_date: Optional[str] = None  # ISO format or relative like "Day 1"
+    send_date: Optional[str] = None  # ISO format "YYYY-MM-DD"
+    send_time: Optional[str] = None  # "HH:MM AM/PM"
     email_purpose: Literal["promotional", "educational", "storytelling", "nurture", "conversion"]
     intensity_level: Literal["hard_sell", "medium", "soft"]
     

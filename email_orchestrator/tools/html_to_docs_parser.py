@@ -20,6 +20,11 @@ class HtmlToDocsParser:
         Parses HTML into a list of high-level operations.
         Returns list of dicts: {'type': 'text|table|list', ...}
         """
+        if not html_content: return []
+        
+        # 0. Decode HTML entities EARLY to ensure we catch escaped tags like &lt;table&gt;
+        html_content = html.unescape(html_content)
+        
         ops = []
         
         # 1. Split by Table to isolate complex blocks
@@ -108,9 +113,14 @@ class HtmlToDocsParser:
         # Use a negative lookahead regex
         text = re.sub(r'<(?!/?(b|i|u|strong|em)\b).*?>', '', text, flags=re.IGNORECASE)
         
-        # 3. Collapse multiple spaces/tabs into single space (but keep placeholders)
-        # We replace any sequence of whitespace chars with a single space
+        # 3. Collapse multiple spaces/tabs into single space
         text = re.sub(r'\s+', ' ', text)
+        
+        # 3.5 Clean spaces around placeholders to prevent "Leading Space" issue
+        # e.g. "foo __BR__ bar" -> "foo__BR__bar"
+        text = re.sub(r'\s+__BR__', '__BR__', text)
+        text = re.sub(r'__BR__\s+', '__BR__', text)
+        text = re.sub(r'\s+__LI__', '__LI__', text) # Don't strip after LI, we add bullet later
         
         # 4. Restore Placeholders
         text = text.replace('__BR__', '\n')

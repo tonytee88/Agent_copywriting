@@ -226,6 +226,7 @@ async def generate_email_campaign(
         for lang in target_languages:
             print(f"   > [Language: {lang}]")
             
+        try:
             # A. Strategist (Create Blueprint using Slot Directives)
             # STRICT RULE: If Educational/Nurture, HIDE the offer to prevent leakage
             effective_offer = slot.offer_details or "General Brand Awareness"
@@ -242,7 +243,10 @@ async def generate_email_campaign(
             # Pass folder selection context? Not needed for Strategist.
             blueprint = await strategist_agent(request, brand_bio, campaign_context=slot, language=lang)
             
-            # B. Drafter Wrapper Loop (Judge + Repair)
+            # B. Bundled Generation (Drafter + Stylist)
+            # Concept: The Strategist & Drafter & Stylist work as a production unit.
+            # The Verifier (Deterministic & LLM) checks the FINAL STYLED OUTPUT.
+            
             final_draft = None
             revision_feedback = None
             
@@ -251,20 +255,49 @@ async def generate_email_campaign(
             past_emails = history_manager.get_recent_campaigns(history_identifier, limit=10)
             past_emails_dicts = [entry.model_dump() for entry in past_emails]
     
-            # 1. GENERATION + DETERMINISTIC LOOP (Strict)
-            max_det_retries = 5
-            det_attempt = 0
-            
             # SESSION START
             from email_orchestrator.subagents.drafter_agent import DraftingSession
             drafting_session = DraftingSession(blueprint, brand_bio, language=lang, campaign_context=plan.campaign_context)
+
+            # --- HELPER: Draft & Style Bundle ---
+            async def generate_and_style(feedback: Optional[str] = None):
+                """
+                Bundles Drafting and Styling.
+                If feedback is provided, it's a revision. Otherwise, it's a fresh start.
+                """
+                if feedback:
+                    # Revision
+                    raw_draft = await drafting_session.revise(feedback)
+                else:
+                    # Fresh Start
+                    raw_draft = await drafting_session.start()
+                
+                # Apply Styling immediately
+                # Stylist works on the raw draft and returns styled HTML for the body
+                try:
+                    raw_desc = getattr(raw_draft, 'descriptive_block_content', '')
+                    if raw_desc:
+                        styled_desc = await stylist.style_content(
+                            content=raw_desc, 
+                            structure_id=blueprint.structure_id,
+                            brand_voice=brand_bio.brand_voice, 
+                            language=lang
+                        )
+                        raw_draft.descriptive_block_content = styled_desc
+                except Exception as e:
+                    print(f"[Email #{slot.slot_number}-{lang}] Stylist failed, keeping raw draft: {e}")
+                
+                return raw_draft
+
+            # 1. INITIAL BUNDLE
+            current_draft = await generate_and_style(None)
             
-            # Initial Draft
-            draft = await drafting_session.start()
+            # 2. DETERMINISTIC VERIFICATION LOOP (Checks the STYLED draft)
+            max_det_retries = 3
+            det_attempt = 0
             
             while det_attempt < max_det_retries:
-                # draft is already generated above or via revision below
-                det_issues = det_verifier.verify_draft(draft, history=past_emails_dicts, campaign_id=plan.campaign_id)
+                det_issues = det_verifier.verify_draft(current_draft, history=past_emails_dicts, campaign_id=plan.campaign_id)
                 
                 if not det_issues:
                     print(f"[Email #{slot.slot_number}-{lang}] Layer 1 (Deterministic) Passed.")
@@ -273,64 +306,36 @@ async def generate_email_campaign(
                 det_attempt += 1
                 print(f"[Email #{slot.slot_number}-{lang}] Layer 1 FAILED ({len(det_issues)} issues). Retry {det_attempt}/{max_det_retries}...")
                 
-                # Construct feedback ONLY for deterministic issues
+                # Construct feedback
                 feedback_msg = "STRICT RULES VIOLATION. You MUST fix these before we can proceed:\n"
                 feedback_msg += "\n".join([f"- [{i.field}] {i.problem} (Reason: {i.rationale})" for i in det_issues])
-                
-                # LOGGING for diagnosis (User Request)
                 print(f"[Email #{slot.slot_number}-{lang}] DET FEEDBACK SENT TO DRAFTER:\n{feedback_msg}")
                 
-                # Session-based Revision
-                draft = await drafting_session.revise(feedback_msg)
+                # REVISE & RE-STYLE
+                current_draft = await generate_and_style(feedback_msg)
     
             if det_attempt >= max_det_retries:
                 print(f"[Email #{slot.slot_number}-{lang}] CRITICAL: Failed to fix deterministic issues after {max_det_retries} attempts.")
-                # We still proceed to LLM QA but it will likely fail too. Or we could raise/skip.
-                # For now, let's proceed with the best we have.
-    
-            # 2. [NEW] STYLIST AGENT (Tactical Formatting)
-            # Runs on the draft (either perfected or best-effort) before final LLM QA
-            print(f"[Email #{slot.slot_number}-{lang}] Passing to Stylist for tactical formatting...")
-            try:
-                # draft is an EmailDraft Pydantic object, accessed via dot notation
-                raw_desc = getattr(draft, 'descriptive_block_content', '')
-                if raw_desc:
-                    styled_desc = await stylist.style_content(
-                        content=raw_desc, 
-                        structure_id=blueprint.structure_id,
-                        brand_voice=brand_bio.brand_voice, 
-                        language=lang
-                    )
-                    # Update the Pydantic model directly
-                    draft.descriptive_block_content = styled_desc
-                    print(f"[Email #{slot.slot_number}-{lang}] Stylist applied formatting.")
-            except Exception as e:
-                 print(f"[Email #{slot.slot_number}-{lang}] Stylist failed, keeping raw draft: {e}")
 
-            # 3. LLM QA LOOP (One-Pass)
-            print(f"[Email #{slot.slot_number}-{lang}] Proceeding to LLM QA...")
-            # Todo: Verifier should ideally know language too, but English feedback is usually fine for general structure checks.
-            # Assuming Verifier is Language-Agnostic or defaults to EN analysis which works ok for structure.
-            # Ideally Verifier should verify IN that language.
-            # For now, standard verifier is used.
-            verification = await verifier_agent(draft, blueprint, plan.brand_name, campaign_context=plan.campaign_context)
+            # 3. LLM QA LOOP (Checks the final STYLED draft)
+            print(f"[Email #{slot.slot_number}-{lang}] Proceeding to LLM QA (Verifier)...")
+            verification = await verifier_agent(current_draft, blueprint, plan.brand_name, campaign_context=plan.campaign_context)
             
             if verification.approved:
                 print(f"[Email #{slot.slot_number}-{lang}] APPROVED! Score: {verification.score}")
-                final_draft = draft
+                final_draft = current_draft
             else:
                 print(f"[Email #{slot.slot_number}-{lang}] REJECTED. Requesting ONE-TIME Strategic Revision...")
                 
-                # Construct detailed feedback for revision
+                # Construct detailed feedback
                 feedback_lines = [f"QA VERDICT: {verification.feedback_for_drafter}"]
                 for imp in verification.top_improvements:
                     feedback_lines.append(f"- [Rank {imp.rank}] [{imp.category}] {imp.problem}")
                     feedback_lines.append(f"  Fix Options: {json.dumps(imp.options)}")
-    
                 revision_feedback = "\n".join(feedback_lines)
                 
-                # Session-based Revision
-                final_draft = await drafting_session.revise(revision_feedback)
+                # REVISE & RE-STYLE (Final Pass)
+                final_draft = await generate_and_style(revision_feedback)
                 
                 # Final Deterministic Check on revised draft (Safety)
                 final_det = det_verifier.verify_draft(final_draft, history=past_emails_dicts, campaign_id=plan.campaign_id)
@@ -339,49 +344,26 @@ async def generate_email_campaign(
                 
                 print(f"[Email #{slot.slot_number}-{lang}] Revision complete. Auto-approving for export.")
             
-            # [CRITICAL UPDATE] RE-RUN STYLIST IF REVISED
-            # If revision happened, the new draft is raw text again. We must re-style it.
-            # Even if no revision, we want to ensure 'final_draft' is the one that gets logged and exported.
+            # --- FINAL SAFETY NET (The "Sanitizer") ---
+            # User reported dashes persisting. We will strictly strip them here.
+            # This handles cases where Stylist or Drafter (after N retries) still failed.
+            if final_draft:
+                 import re
+                 def sanitize_text(t):
+                     if not t: return t
+                     t = t.replace("—", ", ").replace("–", ", ") # Replace with comma space
+                     t = t.replace(" - ", ", ")
+                     return t
+
+                 final_draft.subject = sanitize_text(final_draft.subject)
+                 final_draft.preview = sanitize_text(final_draft.preview)
+                 final_draft.hero_subtitle = sanitize_text(final_draft.hero_subtitle)
+                 final_draft.descriptive_block_subtitle = sanitize_text(final_draft.descriptive_block_subtitle)
             
-            target_draft = final_draft if final_draft else draft
-            
-            # Note: The Stylist runs on 'draft' above.
-            # If revision happened, 'final_draft' is a distinct object (the return of revise()).
-            # This 'final_draft' HAS NOT visited the Stylist yet.
-            
-            # Simple Logic: Always run Stylist on the *Approved* draft (target_draft) just before saving.
-            # But wait, verification happened on the *Styled* draft?
-            # CASE A: Pass 1 -> Stylist -> Verifier (Approved) -> target_draft IS styled.
-            # CASE B: Pass 1 -> Stylist -> Verifier (Reject) -> Revision (Raw) -> Verifier (Approve) -> target_draft IS RAW.
-            
-            # Fix: Run Stylist only if we went through revision (Case B).
-            # OR better: Just run it again on the final object if it lacks styling? Hard to detect.
-            # Safer: Just re-run Stylist on 'final_draft' if revision_feedback was present.
-            
-            if revision_feedback and final_draft:
-                print(f"[Email #{slot.slot_number}-{lang}] Re-applying Stylist to revised draft...")
-                try:
-                    raw_desc = getattr(final_draft, 'descriptive_block_content', '')
-                    if raw_desc:
-                        styled_desc = await stylist.style_content(
-                            content=raw_desc, 
-                            structure_id=blueprint.structure_id,
-                            brand_voice=brand_bio.brand_voice, 
-                            language=lang
-                        )
-                        final_draft.descriptive_block_content = styled_desc
-                        print(f"[Email #{slot.slot_number}-{lang}] Stylist applied formatting to revision.")
-                except Exception as e:
-                     print(f"[Email #{slot.slot_number}-{lang}] Stylist re-run failed: {e}")
-            
-            # Ensure final_draft connects to 'draft' if no revision occurred
-            if not final_draft:
-                final_draft = draft
-                
             log_entry = CampaignLogEntry(
                 campaign_id=campaign_id,
                 timestamp=datetime.now().isoformat(),
-                brand_id=plan.brand_id, # Added for multi-brand isolation
+                brand_id=plan.brand_id, 
                 brand_name=plan.brand_name,
                 transformation_description=blueprint.transformation_description,
                 transformation_id=blueprint.transformation_id,
@@ -406,6 +388,16 @@ async def generate_email_campaign(
                 "language": lang 
             })
             results.append(draft_data)
+        except Exception as e:
+            print(f"[Email #{slot.slot_number}-{lang}] ERROR processing slot: {str(e)}")
+            import traceback
+            traceback.print_exc()
+            results.append({
+                "slot_number": slot.slot_number,
+                "status": "failed",
+                "error": str(e),
+                "language": lang
+            })
         
         # F. Export to Google Docs (LEGACY - Disabled)
         # try:

@@ -30,17 +30,18 @@ class DeterministicVerifier:
         # Length Constraints (Min-Max chars)
         # UPDATED: Flexible minimum (0). Max is the only hard cap.
         self.LENGTH_RULES = {
-            "subject": (0, 40),
-            "preview": (0, 55),
-            "hero_title": (0, 40),
-            "hero_subtitle": (0, 55),
-            "descriptive_block_title": (0, 40),
-            "descriptive_block_subtitle": (0, 60),
-            "descriptive_block_content": (0, 400),
-            "product_block_title": (0, 40),
-            "product_block_subtitle": (0, 80),
-            "cta_hero": (0, 15), # Shorter CTAs (was 20)
-            "cta_product": (0, 15) # Shorter CTAs (was 20)
+            "subject": (0, 60),      # Increased from 40 for French length
+            "preview": (0, 80),      # Increased from 55
+            "hero_title": (0, 60),   # Increased from 40
+            "hero_subtitle": (0, 80),# Increased from 55
+            "descriptive_block_title": (0, 60),
+            "descriptive_block_subtitle": (0, 90), # Increased from 60
+            "descriptive_block_content": (0, 600), # Increased from 400
+            "product_block_title": (0, 60),
+            "product_block_subtitle": (0, 100),
+            "cta_hero": (0, 25),    # Increased from 15 ("Je profite de l'offre" is > 15)
+            "cta_product": (0, 25),
+            "cta_descriptive": (2, 30) # Enforce presence (min 2 chars)
         }
         
     def _jaccard_similarity(self, s1: str, s2: str) -> float:
@@ -234,18 +235,40 @@ class DeterministicVerifier:
 
         # 3. Length Constraints
         for field, (min_len, max_len) in self.LENGTH_RULES.items():
-            val = getattr(draft, field, "")
-            if val:
-                length = len(val)
-                if length < min_len:
-                     issues.append(Issue(
-                        type="formatting",
-                        severity="P2",
-                        scope="email",
-                        field=field,
-                        problem=f"Text too short ({length} < {min_len} chars).",
-                        rationale=f"Must be between {min_len}-{max_len} chars."
-                    ))
+            val = getattr(draft, field)
+            if val is None:
+                val = ""
+            
+            length = len(val)
+            
+            # Check Min Length (Enforces existence)
+            if length < min_len:
+                 # If min_len > 0, being empty/None is a failure
+                 issues.append(Issue(
+                    type="formatting",
+                    severity="P2",
+                    scope="email",
+                    field=field,
+                    problem=f"Text missing or too short ({length} < {min_len} chars).",
+                    rationale=f"This field is required and must be between {min_len}-{max_len} chars."
+                ))
+            
+            # Check Max Length (if content exists)
+            if length > 0 and max_len > 0 and length > max_len:
+                # UPDATED: More descriptive for max caps
+                issue_problem = f"Text too long ({length} chars)."
+                issue_rationale = f"Maximum limit is {max_len} characters. Please shorten this field."
+                if min_len > 0:
+                    issue_rationale = f"Must be between {min_len}-{max_len} chars."
+                    
+                issues.append(Issue(
+                    type="formatting",
+                    severity="P2",
+                    scope="email",
+                    field=field,
+                    problem=issue_problem,
+                    rationale=issue_rationale
+                ))
                 if max_len > 0 and length > max_len:
                     # UPDATED: More descriptive for max caps
                     issue_problem = f"Text too long ({length} chars)."
@@ -271,7 +294,7 @@ class DeterministicVerifier:
         # "Never use em dashes, hyphens or dashes. Never ever".
         # This implies even compound words should be avoided or rephrased.
         # Strict check.
-        banned = ["-", "–", "—"]
+        banned = ["–", "—"] # Only ban En-dash and Em-dash. Hyphen (-) is allowed.
         for char in banned:
             if char in text:
                 return True

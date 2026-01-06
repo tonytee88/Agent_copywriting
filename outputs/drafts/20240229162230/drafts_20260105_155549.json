@@ -1,0 +1,60 @@
+[
+  {
+    "subject": "Soldes Hiver : -65% Pack Confort PopBrush !",
+    "preview": "Cheveux doux et disciplin\u00e9s \u00e0 prix mini ,  stock limit\u00e9",
+    "hero_title": "Transformez votre routine capillaire - 65% offerts !",
+    "hero_subtitle": "Premier jour des soldes d\u2019hiver, stock limit\u00e9 : simplifiez les matins et profitez vite de l\u2019offre exceptionnelle.",
+    "cta_hero": "Profiter de l\u2019offre",
+    "descriptive_block_title": "Simplifiez le soin des cheveux chaque matin",
+    "descriptive_block_subtitle": "Le Pack Confort PopBrush transforme le quotidien des familles",
+    "descriptive_block_content": "<table>\n<tr>\n<td><b>Imaginez des matins o\u00f9 vos enfants sourient pendant le d\u00e9m\u00ealage</b></td>\n<td><b>Le Pack Confort PopBrush r\u00e9unit tout ce qu\u2019il faut pour une routine zen et \u00e9conomique</b></td>\n</tr>\n<tr>\n<td>fini les pleurs et les cris, place au confort pour toute la famille.</td>\n<td>brosses innovantes, pinces pratiques, spray d\u00e9m\u00ealant doux.</td>\n</tr>\n<tr>\n<td>Sentez la diff\u00e9rence d\u00e8s le premier jour</td>\n<td>retrouvez le plaisir de coiffer vos enfants sans bataille.</td>\n</tr>\n<tr>\n<td><b>L\u2019offre hivernale est en stock limit\u00e9</b></td>\n<td>ne manquez pas votre chance de rendre chaque matin plus serein.</td>\n</tr>\n</table>\n<br>\nPr\u00eats \u00e0 changer les matins ? Nous sommes l\u00e0 pour vous accompagner !",
+    "cta_descriptive": "D\u00e9couvrir le pack",
+    "product_block_title": "Le kit complet pour cheveux disciplin\u00e9s",
+    "product_block_subtitle": "Tout ce qu\u2019il faut pour un d\u00e9m\u00ealage sans douleur et une routine facile",
+    "products": [
+      "Brosse PopBrush (x2)",
+      "Pince Clipia (pack de huit)",
+      "Spray d\u00e9m\u00ealant (pack de deux)"
+    ],
+    "product_block_content": null,
+    "cta_product": "Voir la s\u00e9lection",
+    "full_text_formatted": "\nSUBJECT: Soldes Hiver : -65% Pack Confort PopBrush !\nPREVIEW: Cheveux doux et disciplin\u00e9s \u00e0 prix mini \u2013 stock limit\u00e9\nHERO IMAGE: None\nHERO TITLE: Transformez votre routine capillaire - 65% offerts !\nHERO SUBTITLE: Premier jour des soldes d\u2019hiver, stock limit\u00e9 : simplifiez les matins et profitez vite de l\u2019offre exceptionnelle.\nCTA: None\n\n--- DESCRIPTIVE BLOCK ---\nTITLE: Simplifiez le soin des cheveux chaque matin\nCONTENT: [[table]] <b>Imaginez des matins o\u00f9 vos enfants sourient pendant le d\u00e9m\u00ealage</b> : fini les pleurs et les cris, place au confort pour toute la famille. <b>Le Pack Confort PopBrush r\u00e9unit tout ce qu\u2019il faut pour une routine zen et \u00e9conomique</b> : brosses innovantes, pinces pratiques, spray d\u00e9m\u00ealant doux. Sentez la diff\u00e9rence d\u00e8s le premier jour et retrouvez le plaisir de coiffer vos enfants sans bataille. <b>L\u2019offre hivernale est en stock limit\u00e9</b> \u2013 ne manquez pas votre chance de rendre chaque matin plus serein. Pr\u00eats \u00e0 changer les matins ? Nous sommes l\u00e0 pour vous accompagner !\n\n--- PRODUCTS ---\n- Brosse PopBrush (x2)\n- Pince Clipia (pack de huit)\n- Spray d\u00e9m\u00ealant (pack de deux)\nCTA: None\n\n--- FOOTER ---\nNone\n",
+    "slot_number": 1,
+    "status": "completed",
+    "content": "\nSUBJECT: Soldes Hiver : -65% Pack Confort PopBrush !\nPREVIEW: Cheveux doux et disciplin\u00e9s \u00e0 prix mini \u2013 stock limit\u00e9\nHERO IMAGE: None\nHERO TITLE: Transformez votre routine capillaire - 65% offerts !\nHERO SUBTITLE: Premier jour des soldes d\u2019hiver, stock limit\u00e9 : simplifiez les matins et profitez vite de l\u2019offre exceptionnelle.\nCTA: None\n\n--- DESCRIPTIVE BLOCK ---\nTITLE: Simplifiez le soin des cheveux chaque matin\nCONTENT: [[table]] <b>Imaginez des matins o\u00f9 vos enfants sourient pendant le d\u00e9m\u00ealage</b> : fini les pleurs et les cris, place au confort pour toute la famille. <b>Le Pack Confort PopBrush r\u00e9unit tout ce qu\u2019il faut pour une routine zen et \u00e9conomique</b> : brosses innovantes, pinces pratiques, spray d\u00e9m\u00ealant doux. Sentez la diff\u00e9rence d\u00e8s le premier jour et retrouvez le plaisir de coiffer vos enfants sans bataille. <b>L\u2019offre hivernale est en stock limit\u00e9</b> \u2013 ne manquez pas votre chance de rendre chaque matin plus serein. Pr\u00eats \u00e0 changer les matins ? Nous sommes l\u00e0 pour vous accompagner !\n\n--- PRODUCTS ---\n- Brosse PopBrush (x2)\n- Pince Clipia (pack de huit)\n- Spray d\u00e9m\u00ealant (pack de deux)\nCTA: None\n\n--- FOOTER ---\nNone\n",
+    "structure_id": "STRUCT_MINI_GRID",
+    "language": "FR"
+  },
+  {
+    "slot_number": 2,
+    "status": "failed",
+    "error": "1 validation error for EmailBlueprint\noffer_placement\n  Input should be 'Hero', 'Story', 'Product', 'Descriptive', 'N/A', 'Not applicable' or 'Aucun' [type=literal_error, input_value=\"Aucune (pas d'offre commerciale)\", input_type=str]\n    For further information visit https://errors.pydantic.dev/2.12/v/literal_error",
+    "language": "FR"
+  },
+  {
+    "subject": "Derni\u00e8re chance : 65% sur Pack Confort \u23f3",
+    "preview": "Adieu matins stressants : offre Pack Confort bient\u00f4t termin\u00e9e.",
+    "hero_title": "Pack Confort, matins transform\u00e9s",
+    "hero_subtitle": "Passez du chaos au calme : solution compl\u00e8te PopBrush, \u00e0 prix mini.",
+    "cta_hero": "Je veux mon Pack Confort !",
+    "descriptive_block_title": "<b>Des matins sereins pour toute la famille</b>",
+    "descriptive_block_subtitle": "La routine capillaire simplifi\u00e9e, pour petits et grands.",
+    "descriptive_block_content": "<ul>\n<li>\u23f0 <b>Gain de temps le matin :</b> Fini les crises, chaque coiffure est pr\u00eate en quelques minutes.</li>\n<li>\ud83c\udf31 <b>Facilit\u00e9 et douceur :</b> Adapt\u00e9 \u00e0 <b>tous types de cheveux</b>, m\u00eame les plus rebelles.</li>\n<li>\ud83d\udc68\u200d\ud83d\udc69\u200d\ud83d\udc67 <b>Solution familiale :</b> Convient aux enfants et parents, sans douleur ni grimace.</li>\n<li>\ud83d\udcb8 <b>Offre imbattable :</b> soixante-cinq pour cent de r\u00e9duction, stocks limit\u00e9s.</li>\n</ul>\nChaque matin devient un moment complice : fini les pleurs, bonjour la douceur et le sourire devant le miroir. Profitez de cette derni\u00e8re chance pour transformer votre quotidien capillaire !",
+    "cta_descriptive": "D\u00e9couvrir sans attendre",
+    "product_block_title": "<b>Le Pack Confort en d\u00e9tail</b>",
+    "product_block_subtitle": "Tout ce qu\u2019il faut pour une routine du matin apais\u00e9e et efficace.",
+    "products": [
+      "Pince Clipia (pack de huit)",
+      "Spray PopBrush (pack de deux)",
+      "Brosse PopBrush (deux unit\u00e9s)"
+    ],
+    "product_block_content": "Imaginez : des cheveux d\u00e9m\u00eal\u00e9s en douceur, des enfants pr\u00eats \u00e0 l\u2019heure et des parents sereins, chaque jour. Le Pack Confort r\u00e9unit tout le n\u00e9cessaire pour dire adieu aux matins compliqu\u00e9s. Valeur r\u00e9elle cent quarante-neuf euros quarante, aujourd\u2019hui \u00e0 seulement cinquante-deux euros vingt-neuf. Attention, il ne reste que quelques heures et les stocks sont tr\u00e8s limit\u00e9s.",
+    "cta_product": "Je veux mon Pack Confort !",
+    "full_text_formatted": "\nSUBJECT: Derni\u00e8re chance : 65% sur Pack Confort \u23f3\nPREVIEW: Adieu matins stressants : offre Pack Confort bient\u00f4t termin\u00e9e.\nHERO IMAGE: None\nHERO TITLE: Pack Confort, matins transform\u00e9s\nHERO SUBTITLE: Passez du chaos au calme : solution compl\u00e8te PopBrush, \u00e0 prix mini.\nCTA: None\n\n--- DESCRIPTIVE BLOCK ---\nTITLE: <b>Des matins sereins pour toute la famille</b>\nCONTENT: <ul><li>\u23f0 <b>Gain de temps le matin :</b> Fini les crises, chaque coiffure est pr\u00eate en quelques minutes.</li><li>\ud83c\udf31 <b>Facilit\u00e9 et douceur :</b> Adapt\u00e9 \u00e0 <b>tous types de cheveux</b>, m\u00eame les plus rebelles.</li><li>\ud83d\udc68\u200d\ud83d\udc69\u200d\ud83d\udc67 <b>Solution familiale :</b> Convient aux enfants et parents, sans douleur ni grimace.</li><li>\ud83d\udcb8 <b>Offre imbattable :</b> soixante-cinq pour cent de r\u00e9duction, stocks limit\u00e9s.</li></ul>Chaque matin devient un moment complice : fini les pleurs, bonjour la douceur et le sourire devant le miroir. Profitez de cette derni\u00e8re chance pour transformer votre quotidien capillaire !\n\n--- PRODUCTS ---\n- Pince Clipia (pack de huit)\n- Spray PopBrush (pack de deux)\n- Brosse PopBrush (deux unit\u00e9s)\nCTA: None\n\n--- FOOTER ---\nNone\n",
+    "slot_number": 3,
+    "status": "completed",
+    "content": "\nSUBJECT: Derni\u00e8re chance : 65% sur Pack Confort \u23f3\nPREVIEW: Adieu matins stressants : offre Pack Confort bient\u00f4t termin\u00e9e.\nHERO IMAGE: None\nHERO TITLE: Pack Confort, matins transform\u00e9s\nHERO SUBTITLE: Passez du chaos au calme : solution compl\u00e8te PopBrush, \u00e0 prix mini.\nCTA: None\n\n--- DESCRIPTIVE BLOCK ---\nTITLE: <b>Des matins sereins pour toute la famille</b>\nCONTENT: <ul><li>\u23f0 <b>Gain de temps le matin :</b> Fini les crises, chaque coiffure est pr\u00eate en quelques minutes.</li><li>\ud83c\udf31 <b>Facilit\u00e9 et douceur :</b> Adapt\u00e9 \u00e0 <b>tous types de cheveux</b>, m\u00eame les plus rebelles.</li><li>\ud83d\udc68\u200d\ud83d\udc69\u200d\ud83d\udc67 <b>Solution familiale :</b> Convient aux enfants et parents, sans douleur ni grimace.</li><li>\ud83d\udcb8 <b>Offre imbattable :</b> soixante-cinq pour cent de r\u00e9duction, stocks limit\u00e9s.</li></ul>Chaque matin devient un moment complice : fini les pleurs, bonjour la douceur et le sourire devant le miroir. Profitez de cette derni\u00e8re chance pour transformer votre quotidien capillaire !\n\n--- PRODUCTS ---\n- Pince Clipia (pack de huit)\n- Spray PopBrush (pack de deux)\n- Brosse PopBrush (deux unit\u00e9s)\nCTA: None\n\n--- FOOTER ---\nNone\n",
+    "structure_id": "STRUCT_EMOJI_CHECKLIST",
+    "language": "FR"
+  }
+]

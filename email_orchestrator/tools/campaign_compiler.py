@@ -104,6 +104,10 @@ class CampaignCompiler:
                 # Add Header text e.g. "--- EMAIL #1 ---"
                 slot_header = f"--- EMAIL #{draft.get('slot_number', '?')} ---"
                 write_email_to_doc(self.docs_service, doc_id, draft, structure, lang, header_text=slot_header)
+                
+                # RATE LIMIT PROTECTION: Sleep 2s between writes
+                import time
+                time.sleep(2)
             except Exception as e:
                 print(f"[Compiler] Error writing draft {draft.get('slot_number')}: {e}")
                 # Continue to next draft

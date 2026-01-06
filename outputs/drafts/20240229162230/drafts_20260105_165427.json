@@ -1,0 +1,60 @@
+[
+  {
+    "subject": "Soldes d\u2019Hiver : -65% sur Pack Confort",
+    "preview": "Cheveux doux, routine facile : -65% \u00e0 saisir vite !",
+    "hero_title": "Pack Confort PopBrush \u00e0 -65% !",
+    "hero_subtitle": "Soldes d\u2019Hiver : offre rare pour des matins sereins. Quantit\u00e9s limit\u00e9es.",
+    "cta_hero": "J\u2019en profite",
+    "descriptive_block_title": "L\u2019excitation du premier jour",
+    "descriptive_block_subtitle": "Routine facile, enfants heureux",
+    "descriptive_block_content": "<table>\n  <tr>\n    <td><b>Cheveux disciplin\u00e9s</b></td>\n    <td><b>Douceur imm\u00e9diate</b></td>\n    <td><b>Enfants souriants</b></td>\n  </tr>\n  <tr>\n    <td>Fini les cris</td>\n    <td>Accessoires adapt\u00e9s</td>\n    <td>Matins sereins</td>\n  </tr>\n</table>\n<br>\n<p><b>Gagnez du temps</b>, profitez d\u2019accessoires pour tous types de cheveux et vivez enfin des matins sereins.</p>\n<br>\n<p><u>L\u2019offre \u00e0 -65% est limit\u00e9e</u>, foncez !</p>",
+    "cta_descriptive": "Voir l\u2019offre",
+    "product_block_title": "Pack Confort \u00e0 prix mini",
+    "product_block_subtitle": "Brosse, spray, pinces\u202f: l\u2019essentiel pour tous les cheveux.",
+    "products": [
+      "Brosse PopBrush",
+      "Spray D\u00e9m\u00ealant PopBrush",
+      "Pinces Clipia (pack de huit)"
+    ],
+    "product_block_content": null,
+    "cta_product": "Je veux -65%",
+    "full_text_formatted": "\nSUBJECT: Soldes d\u2019Hiver : -65% sur Pack Confort\nPREVIEW: Cheveux doux, routine facile : -65% \u00e0 saisir vite !\nHERO IMAGE: None\nHERO TITLE: Pack Confort PopBrush \u00e0 -65% !\nHERO SUBTITLE: Soldes d\u2019Hiver : offre rare pour des matins sereins. Quantit\u00e9s limit\u00e9es.\nCTA: None\n\n--- DESCRIPTIVE BLOCK ---\nTITLE: L\u2019excitation du premier jour\nCONTENT: [[image-text table]] Fini les cris et les cheveux emm\u00eal\u00e9s au r\u00e9veil. Avec le Pack Confort PopBrush, la routine devient simple : <b>cheveux disciplin\u00e9s, douceur imm\u00e9diate, enfants souriants</b>. Gagnez du temps, profitez d\u2019accessoires pour tous types de cheveux et vivez enfin des matins sereins. <b>L\u2019offre \u00e0 -65% est limit\u00e9e, foncez !</b>\nCTA DESCRIPTIVE: Voir l\u2019offre\n\n--- PRODUCTS ---\n- Brosse PopBrush\n- Spray D\u00e9m\u00ealant PopBrush\n- Pinces Clipia (pack de huit)\nCTA: None\n\n--- FOOTER ---\nNone\n",
+    "slot_number": 1,
+    "status": "completed",
+    "content": "\nSUBJECT: Soldes d\u2019Hiver : -65% sur Pack Confort\nPREVIEW: Cheveux doux, routine facile : -65% \u00e0 saisir vite !\nHERO IMAGE: None\nHERO TITLE: Pack Confort PopBrush \u00e0 -65% !\nHERO SUBTITLE: Soldes d\u2019Hiver : offre rare pour des matins sereins. Quantit\u00e9s limit\u00e9es.\nCTA: None\n\n--- DESCRIPTIVE BLOCK ---\nTITLE: L\u2019excitation du premier jour\nCONTENT: [[image-text table]] Fini les cris et les cheveux emm\u00eal\u00e9s au r\u00e9veil. Avec le Pack Confort PopBrush, la routine devient simple : <b>cheveux disciplin\u00e9s, douceur imm\u00e9diate, enfants souriants</b>. Gagnez du temps, profitez d\u2019accessoires pour tous types de cheveux et vivez enfin des matins sereins. <b>L\u2019offre \u00e0 -65% est limit\u00e9e, foncez !</b>\nCTA DESCRIPTIVE: Voir l\u2019offre\n\n--- PRODUCTS ---\n- Brosse PopBrush\n- Spray D\u00e9m\u00ealant PopBrush\n- Pinces Clipia (pack de huit)\nCTA: None\n\n--- FOOTER ---\nNone\n",
+    "structure_id": "STRUCT_MINI_GRID",
+    "language": "FR"
+  },
+  {
+    "slot_number": 2,
+    "status": "failed",
+    "error": "1 validation error for EmailBlueprint\noffer_placement\n  Input should be 'Hero', 'Story', 'Product', 'Descriptive', 'N/A', 'N/a', 'n/a', 'Not applicable' or 'Aucun' [type=literal_error, input_value=\"Aucune offre commerciale...sources \u00e0 d\u00e9couvrir).\", input_type=str]\n    For further information visit https://errors.pydantic.dev/2.12/v/literal_error",
+    "language": "FR"
+  },
+  {
+    "subject": "Derni\u00e8re chance : -65% sur le Pack Confort",
+    "preview": "Plus que quelques heures pour une routine facile \u00e0 -65%.",
+    "hero_title": "Offre limit\u00e9e : -65% aujourd\u2019hui",
+    "hero_subtitle": "La solution pour des matins sans stress : tout inclus, cheveux impeccables en un geste.",
+    "cta_hero": "Profiter du pack",
+    "descriptive_block_title": "Du chaos matinal \u00e0 la facilit\u00e9",
+    "descriptive_block_subtitle": "La solution PopBrush pour toute la famille.",
+    "descriptive_block_content": "<ul>\n  <li>\u2728 <b>Gagnez du temps chaque matin gr\u00e2ce \u00e0 notre solution tout-en-un.</b></li>\n  <li>\u2728 <b>Convient \u00e0 tous les types de cheveux, m\u00eame les plus rebelles.</b></li>\n  <li>\u2728 <b>Id\u00e9al pour les familles : fini les cris et les larmes devant la brosse.</b></li>\n  <li>\u2728 <b>Profitez d'une exp\u00e9rience de coiffage rapide, douce et sans douleur.</b></li>\n</ul>\n<p><i>Imaginez des matins fluides o\u00f9 toute la famille est pr\u00eate avec le sourire.</i></p>\n<p>Parce que chaque famille m\u00e9rite des matins sereins, <u>changez vos habitudes d\u00e8s aujourd\u2019hui</u> avec PopBrush.</p>",
+    "cta_descriptive": "Je veux mon Pack \u00e0 -65%",
+    "product_block_title": "Le Pack Confort complet \u00e0 prix mini",
+    "product_block_subtitle": "Brosses, pinces et spray\u00a0: routine rapide, sans stress, \u00e0 seulement 52,29\u20ac. Offre limit\u00e9e, ne manquez pas ce pack complet \u00e0 prix mini.",
+    "products": [
+      "Brosse PopBrush",
+      "Pince Clipia (pack de huit)",
+      "Spray PopBrush (pack de deux)"
+    ],
+    "product_block_content": null,
+    "cta_product": "Shoppez le pack",
+    "full_text_formatted": "\nSUBJECT: Derni\u00e8re chance : -65% sur le Pack Confort\nPREVIEW: Plus que quelques heures pour une routine facile \u00e0 -65%.\nHERO IMAGE: None\nHERO TITLE: Offre limit\u00e9e : -65% aujourd\u2019hui\nHERO SUBTITLE: La solution pour des matins sans stress : tout inclus, cheveux impeccables en un geste.\nCTA: None\n\n--- DESCRIPTIVE BLOCK ---\nTITLE: Du chaos matinal \u00e0 la facilit\u00e9\nCONTENT: <ul><li>\u2728 <b>Gagnez du temps chaque matin gr\u00e2ce \u00e0 notre solution tout-en-un.</b></li><li>\u2728 <b>Convient \u00e0 tous les types de cheveux, m\u00eame les plus rebelles.</b></li><li>\u2728 <b>Id\u00e9al pour les familles : fini les cris et les larmes devant la brosse.</b></li><li>\u2728 <b>Profitez d'une exp\u00e9rience de coiffage rapide, douce et sans douleur.</b></li></ul>Imaginez des matins fluides o\u00f9 toute la famille est pr\u00eate avec le sourire. Parce que chaque famille m\u00e9rite des matins sereins, changez vos habitudes d\u00e8s aujourd\u2019hui avec PopBrush.\nCTA DESCRIPTIVE: Je veux mon Pack \u00e0 -65%\n\n--- PRODUCTS ---\n- Brosse PopBrush\n- Pince Clipia (pack de huit)\n- Spray PopBrush (pack de deux)\nCTA: None\n\n--- FOOTER ---\nNone\n",
+    "slot_number": 3,
+    "status": "completed",
+    "content": "\nSUBJECT: Derni\u00e8re chance : -65% sur le Pack Confort\nPREVIEW: Plus que quelques heures pour une routine facile \u00e0 -65%.\nHERO IMAGE: None\nHERO TITLE: Offre limit\u00e9e : -65% aujourd\u2019hui\nHERO SUBTITLE: La solution pour des matins sans stress : tout inclus, cheveux impeccables en un geste.\nCTA: None\n\n--- DESCRIPTIVE BLOCK ---\nTITLE: Du chaos matinal \u00e0 la facilit\u00e9\nCONTENT: <ul><li>\u2728 <b>Gagnez du temps chaque matin gr\u00e2ce \u00e0 notre solution tout-en-un.</b></li><li>\u2728 <b>Convient \u00e0 tous les types de cheveux, m\u00eame les plus rebelles.</b></li><li>\u2728 <b>Id\u00e9al pour les familles : fini les cris et les larmes devant la brosse.</b></li><li>\u2728 <b>Profitez d'une exp\u00e9rience de coiffage rapide, douce et sans douleur.</b></li></ul>Imaginez des matins fluides o\u00f9 toute la famille est pr\u00eate avec le sourire. Parce que chaque famille m\u00e9rite des matins sereins, changez vos habitudes d\u00e8s aujourd\u2019hui avec PopBrush.\nCTA DESCRIPTIVE: Je veux mon Pack \u00e0 -65%\n\n--- PRODUCTS ---\n- Brosse PopBrush\n- Pince Clipia (pack de huit)\n- Spray PopBrush (pack de deux)\nCTA: None\n\n--- FOOTER ---\nNone\n",
+    "structure_id": "STRUCT_EMOJI_CHECKLIST",
+    "language": "FR"
+  }
+]

@@ -57,8 +57,8 @@ Your goal is to write a high-converting "Type #1" email by strictly following th
 6. **Adopt the Persona**: Use the voice/tone defined by the Persona Description.
 7. **CTA Strategy (Context-Aware)**:
    - **Promotional**: "Shop Now", "Get Yours".
-   - **Educational/Nurture**: "Discover", "View Collection", "See the Solution".
-   - **BANNED**: NEVER use "Learn More", "Read More" (We do not have a blog).
+   - **Educational/Nurture**: "View Relevant Tools", "See the Collection", "Get the Look".
+   - **BANNED**: NEVER use "Learn More", "Read More", "See Advice" (We do not have a blog). ALL CTAs must drive to a Product or Collection page.
 8. **JSON OUTPUT ONLY**.
 9. **PATCHING MINDSET (IF REVISION)**: If `REVISION FEEDBACK` is provided, do NOT restart. KEEP the good parts of the draft and only PATCH/FIX the specific issues requested. Enhance the existing copy rather than replacing it entirely unless instructed.
 
@@ -77,6 +77,7 @@ Return valid JSON:
   "descriptive_block_title": "Max 36 chars. The 'Why' or 'Story'.",
   "descriptive_block_subtitle": "Max 54 chars. The 'How' or 'Benefit'.",
   "descriptive_block_content": "Max 360 chars. Focus on the transformation.",
+  "cta_descriptive": "Short button text (Max 25 chars). Context-aware.",
   
   "product_block_title": "Max 36 chars. Bridge angle to products.",
   "product_block_subtitle": "Max 72 chars. Theme extension.",

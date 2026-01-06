@@ -1,0 +1,61 @@
+[
+  {
+    "subject": "Soldes d\u2019Hiver : -65% sur le Pack Confort",
+    "preview": "Routine capillaire simplifi\u00e9e, stocks limit\u00e9s.",
+    "hero_title": "Offre exceptionnelle : Pack Confort \u00e0 -65%",
+    "hero_subtitle": "D\u00e9butez les Soldes avec le Pack Confort PopBrush \u00e0 prix mini : douceur et facilit\u00e9 pour tous.",
+    "cta_hero": "Saisir l'offre",
+    "descriptive_block_title": "Simplifiez votre routine capillaire",
+    "descriptive_block_subtitle": "Fin des cheveux emm\u00eal\u00e9s, place \u00e0 la douceur et facilit\u00e9.",
+    "descriptive_block_content": "<table>\n  <tr>\n    <td><b>Brosse PopBrush</b> : D\u00e9m\u00eale en douceur, prot\u00e8ge contre la casse et les cris.</td>\n  </tr>\n  <tr>\n    <td><b>Spray PopBrush</b> : Un geste rapide pour des cheveux doux et souples.</td>\n  </tr>\n  <tr>\n    <td><b>Pince Clipia</b> : Maintient les m\u00e8ches sans tirer, pratique pour coiffer.</td>\n  </tr>\n  <tr>\n    <td><b>Pack complet</b> : Routine rapide, sans douleur, et \u00e0 prix r\u00e9duit.</td>\n  </tr>\n</table>\n<p><b>Offrez \u00e0 votre famille</b> le plaisir de coiffer <i>sans stress</i>, chaque matin.</p>\n<p><u>Commandez maintenant</u> et profitez d\u2019une <b>transformation capillaire</b> d\u00e8s aujourd\u2019hui.</p>",
+    "cta_descriptive": "Commandez maintenant",
+    "product_block_title": "Stocks limit\u00e9s, offre \u00e0 saisir",
+    "product_block_subtitle": "Pack Confort \u00e0 prix r\u00e9duit, exclusivement pendant les Soldes d\u2019Hiver.",
+    "products": [
+      "Pack Confort PopBrush : 2 x Brosse, 2 x Spray, 8 x Pince Clipia",
+      "Brosse PopBrush",
+      "Spray PopBrush",
+      "Pince Clipia"
+    ],
+    "product_block_content": null,
+    "cta_product": "Profitez vite",
+    "full_text_formatted": "\nSUBJECT: Soldes d\u2019Hiver : -65% sur le Pack Confort\nPREVIEW: Routine capillaire simplifi\u00e9e, stocks limit\u00e9s.\nHERO IMAGE: None\nHERO TITLE: Offre exceptionnelle : Pack Confort \u00e0 -65%\nHERO SUBTITLE: D\u00e9butez les Soldes avec le Pack Confort PopBrush \u00e0 prix mini : douceur et facilit\u00e9 pour tous.\nCTA: None\n\n--- DESCRIPTIVE BLOCK ---\nTITLE: Simplifiez votre routine capillaire\nCONTENT: [[table]] <b>Brosse PopBrush</b> : D\u00e9m\u00eale en douceur, prot\u00e8ge contre la casse et les cris. <b>Spray PopBrush</b> : Un geste rapide pour des cheveux doux et souples. <b>Pince Clipia</b> : Maintient les m\u00e8ches sans tirer, pratique pour coiffer. <b>Pack complet</b> : Routine rapide, sans douleur, et \u00e0 prix r\u00e9duit. Offrez \u00e0 votre famille le plaisir de coiffer sans stress, chaque matin. Commandez maintenant et profitez d\u2019une transformation capillaire d\u00e8s aujourd\u2019hui.\nCTA DESCRIPTIVE: Commandez maintenant\n\n--- PRODUCTS ---\n- Pack Confort PopBrush : 2 x Brosse, 2 x Spray, 8 x Pince Clipia\n- Brosse PopBrush\n- Spray PopBrush\n- Pince Clipia\nCTA: None\n\n--- FOOTER ---\nNone\n",
+    "slot_number": 1,
+    "status": "completed",
+    "content": "\nSUBJECT: Soldes d\u2019Hiver : -65% sur le Pack Confort\nPREVIEW: Routine capillaire simplifi\u00e9e, stocks limit\u00e9s.\nHERO IMAGE: None\nHERO TITLE: Offre exceptionnelle : Pack Confort \u00e0 -65%\nHERO SUBTITLE: D\u00e9butez les Soldes avec le Pack Confort PopBrush \u00e0 prix mini : douceur et facilit\u00e9 pour tous.\nCTA: None\n\n--- DESCRIPTIVE BLOCK ---\nTITLE: Simplifiez votre routine capillaire\nCONTENT: [[table]] <b>Brosse PopBrush</b> : D\u00e9m\u00eale en douceur, prot\u00e8ge contre la casse et les cris. <b>Spray PopBrush</b> : Un geste rapide pour des cheveux doux et souples. <b>Pince Clipia</b> : Maintient les m\u00e8ches sans tirer, pratique pour coiffer. <b>Pack complet</b> : Routine rapide, sans douleur, et \u00e0 prix r\u00e9duit. Offrez \u00e0 votre famille le plaisir de coiffer sans stress, chaque matin. Commandez maintenant et profitez d\u2019une transformation capillaire d\u00e8s aujourd\u2019hui.\nCTA DESCRIPTIVE: Commandez maintenant\n\n--- PRODUCTS ---\n- Pack Confort PopBrush : 2 x Brosse, 2 x Spray, 8 x Pince Clipia\n- Brosse PopBrush\n- Spray PopBrush\n- Pince Clipia\nCTA: None\n\n--- FOOTER ---\nNone\n",
+    "structure_id": "STRUCT_MINI_GRID",
+    "language": "FR"
+  },
+  {
+    "slot_number": 2,
+    "status": "failed",
+    "error": "1 validation error for EmailBlueprint\noffer_placement\n  Input should be 'Hero', 'Story', 'Product', 'Descriptive', 'N/A', 'Not applicable' or 'Aucun' [type=literal_error, input_value='N/a', input_type=str]\n    For further information visit https://errors.pydantic.dev/2.12/v/literal_error",
+    "language": "FR"
+  },
+  {
+    "subject": "Derni\u00e8re chance : Pack Confort \u00e0 -65%",
+    "preview": "Routine cheveux facile, offre limit\u00e9e \u00e0 52,29 euros",
+    "hero_title": "Derni\u00e8re chance pour des matins faciles !",
+    "hero_subtitle": "Le Pack Confort passe \u00e0 52,29 euros au lieu de 149,40 euros. Offre limit\u00e9e, ne tardez pas.",
+    "cta_hero": "J\u2019en profite maintenant",
+    "descriptive_block_title": "Adoptez une routine capillaire sans stress \u2728",
+    "descriptive_block_subtitle": "Simple et rapide pour toute la famille, fini le stress capillaire",
+    "descriptive_block_content": "<ul>\n  <li>\u2728 <b>Gain de temps chaque matin</b> : Cheveux pr\u00eats en quelques minutes</li>\n  <li>\u2728 <b>Facilit\u00e9 d\u2019utilisation</b> : Convient \u00e0 tous, m\u00eame aux enfants et tous types de cheveux</li>\n  <li>\u2728 <b>Pack complet</b> : Brosse, spray et pinces pour un coiffage sans douleur</li>\n  <li>\u2728 <b>Confort familial</b> : Transformez la routine en un moment serein et complice</li>\n  <li>\u2728 <b>Offre sp\u00e9ciale \u00e0 -65%</b> : Occasion unique \u00e0 ne pas rater</li>\n</ul>\n<p><b>Profitez de cette offre exceptionnelle</b> avant qu'elle disparaisse !</p>\n<p>Chaque geste devient plus simple, chaque matin plus doux.</p>\n<p><i>Pr\u00eat \u00e0 changer votre routine ?</i></p>",
+    "cta_descriptive": "Profitez de l\u2019offre maintenant",
+    "product_block_title": "Votre Pack Confort disponible aujourd\u2019hui",
+    "product_block_subtitle": "Brosse, spray et pinces r\u00e9unis \u00e0 52,29 euros. Offre limit\u00e9e \u00e0 -65% aujourd\u2019hui seulement.",
+    "products": [
+      "Brosse PopBrush",
+      "Spray d\u00e9m\u00ealant (lot de 2)",
+      "Pince Clipia (lot de 8)"
+    ],
+    "product_block_content": null,
+    "cta_product": "Commandez votre pack aujourd\u2019hui",
+    "full_text_formatted": "\nSUBJECT: Derni\u00e8re chance : Pack Confort \u00e0 -65%\nPREVIEW: Routine cheveux facile, offre limit\u00e9e \u00e0 52,29 euros\nHERO IMAGE: None\nHERO TITLE: Derni\u00e8re chance pour des matins faciles !\nHERO SUBTITLE: Le Pack Confort passe \u00e0 52,29 euros au lieu de 149,40 euros. Offre limit\u00e9e, ne tardez pas.\nCTA: None\n\n--- DESCRIPTIVE BLOCK ---\nTITLE: Adoptez une routine capillaire sans stress \u2728\nCONTENT: <ul><li>\u2728 <b>Gain de temps chaque matin</b> : Cheveux pr\u00eats en quelques minutes</li><li>\u2728 <b>Facilit\u00e9 d\u2019utilisation</b> : Convient \u00e0 tous, m\u00eame aux enfants et tous types de cheveux</li><li>\u2728 <b>Pack complet</b> : Brosse, spray et pinces pour un coiffage sans douleur</li><li>\u2728 <b>Confort familial</b> : Transformez la routine en un moment serein et complice</li><li>\u2728 <b>Offre sp\u00e9ciale \u00e0 -65%</b> : Occasion unique \u00e0 ne pas rater</li></ul>Profitez de cette offre exceptionnelle avant qu'elle disparaisse ! Chaque geste devient plus simple, chaque matin plus doux. Pr\u00eat \u00e0 changer votre routine ?\nCTA DESCRIPTIVE: Profitez de l\u2019offre maintenant\n\n--- PRODUCTS ---\n- Brosse PopBrush\n- Spray d\u00e9m\u00ealant (lot de 2)\n- Pince Clipia (lot de 8)\nCTA: None\n\n--- FOOTER ---\nNone\n",
+    "slot_number": 3,
+    "status": "completed",
+    "content": "\nSUBJECT: Derni\u00e8re chance : Pack Confort \u00e0 -65%\nPREVIEW: Routine cheveux facile, offre limit\u00e9e \u00e0 52,29 euros\nHERO IMAGE: None\nHERO TITLE: Derni\u00e8re chance pour des matins faciles !\nHERO SUBTITLE: Le Pack Confort passe \u00e0 52,29 euros au lieu de 149,40 euros. Offre limit\u00e9e, ne tardez pas.\nCTA: None\n\n--- DESCRIPTIVE BLOCK ---\nTITLE: Adoptez une routine capillaire sans stress \u2728\nCONTENT: <ul><li>\u2728 <b>Gain de temps chaque matin</b> : Cheveux pr\u00eats en quelques minutes</li><li>\u2728 <b>Facilit\u00e9 d\u2019utilisation</b> : Convient \u00e0 tous, m\u00eame aux enfants et tous types de cheveux</li><li>\u2728 <b>Pack complet</b> : Brosse, spray et pinces pour un coiffage sans douleur</li><li>\u2728 <b>Confort familial</b> : Transformez la routine en un moment serein et complice</li><li>\u2728 <b>Offre sp\u00e9ciale \u00e0 -65%</b> : Occasion unique \u00e0 ne pas rater</li></ul>Profitez de cette offre exceptionnelle avant qu'elle disparaisse ! Chaque geste devient plus simple, chaque matin plus doux. Pr\u00eat \u00e0 changer votre routine ?\nCTA DESCRIPTIVE: Profitez de l\u2019offre maintenant\n\n--- PRODUCTS ---\n- Brosse PopBrush\n- Spray d\u00e9m\u00ealant (lot de 2)\n- Pince Clipia (lot de 8)\nCTA: None\n\n--- FOOTER ---\nNone\n",
+    "structure_id": "STRUCT_EMOJI_CHECKLIST",
+    "language": "FR"
+  }
+]

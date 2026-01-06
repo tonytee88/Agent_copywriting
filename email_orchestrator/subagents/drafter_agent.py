@@ -257,6 +257,7 @@ CTA: {data.get('hero_cta_text')}
 --- DESCRIPTIVE BLOCK ---
 TITLE: {data.get('descriptive_block_title')}
 CONTENT: {data.get('descriptive_block_content')}
+CTA DESCRIPTIVE: {data.get('cta_descriptive', 'N/A')}
 
 --- PRODUCTS ---
 {products_list}

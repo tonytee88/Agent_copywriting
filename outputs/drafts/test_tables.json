@@ -1,0 +1,50 @@
+[
+  {
+    "slot_number": 1,
+    "status": "completed",
+    "subject": "Test Email 1 with Table",
+    "preview": "Preview for 1",
+    "hero_title": "Hero 1",
+    "hero_subtitle": "Subtitle 1",
+    "descriptive_block_title": "Desc Title 1",
+    "descriptive_block_subtitle": "Desc Subtitle 1",
+    "descriptive_block_content": "\n    <table>\n        <tr><td><strong>Feature</strong></td><td><strong>Benefit</strong></td></tr>\n        <tr><td>Hydration</td><td>Keeps skin moist</td></tr>\n    </table>\n    ",
+    "products": [
+      "Prod 1-A",
+      "Prod 1-B"
+    ],
+    "language": "EN"
+  },
+  {
+    "slot_number": 2,
+    "status": "completed",
+    "subject": "Test Email 2 with Table",
+    "preview": "Preview for 2",
+    "hero_title": "Hero 2",
+    "hero_subtitle": "Subtitle 2",
+    "descriptive_block_title": "Desc Title 2",
+    "descriptive_block_subtitle": "Desc Subtitle 2",
+    "descriptive_block_content": "\n    <table>\n        <tr><td><strong>Step</strong></td><td><strong>Action</strong></td></tr>\n        <tr><td>1</td><td>Open Bottle</td></tr>\n        <tr><td>2</td><td>Drink</td></tr>\n        <tr><td>3</td><td>Enjoy</td></tr>\n    </table>\n    ",
+    "products": [
+      "Prod 2-A",
+      "Prod 2-B"
+    ],
+    "language": "EN"
+  },
+  {
+    "slot_number": 3,
+    "status": "completed",
+    "subject": "Test Email 3 with Table",
+    "preview": "Preview for 3",
+    "hero_title": "Hero 3",
+    "hero_subtitle": "Subtitle 3",
+    "descriptive_block_title": "Desc Title 3",
+    "descriptive_block_subtitle": "Desc Subtitle 3",
+    "descriptive_block_content": "\n    <table>\n        <tr><td><strong>Day</strong></td><td><strong>Goal</strong></td></tr>\n        <tr><td>Mon</td><td>1L</td></tr>\n        <tr><td>Tue</td><td>1.5L</td></tr>\n        <tr><td>Wed</td><td>2L</td></tr>\n    </table>\n    ",
+    "products": [
+      "Prod 3-A",
+      "Prod 3-B"
+    ],
+    "language": "EN"
+  }
+]
