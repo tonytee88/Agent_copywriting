@@ -132,78 +132,52 @@ class DraftingSession:
         return _parse_draft_response(response_text)
 
     async def revise(self, feedback: str) -> EmailDraft:
-        """Revises the draft based on feedback, keeping context."""
-        print(f"[DraftingSession] Revising based on feedback...")
+        # OPTIMIZED REVISION (Slim Strategy)
+        # Instead of reloading the massive PDF + Blueprint, we use a targeted "Fixer" prompt.
         
-        revision_prompt = f"""
-CRITICAL FEEDBACK RECEIVED:
-{feedback}
+        prompt_path = Path(__file__).parent.parent / "prompts" / "drafter" / "v2_revision.txt"
+        try:
+            prompt_template = prompt_path.read_text(encoding="utf-8")
+        except FileNotFoundError:
+            # Fallback (Should not happen if deployed correctly)
+            print("[Drafter] Warning: v2_revision.txt not found. Using legacy revision.")
+            return await self._legacy_revise(feedback)
 
-INSTRUCTIONS:
-1. Fix the issues above.
-2. Maintain the same Tone and Style as the previous draft.
-3. Return the FULL updated JSON for the email.
-"""
-        self.history.append({"role": "user", "content": revision_prompt})
+        # Get the previous draft content
+        # History structure: [User(Prompt), Assistant(Draft), User(Feedback), Assistant(Draft)...]
+        # We need the LAST assistant message.
+        last_draft_content = ""
+        for msg in reversed(self.history):
+            if msg["role"] == "assistant":
+                last_draft_content = msg["content"]
+                break
         
-        # Build Context Window for Stateless API
-        # Only inject the LAST assistant response + New Feedback? 
-        # Or full chain? Full chain is better but costly.
-        # Let's use: System Context (Hidden) + Last Draft + Feedback
-        # OR: Just concat everything.
-        
-        # Simple concat for now (watch token limits)
-        conversation_str = ""
-        # We don't want to re-send the HUGE initial prompt every time if we can avoid it, 
-        # but for coherence we might need the blueprint reference.
-        # Strategy: 
-        # [System/Blueprint] ...
-        # [Assistant] {Last JSON}
-        # [User] Fix X
-        
-        # Let's reconstruct a streamlined prompt for revision
-        # actually, simply appending new messages to the history list is cleaner logic 
-        # but we need to pass a single string to generate_text.
-        
-        # Optimized Revision Prompt with FULL CONTEXT (Amnesia Fix):
-        
-        # 1. Re-fetch Format Guide (Context persistence)
-        format_guide = self.knowledge_reader.get_document_content("Email instructions type #1.pdf")
-        if not format_guide:
-            format_guide = "Ensure strict Type #1 format: Hero, Descriptive Block, Product Block."
+        if not last_draft_content:
+            print("[Drafter] Error: No previous draft found in history.")
+            return await self._legacy_revise(feedback)
             
-        last_draft_content = self.history[-2]["content"] # Assistant's last response
+        combined_prompt = prompt_template.format(
+            last_draft=last_draft_content,
+            feedback=feedback,
+            language=self.language,
+            brand_voice=self.brand_bio.brand_voice,
+            campaign_context=self.campaign_context or "None"
+        )
         
-        combined_prompt = f"""
-ORIGINAL REQUEST CONTEXT:
-=== BLUEPRINT ===
-{self.blueprint.model_dump_json(indent=2)}
-
-=== BRAND BIO ===
-{self.brand_bio.model_dump_json(indent=2)}
-
-=== FORMAT GUIDE ===
-{format_guide}
-
-CAMPAIGN CONTEXT:
-{self.campaign_context or 'None'}
-
-### YOUR PREVIOUS DRAFT:
-{last_draft_content}
-
-### CRITICAL FEEDBACK (MUST FIX):
-{feedback}
-
-### TASK:
-Rewrite the draft to address the feedback strictly.
-1. Maintain the Persona and Tone defined in Brand Bio.
-2. Adhere to ALL constraints in the Format Guide (No dashes, numeric digits, etc.).
-3. Return ONLY the FULL updated JSON.
-"""
         response_text = await self.client.generate_text(combined_prompt, model=self.model)
+        
+        # Append to history for continuity (though we skipped the full context in this turn)
+        self.history.append({"role": "user", "content": f"Feedback: {feedback}"})
         self.history.append({"role": "assistant", "content": response_text})
         
         return _parse_draft_response(response_text)
+
+    async def _legacy_revise(self, feedback: str) -> EmailDraft:
+        """Legacy revision method (Backup)."""
+        # ... (Original Logic if needed, or just fail)
+        # For now, just simplistic fallback or raising error
+        pass
+
 
 
 def _parse_draft_response(result_json_str: str) -> EmailDraft:

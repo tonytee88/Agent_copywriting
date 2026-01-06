@@ -1,0 +1,1321 @@
+
+ORIGINAL REQUEST CONTEXT:
+=== BLUEPRINT ===
+{
+  "brand_name": "Unknown Brand",
+  "campaign_theme": "Winter Sales & Family Hydration",
+  "transformation_description": "From chaotic mornings with tears to calm, smooth brushing routines.",
+  "transformation_id": null,
+  "structure_id": "STRUCT_MINI_GRID",
+  "structure_execution_map": {
+    "instruction": "Use 2x2 grid for product benefits"
+  },
+  "persona_description": "Warm, helpful, parent-to-parent advice.",
+  "persona_id": "PER_FOUNDER",
+  "angle_description": "Focus on the limited time Winter Sale discounts.",
+  "angle_id": "ANG_URGENCY",
+  "offer_details": "65% OFF Pack Confort",
+  "offer_placement": "Hero",
+  "cta_description": null,
+  "cta_style_id": null,
+  "subject_ideas": [
+    "Soldes d'hiver : -65%",
+    "Fini les pleurs ce matin ?"
+  ],
+  "preview_text_ideas": [
+    "Profitez-en vite.",
+    "Offre limitée."
+  ],
+  "key_points_for_descriptive_block": [
+    "Detangles gently",
+    "Ends tears",
+    "Complete kit"
+  ],
+  "copy_constraints": []
+}
+
+=== BRAND BIO ===
+{
+  "brand_id": null,
+  "website_url": null,
+  "brand_name": "PopBrush",
+  "industry": "Hair Care",
+  "target_audience": "Parents of young children",
+  "unique_selling_proposition": "Detangling brush that stops tears.",
+  "brand_voice": "Empathetic, cheerful, helpful.",
+  "key_products": [],
+  "mission_statement": null
+}
+
+=== FORMAT GUIDE ===
+None 
+ None 
+ None 
+Voici  les  instructions  pour  rédiger  un  bon  email  du  type  #1.  
+```  
+Email  Type  #1:  Promotional  emails  –  Crafting  
+Instructions
+ 
+Use  these  steps  to  produce  a  punchy,  on-brand  “Seasonal  &  Calendar  Deals”  email.  Swap  in  
+your
+ 
+theme,
+ 
+courses
+ 
+and
+ 
+promotion;
+ 
+follow
+ 
+the
+ 
+structure,
+ 
+tone
+ 
+and
+ 
+length
+ 
+guidelines
+ 
+to
+ 
+get
+ 
+consistent,
+ 
+high-impact
+ 
+results.
+ 
+ 
+1.  Begin  with  a  line  of  10  # characters:  
+ 
+##########  
+1.  Language  Header  
+ ○  On  its  own  line:  
+LANGUAGE: ENGLISH  
+○  Blank  line  after.  
+ 2.  Subject  Line  &  Preview  Text  
+ ○  Subject  Line:  35–40  chars  max,  include  theme  &  promo  if  applicable.  
+ 
+Subject Line: … 
+None 
+ None 
+ None 
+ 
+○   
+Preview
+ 
+Text:
+ 
+35-50
+ 
+chars
+ 
+max,
+ 
+tease
+ 
+value.
+ 
+ 
+Preview Text: …  
+○  Blank  line  after.  
+ 3.  Hero  Banner  
+ ○  Title:  30–40  chars  max,  “movie  teaser”  impact.  
+ 
+Hero Banner Title: …  
+○   
+Subtitle:
+ 
+80–100
+ 
+chars
+ 
+max,
+ 
+expand
+ 
+the
+ 
+hook.
+ 
+ 
+Subtitle: …  
+○   
+CTA:
+ 
+2–3
+ 
+words,
+ 
+10–20
+ 
+chars
+ 
+max.
+ 
+ 
+None 
+CTA: …  
+○  Blank  line  after.  
+ 4.  Descriptive  /  Storytelling  Block  
+ ○  Title  ○  Subtitle  ○  Make  it  2–3  short  paragraphs  (~300–400  characters  total),  weaving  in:  ■  One  Transformative-Grid  angle  (choose  exactly  one:  HAVE,  FEEL,  
+STATUS
+ 
+or
+ 
+AVG
+ 
+DAY).
+ ■  Implicit  “Why  me?  Why  now?  How?” —no  literal  question  labels.  ■  Emotive,  sensory  language  and  varied  CTAs  inline  (questions,  “after”  
+scenes,
+ 
+proof).
+ ■  Use  a  framework  (see  below  for  the  ones  available  and  approved  to  use)  1.  Vary  the  framework  structure  (“Problem  →  Solution  →  CTA”  or  
+“Offer
+ 
+→
+ 
+Reason
+ 
+→
+ 
+Urgency”)
+ 
+from
+ 
+1
+ 
+email
+ 
+to
+ 
+another
+ 
+(especially
+ 
+in
+ 
+the
+ 
+same
+ 
+flow
+ 
+or
+ 
+sequence),
+ 
+we
+ 
+want
+ 
+to
+ 
+add
+ 
+excitement
+ 
+for
+ 
+the
+ 
+reader
+ ■  Pick  a  design  direction  that  best  fit  the  chosen  framework/content  (see  
+below
+ 
+for
+ 
+the
+ 
+ones
+ 
+available
+ 
+and
+ 
+approved
+ 
+to
+ 
+use)
+ 1.  Make  sure  to  add  indicators  of  the  design  style  to  help  the  design  
+team
+ 
+understand
+ 
+the
+ 
+design
+ 
+vision
+ 
+:
+ 
+add
+ 
+[[element
+ 
+style]]
+ 
+before
+ 
+the
+ 
+text
+ 
+content.
+ 
+For
+ 
+example,
+ 
+“[[image-text
+ 
+table]]
+ 
+Benefit
+ 
+1,
+ 
+Benefit
+ 
+2,
+ 
+benefit
+ 
+3”.
+ 2.  Approved  markers:  [[image-text]],  [[pull-quote]],  [[icon  row]],  
+[[table]],
+ 
+[[tip
+ 
+list]]
+ 3.  When  we  use  image-text  tables,  we  need  at  least  3  "sections"  of  
+text
+ 
+so
+ 
+that
+ 
+we
+ 
+can
+ 
+make
+ 
+a
+ 
+img-text
+ 
+rotation
+ 
+on
+ 
+3
+ 
+rows.
+ 4.  Vary  the  type  from  one  email  to  another  just  like  the  framework.  ■  Final  CTA  at  block  end  (2–3  words).  ○  Blank  line  after.  
+EXTRA  CONTEXT  TO  MAKE  THE  COPY  BETTER  IN  A  PINCH  :  Refer  to  the  PDF  
+“Transformations”
+ 
+to
+ 
+see
+ 
+how
+ 
+to
+ 
+find
+ 
+and
+ 
+craft
+ 
+good
+ 
+Transformations
+ 
+if
+ 
+you
+ 
+were
+ 
+not
+ 
+given
+ 
+enough
+ 
+context.
+ 
+🧱  Framework  Categories  (to  pull  from)  
+🧱  Promo  /  Conversion-Focused  Blocks  
+1.  Problem  →  Solution  →  CTA  
+“Tired  of  [pain  point]?  Our  [product]  makes  it  effortless.  
+ 
+No
+ 
+more
+ 
+[annoying
+ 
+detail]
+ 
+—
+ 
+just
+ 
+[desired
+ 
+outcome].”
+ 
+ 
+➡
+ 
+CTA:
+ 
+Shop
+ 
+now
+ 
+→  Works  great  for  sale  drops,  bundles,  or  product  reintroductions.  
+ 
+2.  Offer  →  Reason  →  Urgency  
+“Our  best-selling  serum  —  now  25%  off.  
+ 
+Because
+ 
+glowing
+ 
+skin
+ 
+shouldn’t
+ 
+wait.
+ 
+ 
+Ends
+ 
+tonight.”
+ 
+→  Straightforward,  emotional  +  time-sensitive.  
+ 
+3.  Transformation  Snapshot  
+“From  dull  to  radiant  —  that’s  the  power  of  2  weeks  with  our  formula.  
+ 
+Real
+ 
+results,
+ 
+zero
+ 
+gimmicks.”
+ 
+→  Use  when  showing  before/after  or  customer  reviews.  
+ 
+4.  Lifestyle  Aspiration  
+“For  slow  mornings,  cozy  evenings,  and  every  moment  in  between  —  
+ 
+this
+ 
+is
+ 
+comfort
+ 
+you’ll
+ 
+reach
+ 
+for
+ 
+daily.”
+ 
+→  Perfect  when  selling  a  feeling  (fashion,  home,  wellness).  
+ 
+💡  Educational  /  Value-Add  Blocks  
+5.  Teach  Something,  Then  Tie  to  Product  
+“Hydration  starts  before  your  moisturizer  —  it’s  about  sealing  moisture  from  within.  
+ 
+That’s
+ 
+why
+ 
+our
+ 
+serum
+ 
+layers
+ 
+perfectly
+ 
+under
+ 
+your
+ 
+daily
+ 
+cream.”
+ 
+→  Subtle  education  +  natural  segue  to  product.  
+ 
+6.  Quick  Tips  Format  (1–2  lines)  
+“Better  sleep  starts  with:  
+ 
+•
+ 
+A
+ 
+cooler
+ 
+room
+ 
+ 
+•
+ 
+A
+ 
+calmer
+ 
+mind
+ 
+ 
+•
+ 
+The
+ 
+right
+ 
+pillow
+ 
+—
+ 
+like
+ 
+ours.”
+ 
+→  Light  and  skimmable;  blends  value  with  soft  promo.  
+ 
+7.  Myth  →  Truth  →  CTA  
+“Myth:  You  need  heavy  creams  for  dry  skin.  
+ 
+Truth:
+ 
+You
+ 
+just
+ 
+need
+ 
+smart
+ 
+hydration
+.
+ 
+Try
+ 
+it
+ 
+here.”
+ 
+→  Adds  authority  and  conversational  tone.  
+ 
+❤  Emotional  /  Brand-Building  Blocks  
+8.  Story  Hook  (Founder/Customer/Behind-the-Scenes)  
+“When  we  first  made  this  blend,  it  was  for  our  own  kitchen  table.  
+ 
+Now,
+ 
+thousands
+ 
+of
+ 
+families
+ 
+enjoy
+ 
+it
+ 
+every
+ 
+morning.”
+ 
+→  Builds  warmth  and  authenticity.  
+ 
+9.  Gratitude  &  Inclusion  
+“You  helped  us  reach  10,000  happy  customers  —  and  we  couldn’t  be  prouder.  
+ 
+Here’s
+ 
+a
+ 
+small
+ 
+thank-you.”
+ 
+→  Use  for  milestones,  anniversaries,  or  community  moments.  
+ 
+10.  Challenge/Invitation  
+“This  week,  make  one  small  change  for  yourself  —  start  your  mornings  mindfully.  
+ 
+Our
+ 
+brew
+ 
+is
+ 
+here
+ 
+to
+ 
+help.”
+ 
+None 
+ None 
+→  Feels  like  a  nudge  rather  than  a  sell;  soft  call  to  action.  
+ 
+ 
+🎨  Design  Elements  to  Choose  From  
+Assistant  selects  one  that  fits  the  story  energy  and  readability  goal:  
+●  Bullet  lists  for  clarity  or  “tips”  formats  
+ ●  Split  image-text  layouts  (visual  storytelling)  
+ ●  Side-by-side  table  blocks  (comparisons,  before/after,  bundle  breakdown)  
+ ●  Pull-quotes  or  bold  callouts  to  anchor  emotional  lines  
+ ●  Icons  or  small  illustrations  for  accessibility  and  variety  ●  Simple  sales  pitch  :  Convey  the  benefits,  the  offer  and  the  urgency.  A  few  lines  that  
+pushes
+ 
+people
+ 
+to
+ 
+click.
+ 
+ 
+5.   Product  Block  
+ ○  Title:  30–40  chars  max.  
+ 
+mathematica Copy Product Block Title: …  
+○  Subtitle:  60–80  chars  max.  
+ 
+makefile Copy 
+None 
+ None 
+ None 
+Subtitle: …  
+○  Products:  list  each  product  on  its  own  line  
+ 
+Products: Product  1  Product  2 
+○  CTA:  2–3  words,  10–20  chars  max.  
+ 
+CTA: …  
+○  Blank  line  after.  
+ 6.  Closing  Separator  
+ ○  Line  of  10  # characters:  
+ 
+##########  
+ 
+Length  &  Tone  Checklist  
+●  Subject:  35–40  chars  ●  Preview:  35-55  chars  ●  Hero  Title:  30–40  chars  
+●  Hero  Subtitle:  ≤100  chars  ●  Descriptive  Bloc  Title  ●  Descriptive  Bloc  Subtitle  ●  Descriptive  Block:  ~300–400  chars,  2–3  paras  ●  Product  Title:  30–40  chars  ●  Product  Subtitle:  ≤80  chars  ●  CTA  buttons/links:  2–3  words,  ≤20  chars  ●  Voice:  Warm,  conversational,  empowering  (“you’re”,  “we’ll”),  occasional  emoji,  varied  
+sentences.
+ ●  CTAs:  Vary  style  (question,  proof,  “after”  imagery)  to  avoid  repetition.  ●  Never  use  “em  dashes”  ●  Never  put  emojis  in  the  copy  except  for   ○  Subject  line/preview  if  you  see  fit  to  grab  attention  (do  not  add  it  systematically  to  
+all
+ 
+emails)
+ ○  Descriptive  block  text  to  add  pop,  contrast,  bullet  point  
+Use  this  blueprint  each  time  you  build  a  Promotional  Deals  email—just  swap  the  theme  
+description,
+ 
+dates,
+ 
+courses,
+ 
+promo
+ 
+details
+ 
+and
+ 
+transformation
+ 
+angle
+ 
+to
+ 
+keep
+ 
+your
+ 
+campaigns
+ 
+fresh
+ 
+and
+ 
+high-converting.
+ 
+ 
+```  
+Voici  aussi  des  exemples  :   
+Email  02  
+Description  du  thème  :  
+Une  matinée  lumineuse,  l’odeur  fraîche  des  cheveux  propres…  et  un  nouveau  geste  beauté  qui  
+rend
+ 
+le
+ 
+démêlage
+ 
+encore
+ 
+plus
+ 
+facile
+ 
+et
+ 
+agréable.
+ 
+##########  
+LANGUAGE:  FRENCH  
+Subject  Line  :  Le  duo  PopBrush  qui  change  tout  ✨  
+Preview  Text  :  Aujourd’hui  seulement  :  1  spray  OFFERT  pour  prolonger  la  magie  de  votre  
+PopBrush.
+ 
+Hero  Banner  Title  :  Le  duo  parfait  est  là  
+Hero  Banner  Subtitle  :  PopBrush  +  Spray  démêlant  :  douceur  et  brillance  sans  effort.  
+CTA  :  Profitez  de  l’offre  
+Descriptive  Block  Title  :  Votre  PopBrush  a  trouvé  son  allié   
+Sub-title  :  Un  geste  beauté  qui  prolonge  la  douceur  et  la  brillance.  
+Vous  l’attendiez…  le  voici  enfin  🎉  
+Notre  nouveau  Spray  PopBrush  est  arrivé,  et  il  est  prêt  à  transformer  vos  routines  capillaires.  
+Ce
+ 
+n’est
+ 
+pas
+ 
+juste
+ 
+un
+ 
+produit
+ 
+de
+ 
+plus
+ 
+:
+ 
+c’est
+ 
+le
+ 
+complément
+ 
+idéal
+ 
+de
+ 
+votre
+ 
+brosse
+ 
+PopBrush.
+ 
+Ensemble,  ils  forment  un  duo  irrésistible  :  comme  café  &  lait  ou  pain  &  beurre,  ils  vont  de  pair  
+pour
+ 
+sublimer
+ 
+vos
+ 
+cheveux
+ 
+et
+ 
+rendre
+ 
+chaque
+ 
+coiffage
+ 
+plus
+ 
+simple,
+ 
+plus
+ 
+doux,
+ 
+plus
+ 
+rapide.
+ 
+●  Démêle  en  un  geste,  même  sur  cheveux  mouillés  ou  très  emmêlés.  ●  Protège  contre  la  casse  et  les  frisottis  dès  la  première  utilisation.  ●  Laisse  un  parfum  léger  et  agréable  qui  vous  accompagne  toute  la  journée.  ●  Apporte  brillance  et  souplesse  sans  alourdir.  
+💛  Offre  de  lancement  VIP  :  1  spray  acheté  =  1  spray  OFFERT  (valeur  19,90€).  
+⏳  Offre  valable  pour  une  durée  limitée  et  réservée  exclusivement  à  notre  communauté  
+VIP
+.
+ 
+CTA  :  Profitez  de  l’offre  
+Product  Block  Title  :  Spray  PopBrush   
+Product  Block  Subtitle  :  Le  secret  pour  un  démêlage  encore  plus  doux  et  rapide.  
+Images  :  
+Spray  PopBrush  (https://popbrush.fr/products/spray-popbrush)  
+CTA  :  Profitez  de  l’offre  
+##########  
+Email  03  
+Description  du  thème  :  
+ 
+Une
+ 
+fin
+ 
+de
+ 
+journée
+ 
+paisible,
+ 
+lumière
+ 
+dorée…
+ 
+et
+ 
+un
+ 
+geste
+ 
+beauté
+ 
+qui
+ 
+transforme
+ 
+la
+ 
+routine
+ 
+capillaire
+ 
+en
+ 
+moment
+ 
+complice
+ 
+et
+ 
+serein.
+ 
+##########  
+LANGUAGE:  FRENCH  
+Subject  Line  :  La  petite  histoire  derrière  notre  nouveau  spray  💛  
+ 
+Preview
+ 
+Text
+ 
+:
+ 
+Né
+ 
+d’un
+ 
+vote
+ 
+du
+ 
+public
+ 
+et
+ 
+de
+ 
+tests
+ 
+réels
+ 
+pour
+ 
+sublimer
+ 
+votre
+ 
+routine
+ 
+PopBrush.
+ 
+Hero  Banner  Title  :  Plus  qu’un  produit,  une  mission  
+ 
+Hero
+ 
+Banner
+ 
+Subtitle
+ 
+:
+ 
+Rendre
+ 
+chaque
+ 
+coiffage
+ 
+doux,
+ 
+rapide
+ 
+et
+ 
+sans
+ 
+stress.
+ 
+ 
+CTA
+ 
+:
+ 
+Profitez
+ 
+de
+ 
+l’offre
+ 
+Descriptive  Block  Title  :  Du  rêve  à  la  réalité  ✨  
+ 
+Sub-title
+ 
+:
+ 
+Comment
+ 
+un
+ 
+vote
+ 
+de
+ 
+la
+ 
+communauté
+ 
+est
+ 
+devenu
+ 
+un
+ 
+indispensable
+ 
+capillaire.
+ 
+Quand  nous  avons  créé  la  PopBrush ,  notre  mission  était  claire  :  transformer  vos  matins  en  un  
+moment
+ 
+doux,
+ 
+rapide
+ 
+et
+ 
+sans
+ 
+stress.
+ 
+Mais
+ 
+très
+ 
+vite,
+ 
+nous
+ 
+avons
+ 
+voulu
+ 
+aller
+ 
+plus
+ 
+loin…
+ 
+et
+ 
+trouver
+ 
+un
+ 
+produit
+ 
+complémentaire
+ 
+capable
+ 
+d’amener
+ 
+cette
+ 
+expérience
+ 
+à
+ 
+un
+ 
+tout
+ 
+autre
+ 
+niveau.
+ 
+Avec  votre  aide  –  grâce  à  vos  votes  et  vos  idées  –  nous  avons  imaginé,  testé  et  peaufiné  une  
+formule.
+ 
+Des
+ 
+essais
+ 
+en
+ 
+laboratoire
+ 
+aux
+ 
+tests
+ 
+dans
+ 
+la
+ 
+vraie
+ 
+vie,
+ 
+jusqu’à
+ 
+ce
+ 
+que
+ 
+tout
+ 
+soit
+ 
+parfait…
+ 
+et
+ 
+c’est
+ 
+ainsi
+ 
+qu’est
+ 
+né
+ 
+le
+ 
+Spray
+ 
+PopBrush
+.
+ 
+Aujourd’hui,  c’est  bien  plus  qu’un  produit  :  
+●  Un  parfum  délicat  qui  met  toute  la  famille  de  bonne  humeur.  
+ ●  Une  sensation  de  fluidité  qui  évite  les  tiraillements  et  les  grimaces.  
+ ●  Un  geste  simple  qui  rapproche  parents  et  enfants,  même  les  matins  pressés.  
+ 
+💛  Offre  de  lancement  VIP  :  1  spray  acheté  =  1  spray  OFFERT  (valeur  19,90€).  
+ 
+⏳
+ 
+Offre
+ 
+valable
+ 
+jusqu’au
+ 
+27
+ 
+août
+ 
+et
+ 
+réservée
+ 
+exclusivement
+ 
+à
+ 
+notre
+ 
+communauté
+ 
+VIP
+.
+ 
+CTA  :  Profitez  de  l’offre  
+ 
+Product  Block  Title  :  Spray  PopBrush  💛  
+ 
+Product
+ 
+Block
+ 
+Subtitle
+ 
+:
+ 
+Le
+ 
+secret
+ 
+pour
+ 
+un
+ 
+démêlage
+ 
+encore
+ 
+plus
+ 
+doux
+ 
+et
+ 
+rapide.
+ 
+Images  :  
+ 
+Spray
+ 
+PopBrush
+ 
+(https://popbrush.fr/products/spray-popbrush)
+ 
+CTA  :  Profitez  de  l’offre  
+##########  
+Email  04  
+Description  du  thème  :  
+Un  matin  clair,  sans  précipitation…  juste  quelques  gestes  simples  et  le  plaisir  de  voir  toute  la  
+famille
+ 
+prête
+ 
+à
+ 
+temps,
+ 
+sourire
+ 
+aux
+ 
+lèvres.
+ 
+##########  
+LANGUAGE:  FRENCH  
+Subject  Line  :  Dernière  chance  pour  votre  spray  PopBrush  💛  
+Preview  Text  :  L’offre  VIP  se  termine  ce  soir  :  1  spray  acheté  =  1  offert,  avant  ouverture  au  
+public.
+ 
+Hero  Banner  Title  :  Matins  fluides,  cheveux  parfaits  [[AJOUTER  COUNTDOWN  TIMER  -  date  
+de
+ 
+fin
+ 
+:
+ 
+26
+ 
+août
+ 
+23h59]]
+ 
+Hero  Banner  Subtitle  :  Le  spray  qui  simplifie  votre  routine  capillaire  au  quotidien.  
+CTA  :  Profitez  de  l’offre  
+Descriptive  Block  Title  :  Ce  matin,  tout  a  changé  ✨  
+Subtitle  :  Le  spray  PopBrush  transforme  vos  débuts  de  journée.  
+Votre  routine  du  matin  peut  être  simple,  fluide…  et  même  agréable.  Avec  le  Spray  PopBrush ,  
+quelques
+ 
+pulvérisations
+ 
+suffisent
+ 
+pour
+ 
+que
+ 
+vos
+ 
+cheveux
+ 
+se
+ 
+démêlent
+ 
+facilement,
+ 
+restent
+ 
+doux
+ 
+et
+ 
+brillants
+ 
+toute
+ 
+la
+ 
+journée.
+ 
+Pas
+ 
+de
+ 
+rinçage,
+ 
+pas
+ 
+de
+ 
+cris,
+ 
+juste
+ 
+un
+ 
+moment
+ 
+serein
+ 
+pour
+ 
+toute
+ 
+la
+ 
+famille.
+ 
+C’est
+ 
+LE
+ 
+spray
+ 
+doux
+ 
+pour
+ 
+enfants
+ 
+qui
+ 
+adoucit,
+ 
+démêle
+ 
+et
+ 
+protège,
+ 
+tout
+ 
+en
+ 
+laissant
+ 
+un
+ 
+parfum
+ 
+léger
+ 
+qui
+ 
+donne
+ 
+le
+ 
+sourire
+ 
+dès
+ 
+le
+ 
+matin.
+ 
+💛  Offre  de  lancement  VIP  :  1  spray  acheté  =  1  spray  OFFERT  (valeur  19,90€).  
+⏳  Offre  valable  jusqu’à  ce  soir  uniquement  et  réservée  exclusivement  à  notre  
+communauté
+ 
+VIP
+,
+ 
+avant
+ 
+ouverture
+ 
+au
+ 
+grand
+ 
+public.
+ 
+CTA  :  Profitez  de  l’offre  
+Product  Block  Title  :  Spray  PopBrush  💛  
+Product  Block  Subtitle  :  L’allié  douceur  pour  des  matins  sans  stress.  
+Images  :  
+Spray  PopBrush  
+CTA  :  Profitez  de  l’offre  
+##########  
+—  
+ 
+ 
+
+
+CAMPAIGN CONTEXT:
+Language: French. Focus on 'Winter Hair Care'.
+
+### YOUR PREVIOUS DRAFT:
+{
+  "subject": "Soldes d'Hiver : -65% sur le Pack Confort",
+  "preview": "Routine capillaire simplifi\u00e9e, stocks limit\u00e9s.",
+  "hero_title": "Offre exceptionnelle : Pack Confort \u00e0 -65%",
+  "hero_subtitle": "D\u00e9butez les Soldes avec le Pack Confort PopBrush \u00e0 prix mini.",
+  "cta_hero": "Saisir l'offre",
+  "descriptive_block_title": "Simplifiez votre routine capillaire",
+  "descriptive_block_subtitle": "Fin des cheveux emm\u00eal\u00e9s, place \u00e0 la douceur.",
+  "descriptive_block_content": "<table>...</table>",
+  "cta_descriptive": "Commandez maintenant",
+  "products": [
+    "Pack Confort",
+    "Brosse",
+    "Spray"
+  ],
+  "product_block_title": "Stocks limit\u00e9s",
+  "product_block_subtitle": "Offre exclusive hiver.",
+  "cta_product": "Profitez vite"
+}
+
+### CRITICAL FEEDBACK (MUST FIX):
+STRICT RULES VIOLATION: [hero_subtitle] Text too long. Shorten to 80 chars.
+
+### TASK:
+Rewrite the draft to address the feedback strictly.
+1. Maintain the Persona and Tone defined in Brand Bio.
+2. Adhere to ALL constraints in the Format Guide (No dashes, numeric digits, etc.).
+3. Return ONLY the FULL updated JSON.
