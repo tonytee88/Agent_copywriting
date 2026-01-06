@@ -15,6 +15,7 @@ class CampaignRequest(BaseModel):
     promotional_ratio: float = Field(default=0.4, description="Ratio of promotional emails (0.0 to 1.0)")
     languages: List[str] = Field(default=["FR"], description="List of target languages (e.g. ['FR', 'EN'])")
     notes: Optional[str] = Field(default=None, description="Any additional context, constraints, or instruction")
+    website_url: Optional[str] = Field(default=None, description="Website URL if provided (implied or explicit)")
 
 async def parse_campaign_request(user_input: str) -> CampaignRequest:
     """
@@ -29,6 +30,7 @@ async def parse_campaign_request(user_input: str) -> CampaignRequest:
     
     Extract the following fields from the User Input:
     - brand_name: (Required) Guess if implied or explicit.
+    - website_url: (Optional) Extract if User provides a URL (e.g. "https://brand.com" or "brand.com").
     - campaign_goal: (Required) e.g., "Black Friday", "Welcome Series".
     - duration: (Required) e.g., "November", "Next Month", "Q4". Default to "Next Month" if unclear.
     - start_date: (Optional) If user specifies a start date (e.g. "starting Jan 7th"), extract it here.
@@ -42,6 +44,7 @@ async def parse_campaign_request(user_input: str) -> CampaignRequest:
     Return ONLY valid JSON matching this structure:
     {{
         "brand_name": "...",
+        "website_url": "...",
         "campaign_goal": "...",
         "duration": "...",
         "start_date": "...",

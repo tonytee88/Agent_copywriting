@@ -40,5 +40,32 @@
       "\u00d6\u2122 Motivation 2.5L Bottle"
     ],
     "mission_statement": "Not explicitly stated"
+  },
+  "icarexperience.ca": {
+    "brand_id": "icarexperience.ca",
+    "website_url": "icarexperience.ca",
+    "brand_name": "ICAR",
+    "industry": "Motor Sports and Experiences",
+    "target_audience": "Adrenaline enthusiasts, car and motor sports fans, corporate groups, and families looking for unique experiences.",
+    "unique_selling_proposition": "Providing an ultimate motor sports experience with exotic cars, competitive racing events, and diverse activities in a dedicated complex.",
+    "brand_voice": "Energetic, adventurous, and exhilarating with a focus on premium experiences and excitement.",
+    "key_products": [
+      "Lamborghini Gallardo Experience",
+      "Ferrari 458 Italia Experience",
+      "Corvette C8 Z06 Experience",
+      "Rally Driving Experience",
+      "Preventive Driving Course",
+      "Mustang GT Experience",
+      "Competition License Training",
+      "Introduction to Lapping",
+      "Lapping Sessions",
+      "Drag Racing",
+      "Drifting",
+      "Karting",
+      "Winter Experiences",
+      "Team Building Packages",
+      "Gift Cards"
+    ],
+    "mission_statement": "To deliver thrilling, world-class motor sports experiences and events that cater to individuals, families, and corporate groups while creating unforgettable memories."
   }
 }

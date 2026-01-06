@@ -41,7 +41,8 @@ async def run_plan(args):
             notes=req.notes,
             start_date=req.start_date,
             excluded_days=req.excluded_days,
-            raw_user_input=user_prompt
+            raw_user_input=user_prompt,
+            website_url=req.website_url
         )
         print("\n" + "="*50)
         print(result)

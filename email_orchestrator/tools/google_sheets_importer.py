@@ -105,6 +105,18 @@ class GoogleSheetsImporter:
                 val = row[1].strip()
                 if key:
                     overview[key] = val
+
+        # Extra Robustness for specific keys that might be missed if row alignment varies
+        # We scan for them specifically if not found by simple A/B check
+        if "Campaign Context" not in overview:
+             for row in rows[:20]: # Check first 20 rows
+                 if row and "Campaign Context" in row[0]:
+                     if len(row) > 1: overview["Campaign Context"] = row[1]
+        
+        if "Narrative" not in overview and "Overarching Narrative" not in overview:
+             for row in rows[:20]:
+                 if row and "Narrative" in row[0]: # Matches "Narrative" or "Overarching Narrative"
+                      if len(row) > 1: overview["Narrative"] = row[1]
         
         # 2. Parse Email Slots
         if header_row_index == -1:
@@ -148,6 +160,9 @@ class GoogleSheetsImporter:
         return {
             "campaign_id": overview.get("Campaign ID"),
             "campaign_name": overview.get("Campaign Name"),
+            "campaign_goal": overview.get("Goal"),
+            "overarching_narrative": overview.get("Narrative") or overview.get("Overarching Narrative"),
+            "campaign_context": overview.get("Campaign Context"),
             "email_slots": email_slots
         }
 

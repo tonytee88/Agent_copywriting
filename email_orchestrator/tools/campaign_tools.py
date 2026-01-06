@@ -43,7 +43,8 @@ async def plan_campaign(
     start_date: Optional[str] = None,
     excluded_days: List[str] = [],
     raw_user_input: Optional[str] = None,
-    drive_folder_id: Optional[str] = POPBRUSH_FOLDER_ID
+    drive_folder_id: Optional[str] = POPBRUSH_FOLDER_ID,
+    website_url: Optional[str] = None
 ) -> str:
     """
     Orchestrates the Campaign Planning Phase.
@@ -53,7 +54,7 @@ async def plan_campaign(
     tracker.reset()
     
     # 1. Analyze Brand (or load cached)
-    analysis_result = await analyze_brand(brand_name)
+    analysis_result = await analyze_brand(brand_name, website_url=website_url)
     brand_bio = BrandBio(**json.loads(analysis_result))
     
     # 2. Generate Initial Plan
@@ -206,6 +207,51 @@ async def generate_email_campaign(
     # Load Brand Bio
     analysis_result = await analyze_brand(plan.brand_name)
     brand_bio = BrandBio(**json.loads(analysis_result))
+
+    # --- NEW: Sync from Google Sheet if available ---
+    if getattr(plan, 'sheet_url', None) and "docs.google.com" in plan.sheet_url:
+        print(f"\n[Importer] 📡 Syncing plan from Google Sheet: {plan.sheet_url}")
+        try:
+            from email_orchestrator.tools.google_sheets_importer import import_plan_from_sheet
+            sheet_data = import_plan_from_sheet(plan.sheet_url)
+            
+            # 1. Update Global Fields
+            if sheet_data.get('campaign_context'):
+                print(f"   > Updated Campaign Context from Sheet")
+                plan.campaign_context = sheet_data['campaign_context']
+            
+            if sheet_data.get('overarching_narrative'):
+                plan.overarching_narrative = sheet_data['overarching_narrative']
+                
+            if sheet_data.get('campaign_goal'):
+                plan.campaign_goal = sheet_data['campaign_goal']
+
+            # 2. Update Slots
+            # Create a lookup for imported slots
+            imported_slots_map = {s['slot_number']: s for s in sheet_data.get('email_slots', [])}
+            
+            updates_count = 0
+            for slot in plan.email_slots:
+                imp_slot = imported_slots_map.get(slot.slot_number)
+                if imp_slot:
+                    # Update editable fields
+                    if imp_slot.get('theme'): slot.theme = imp_slot['theme']
+                    if imp_slot.get('email_purpose'): slot.email_purpose = imp_slot['email_purpose']
+                    if imp_slot.get('intensity_level'): slot.intensity_level = imp_slot['intensity_level']
+                    if imp_slot.get('transformation_description'): slot.transformation_description = imp_slot['transformation_description']
+                    if imp_slot.get('angle_description'): slot.angle_description = imp_slot['angle_description']
+                    if imp_slot.get('structure_id'): slot.structure_id = imp_slot['structure_id']
+                    if imp_slot.get('persona_description'): slot.persona_description = imp_slot['persona_description']
+                    if imp_slot.get('key_message'): slot.key_message = imp_slot['key_message']
+                    if imp_slot.get('offer_details'): slot.offer_details = imp_slot['offer_details']
+                    if imp_slot.get('offer_placement'): slot.offer_placement = imp_slot['offer_placement']
+                    if imp_slot.get('cta_description'): slot.cta_description = imp_slot['cta_description']
+                    updates_count += 1
+            
+            print(f"   > Synced {updates_count} slots from Sheet.")
+            
+        except Exception as e:
+            print(f"[Importer] ⚠️ Warning: Failed to sync with Google Sheet. Using local plan. Error: {e}")
     
     print(f"\n--- EXECUTING CAMPAIGN: {plan.campaign_name} ({len(plan.email_slots)} emails) ---")
     

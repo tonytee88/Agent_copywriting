@@ -26,15 +26,44 @@ async def brand_scraper_agent(website_url: str) -> str:
             "error": "BeautifulSoup4 library is missing. Please install it with `pip install beautifulsoup4`."
         })
 
-    print(f"[BrandScraper] Fetching {website_url}...")
+    # Try importing googlesearch
     try:
-        # 1. Fetch content
-        headers = {
-            'User-Agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.114 Safari/537.36'
-        }
-        response = requests.get(website_url, headers=headers, timeout=10)
-        response.raise_for_status()
-        
+        from googlesearch import search
+        SEARCH_AVAILABLE = True
+    except ImportError:
+        SEARCH_AVAILABLE = False
+        print("[BrandScraper] Warning: googlesearch-python not installed. Search fallback disabled.")
+
+    print(f"[BrandScraper] Fetching {website_url}...")
+    
+    # 1. URL Sanitization
+    target_url = website_url
+    if not target_url.startswith("http"):
+        target_url = "https://" + target_url.strip()
+        print(f"[BrandScraper] Auto-corrected URL to: {target_url}")
+
+    soup_text = ""
+    scrape_success = False
+
+    try:
+        # Attempt to use cloudscraper to bypass Cloudflare
+        try:
+            import cloudscraper
+            scraper = cloudscraper.create_scraper(browser='chrome')
+            response = scraper.get(target_url, timeout=15)
+            response.raise_for_status()
+            print("[BrandScraper] Access Code: Cloudscraper Success")
+        except (ImportError, Exception) as cs_error:
+            # Fallback to standard requests if Cloudscraper fails/missing
+            print(f"[BrandScraper] Cloudscraper failed/missing ({cs_error}), falling back to standard requests...")
+            headers = {
+                'User-Agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36',
+                'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8',
+                'Accept-Language': 'en-US,en;q=0.9',
+            }
+            response = requests.get(target_url, headers=headers, timeout=10)
+            response.raise_for_status()
+
         # 2. Extract text
         soup = BeautifulSoup(response.content, 'html.parser')
         
@@ -42,15 +71,64 @@ async def brand_scraper_agent(website_url: str) -> str:
         for script in soup(["script", "style"]):
             script.extract()
             
-        text = soup.get_text(separator=' ', strip=True)
-        
-        # Truncate to avoid token limits (keep first ~3000 words logic or ~12k chars)
-        truncated_text = text[:12000]
+        soup_text = soup.get_text(separator=' ', strip=True)
+        scrape_success = True
         
     except Exception as e:
-        return json.dumps({
-            "error": f"Failed to scrape URL: {str(e)}"
-        })
+        print(f"[BrandScraper] Direct scrape failed: {e}")
+        
+        if SEARCH_AVAILABLE:
+            print("[BrandScraper] ⚠️ Website failed. Falling back to Google Search...")
+            try:
+                # Infer brand name for search
+                from urllib.parse import urlparse
+                domain = urlparse(target_url).netloc.replace("www.", "")
+                brand_guess = domain.split('.')[0]
+                
+                query = f"{brand_guess} brand mission target audience products"
+                print(f"[BrandScraper] Searching for: '{query}'")
+                
+                search_results = list(search(query, num_results=3, advanced=True))
+                
+                combined_text = f"SEARCH RESULTS for '{brand_guess}':\n\n"
+                
+                for res in search_results:
+                     try:
+                         # Lightweight fetch of search result text
+                         r = requests.get(res.url, headers=headers, timeout=5)
+                         if r.status_code == 200:
+                             s = BeautifulSoup(r.content, 'html.parser')
+                             for script in s(["script", "style"]): script.extract()
+                             txt = s.get_text(separator=' ', strip=True)[:1000] # Limit per result
+                             combined_text += f"-- Source: {res.url} --\n{res.title}\n{res.description}\nContent: {txt}\n\n"
+                     except:
+                         continue
+                
+                soup_text = combined_text
+                if len(soup_text) > 200: # Relaxed check
+                     scrape_success = True
+                     print(f"[BrandScraper] Successfully gathered {len(soup_text)} chars from search.")
+                else:
+                     # Attempt to return whatever we have if it's not empty, even if small
+                     if len(soup_text) > 50:
+                         scrape_success = True
+                         print(f"[BrandScraper] Warning: Low data from search ({len(soup_text)} chars), but proceeding.")
+                     else:
+                         # Fallback to Manual Input Prompt mechanism (by returning a specific error structure)
+                         return json.dumps({
+                             "error": f"Automated discovery failed for {target_url}. Google Search blocked or yielded no data. Please provide brand details (Industry, Audience, USP) in your prompt notes or try again later."
+                         })
+
+            except Exception as search_e:
+                 print(f"[BrandScraper] Search Exception: {search_e}")
+                 return json.dumps({"error": f"Search fallback failed: {search_e}. Please provide brand details manually."})
+        else:
+            return json.dumps({
+                "error": f"Failed to scrape URL: {str(e)} and Search fallback unavailable."
+            })
+            
+    # Truncate to avoid token limits (keep first ~3000 words logic or ~12k chars)
+    truncated_text = soup_text[:12000]
 
     # 3. Load prompt
     try:

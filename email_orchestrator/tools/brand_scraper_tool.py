@@ -54,6 +54,11 @@ async def analyze_brand(brand_name: Optional[str] = None, website_url: Optional[
             from email_orchestrator.schemas import BrandBio
             bio_data = json.loads(bio_json)
             
+            # Check for scraper error return
+            if "error" in bio_data:
+                print(f"[BrandTool] Scraper returned error: {bio_data['error']}")
+                return bio_json # Return the error JSON directly
+            
             # Ensure ID and URL are set
             bio_data["website_url"] = website_url
             if "brand_id" not in bio_data:
@@ -68,7 +73,7 @@ async def analyze_brand(brand_name: Optional[str] = None, website_url: Optional[
             return bio_obj.model_dump_json()
         except Exception as e:
             print(f"[BrandTool] Error processing scrape result: {e}")
-            return bio_json
+            return json.dumps({"error": f"Scraping failed or invalid data: {e}"})
             
     # 4. Fallback / Mock for "PopBrush" (Test convenience)
     if brand_name and brand_name.lower() == "popbrush":
