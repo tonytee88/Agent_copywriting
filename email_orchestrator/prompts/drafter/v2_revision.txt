@@ -29,7 +29,8 @@ Your goal is to REVISE an existing draft to address specific feedback while ensu
 6. **CTA STRATEGY**: 
    - Promotional: "Shop Now", "Get Yours"
    - Educational: "View Tools", "See Collection"
-   - BANNED: "Learn More", "Read More"
+   - BANNED: "Learn More", "Read More", "Read Article".
+   - ZERO-CLICK RULE: All advice must be fully contained in the email. We do NOT have a blog. ALL clicks must go to PRODUCTS.
 
 7. **JSON OUTPUT ONLY**: Return the full, valid JSON object.
 

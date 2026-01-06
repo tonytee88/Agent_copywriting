@@ -60,7 +60,6 @@ Context:
 - Theme: {campaign_context.theme}
 - Key Message: {campaign_context.key_message}
 - Purpose: {campaign_context.email_purpose}
-- Purpose: {campaign_context.email_purpose}
 - Intensity: {campaign_context.intensity_level}
 - Target Language: {language} (You MUST write the blueprint content in this language)
 """

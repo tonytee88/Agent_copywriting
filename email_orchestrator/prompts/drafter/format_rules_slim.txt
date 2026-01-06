@@ -12,4 +12,5 @@
 ## CTA RULES
 - **Promotional**: "Shop Now", "Get Yours"
 - **Educational**: "View Tools", "See Collection"
-- **BANNED**: "Learn More", "Read More"
+- **BANNED**: "Learn More", "Read More", "Read Article".
+- **ZERO-CLICK**: All advice/content must be 100% INSIDE the email. We have NO blog. The only valid click is to BUY/VIEW PRODUCTS.

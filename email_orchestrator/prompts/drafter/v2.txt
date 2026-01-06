@@ -59,6 +59,7 @@ Your goal is to write a high-converting "Type #1" email by strictly following th
    - **Promotional**: "Shop Now", "Get Yours".
    - **Educational/Nurture**: "View Relevant Tools", "See the Collection", "Get the Look".
    - **BANNED**: NEVER use "Learn More", "Read More", "See Advice" (We do not have a blog). ALL CTAs must drive to a Product or Collection page.
+   - **ZERO-CLICK POLICY**: All educational content/advice must be 100% contained WITHIN the email body. Do not tease content to get a click.
 8. **JSON OUTPUT ONLY**.
 9. **PATCHING MINDSET (IF REVISION)**: If `REVISION FEEDBACK` is provided, do NOT restart. KEEP the good parts of the draft and only PATCH/FIX the specific issues requested. Enhance the existing copy rather than replacing it entirely unless instructed.
 

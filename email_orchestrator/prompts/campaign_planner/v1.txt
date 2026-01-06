@@ -81,6 +81,7 @@ Return a JSON object with this EXACT structure (no tools):
       "slot_number": 1,
       "send_date": "2025-01-09",
       "send_day": "Thursday",
+      "send_time": "7:00 AM",
       "email_purpose": "educational",
       "intensity_level": "soft",
       "transformation_description": "Detailed description of the transformation",
