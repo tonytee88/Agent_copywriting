@@ -127,7 +127,8 @@ class HtmlToDocsParser:
         text = text.replace('__LI__', '\n• ') # Fake bullet for table cells
         
         # 5. Fix double newlines and trim
-        text = re.sub(r'\n\s*\n', '\n', text)
+        # 5. Fix multiple newlines (Limit to max 2 consecutive)
+        text = re.sub(r'\n{3,}', '\n\n', text)
         text = text.strip()
 
         # 6. Extract Styles (Bold, Italic, Underline)

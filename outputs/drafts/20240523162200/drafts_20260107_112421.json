@@ -1,0 +1,54 @@
+[
+  {
+    "subject": "La science de la glace r\u00e9v\u00e9l\u00e9e",
+    "preview": "Jusqu'\u00e0 45% sur vos exp\u00e9riences hivernales",
+    "hero_title": "Ma\u00eetrisez la glace avec la science",
+    "hero_subtitle": "Profitez des rabais d'hiver sur nos activit\u00e9s uniques",
+    "cta_hero": "Voir les offres",
+    "descriptive_block_title": "Pourquoi la glace fascine les ing\u00e9nieurs",
+    "descriptive_block_subtitle": "D\u00e9cryptez les secrets d'une ma\u00eetrise parfaite en hiver",
+    "descriptive_block_content": "<table width='100%'><tr><td width='30%' valign='top' style='padding-right: 10px;'><img src='[Icon/Image]' width='100%'></td><td width='70%' valign='top'><p><b>La glace n'est pas qu'un obstacle, elle est un terrain d'exp\u00e9rimentation pour la physique.</b><br><br>Quand la surface devient glissante, <b>la dynamique des fluides</b> entre en sc\u00e8ne.<br><br>En comprenant ces lois, vous pouvez anticiper chaque r\u00e9action de votre voiture.<br><br><b>Transformez le chaos en contr\u00f4le scientifique</b> et vivez l'exaltation d'une ma\u00eetrise totale.<br><br>D\u00e9couvrez la magie de la science et devenez ma\u00eetre de votre conduite hivernale !</p></td></tr></table>",
+    "cta_descriptive": "D\u00e9couvrir nos activit\u00e9s",
+    "product_block_title": "Passez de la th\u00e9orie \u00e0 la pratique",
+    "product_block_subtitle": "Testez vos connaissances avec nos exp\u00e9riences sur glace",
+    "products": [
+      "Rallye sur glace : jusqu'\u00e0 45% de rabais, d\u00e8s 2590",
+      "Conduite pr\u00e9ventive : 25% de rabais, 186$ au lieu de 249$",
+      "Exp\u00e9rience Lapping hivernale"
+    ],
+    "product_block_content": null,
+    "cta_product": "Voir la collection",
+    "full_text_formatted": "\nSUBJECT: La science de la glace r\u00e9v\u00e9l\u00e9e\nPREVIEW: Jusqu'\u00e0 45% sur vos exp\u00e9riences hivernales\nHERO IMAGE: Ma\u00eetrisez la glace avec la science (Placeholder)\nHERO TITLE: Ma\u00eetrisez la glace avec la science\nHERO SUBTITLE: Profitez des rabais d'hiver sur nos activit\u00e9s uniques\nCTA: Voir les offres\n\n--- DESCRIPTIVE BLOCK ---\nTITLE: Pourquoi la glace fascine les ing\u00e9nieurs\nCONTENT: <b>La glace n'est pas qu'un obstacle, elle est un terrain d'exp\u00e9rimentation pour la physique.</b> Quand la surface devient glissante, <b>la dynamique des fluides</b> entre en sc\u00e8ne. En comprenant ces lois, vous pouvez anticiper chaque r\u00e9action de votre voiture. <b>Transformez le chaos en contr\u00f4le scientifique</b> et vivez l'exaltation d'une ma\u00eetrise totale. D\u00e9couvrez la magie de la science et devenez ma\u00eetre de votre conduite hivernale!\nCTA DESCRIPTIVE: D\u00e9couvrir nos activit\u00e9s\n\n--- PRODUCTS ---\n- Rallye sur glace : jusqu'\u00e0 45% de rabais, d\u00e8s 2590\n- Conduite pr\u00e9ventive : 25% de rabais, 186$ au lieu de 249$\n- Exp\u00e9rience Lapping hivernale\nCTA: Voir la collection\n\n--- FOOTER ---\nN/A\n",
+    "slot_number": 2,
+    "status": "completed",
+    "content": "\nSUBJECT: La science de la glace r\u00e9v\u00e9l\u00e9e\nPREVIEW: Jusqu'\u00e0 45% sur vos exp\u00e9riences hivernales\nHERO IMAGE: Ma\u00eetrisez la glace avec la science (Placeholder)\nHERO TITLE: Ma\u00eetrisez la glace avec la science\nHERO SUBTITLE: Profitez des rabais d'hiver sur nos activit\u00e9s uniques\nCTA: Voir les offres\n\n--- DESCRIPTIVE BLOCK ---\nTITLE: Pourquoi la glace fascine les ing\u00e9nieurs\nCONTENT: <b>La glace n'est pas qu'un obstacle, elle est un terrain d'exp\u00e9rimentation pour la physique.</b> Quand la surface devient glissante, <b>la dynamique des fluides</b> entre en sc\u00e8ne. En comprenant ces lois, vous pouvez anticiper chaque r\u00e9action de votre voiture. <b>Transformez le chaos en contr\u00f4le scientifique</b> et vivez l'exaltation d'une ma\u00eetrise totale. D\u00e9couvrez la magie de la science et devenez ma\u00eetre de votre conduite hivernale!\nCTA DESCRIPTIVE: D\u00e9couvrir nos activit\u00e9s\n\n--- PRODUCTS ---\n- Rallye sur glace : jusqu'\u00e0 45% de rabais, d\u00e8s 2590\n- Conduite pr\u00e9ventive : 25% de rabais, 186$ au lieu de 249$\n- Exp\u00e9rience Lapping hivernale\nCTA: Voir la collection\n\n--- FOOTER ---\nN/A\n",
+    "structure_id": "STRUCT_MEDIA_LEFT_OFFSET",
+    "language": "FR"
+  },
+  {
+    "subject": "Unveiling the Science of Ice",
+    "preview": "Enjoy up to 45% off your winter experiences",
+    "hero_title": "Master Ice with Science",
+    "hero_subtitle": "Take advantage of winter discounts on our unique activities",
+    "cta_hero": "Explore the Offers",
+    "descriptive_block_title": "Why Ice Captivates Engineers",
+    "descriptive_block_subtitle": "Unlock the secrets to perfect winter mastery",
+    "descriptive_block_content": "<table width='100%'><tr><td width='30%' valign='top' style='padding-right: 10px;'><img src='[Icon/Image]' width='100%'></td><td width='70%' valign='top'><p><b>Ice isn't just an obstacle; it's a playground for physics experimentation.</b><br><br>When the surface turns slick, <b>fluid dynamics</b> takes the spotlight.<br><br>By understanding these laws, you can predict every reaction of your vehicle.<br><br><b>Transform chaos into scientific control</b> and experience the thrill of total mastery.<br><br>Discover the magic of science and become the master of your winter driving!</p></td></tr></table>",
+    "cta_descriptive": "Discover Our Activities",
+    "product_block_title": "From Theory to Practice",
+    "product_block_subtitle": "Test your knowledge with our ice experiences",
+    "products": [
+      "Ice Rally: up to 45% off, starting at $2590",
+      "Defensive Driving: 25% off, $186 instead of $249",
+      "Winter Lapping Experience"
+    ],
+    "product_block_content": null,
+    "cta_product": "View the Collection",
+    "full_text_formatted": "\nSUBJECT: Unveiling the Science of Ice\nPREVIEW: Enjoy up to 45% off your winter experiences\nHERO IMAGE: Master Ice with Science (Placeholder)\nHERO TITLE: Master Ice with Science\nHERO SUBTITLE: Take advantage of winter discounts on our unique activities\nCTA: Explore the Offers\n\n--- DESCRIPTIVE BLOCK ---\nTITLE: Why Ice Captivates Engineers\nCONTENT: <table width='100%'><tr><td width='30%' valign='top' style='padding-right: 10px;'><img src='[Icon/Image]' width='100%'></td><td width='70%' valign='top'><p><b>Ice isn't just an obstacle; it's a playground for physics experimentation.</b><br><br>When the surface turns slick, <b>fluid dynamics</b> takes the spotlight.<br><br>By understanding these laws, you can predict every reaction of your vehicle.<br><br><b>Transform chaos into scientific control</b> and experience the thrill of total mastery.<br><br>Discover the magic of science and become the master of your winter driving!</p></td></tr></table>\nCTA DESCRIPTIVE: Discover Our Activities\n\n--- PRODUCTS ---\n- Ice Rally: up to 45% off, starting at $2590\n- Defensive Driving: 25% off, $186 instead of $249\n- Winter Lapping Experience\nCTA: View the Collection\n\n--- FOOTER ---\nN/A\n",
+    "slot_number": 2,
+    "status": "completed",
+    "content": "\nSUBJECT: Unveiling the Science of Ice\nPREVIEW: Enjoy up to 45% off your winter experiences\nHERO IMAGE: Master Ice with Science (Placeholder)\nHERO TITLE: Master Ice with Science\nHERO SUBTITLE: Take advantage of winter discounts on our unique activities\nCTA: Explore the Offers\n\n--- DESCRIPTIVE BLOCK ---\nTITLE: Why Ice Captivates Engineers\nCONTENT: <table width='100%'><tr><td width='30%' valign='top' style='padding-right: 10px;'><img src='[Icon/Image]' width='100%'></td><td width='70%' valign='top'><p><b>Ice isn't just an obstacle; it's a playground for physics experimentation.</b><br><br>When the surface turns slick, <b>fluid dynamics</b> takes the spotlight.<br><br>By understanding these laws, you can predict every reaction of your vehicle.<br><br><b>Transform chaos into scientific control</b> and experience the thrill of total mastery.<br><br>Discover the magic of science and become the master of your winter driving!</p></td></tr></table>\nCTA DESCRIPTIVE: Discover Our Activities\n\n--- PRODUCTS ---\n- Ice Rally: up to 45% off, starting at $2590\n- Defensive Driving: 25% off, $186 instead of $249\n- Winter Lapping Experience\nCTA: View the Collection\n\n--- FOOTER ---\nN/A\n",
+    "structure_id": "STRUCT_MEDIA_LEFT_OFFSET",
+    "language": "EN"
+  }
+]

@@ -1,0 +1,54 @@
+[
+  {
+    "subject": "La science qui transforme votre conduite",
+    "preview": "Prenez le contr\u00f4le sur la glace cet hiver.",
+    "hero_title": "Ma\u00eetrisez la glace par la science",
+    "hero_subtitle": "Passez du chaos \u00e0 la ma\u00eetrise sur route glac\u00e9e.",
+    "cta_hero": "Voir les secrets",
+    "descriptive_block_title": "Votre terrain d\u2019exp\u00e9rimentation",
+    "descriptive_block_subtitle": "La glace, votre meilleur alli\u00e9 pour progresser.",
+    "descriptive_block_content": "<table width='100%'>\n  <tr>\n    <td width='30%' valign='top' style='padding-right: 10px;'>\n      <img src='[Icon/Image]' width='100%'>\n    </td>\n    <td width='70%' valign='top'>\n      <p>\n        <b>Saviez-vous que la glace peut devenir votre meilleur terrain d\u2019entra\u00eenement ?</b><br><br>\n        Pour vraiment dominer l\u2019hiver, il suffit de comprendre quelques principes simples :\n      </p>\n      <p>\n        \u2022 <b>Dynamique des fluides</b> : Anticipez les r\u00e9actions de votre v\u00e9hicule.<br>\n        \u2022 <b>Adh\u00e9rence et friction</b> : Pr\u00e9voyez chaque virage, m\u00eame sur surface glissante.<br>\n        \u2022 <b>Physique appliqu\u00e9e</b> : Ma\u00eetrisez chaque instant gr\u00e2ce \u00e0 la science, pour plus de confiance au volant.\n      </p>\n      <p>\n        Avec ces cl\u00e9s, <b>chaque exp\u00e9rience devient plus fun et plus s\u00fbre</b>.\n      </p>\n    </td>\n  </tr>\n</table>",
+    "cta_descriptive": "Voir les ateliers",
+    "product_block_title": "Exp\u00e9rimentez la ma\u00eetrise",
+    "product_block_subtitle": "Passez de la th\u00e9orie \u00e0 la pratique avec nos ateliers sur glace. D\u00e9couvrez comment la science transforme votre conduite pour de vrai.",
+    "products": [
+      "Rallye sur glace",
+      "Conduite pr\u00e9ventive",
+      "Winter Experiences"
+    ],
+    "product_block_content": null,
+    "cta_product": "Voir la collection",
+    "full_text_formatted": "\nSUBJECT: La science qui transforme votre conduite\nPREVIEW: Prenez le contr\u00f4le sur la glace cet hiver.\nHERO IMAGE: Ma\u00eetrisez la glace par la science (Placeholder)\nHERO TITLE: Ma\u00eetrisez la glace par la science\nHERO SUBTITLE: Passez du chaos \u00e0 la ma\u00eetrise sur route glac\u00e9e.\nCTA: Voir les secrets\n\n--- DESCRIPTIVE BLOCK ---\nTITLE: Votre terrain d\u2019exp\u00e9rimentation\nCONTENT: Saviez-vous que la glace peut devenir votre meilleur terrain d\u2019entra\u00eenement ? Pour vraiment dominer l\u2019hiver, il suffit de comprendre quelques principes simples :\n\n\u2022 Dynamique des fluides : Anticipez les r\u00e9actions de votre v\u00e9hicule.\n\u2022 Adh\u00e9rence et friction : Pr\u00e9voyez chaque virage, m\u00eame sur surface glissante.\n\u2022 Physique appliqu\u00e9e : Ma\u00eetrisez chaque instant gr\u00e2ce \u00e0 la science, pour plus de confiance au volant.\n\nAvec ces cl\u00e9s, chaque exp\u00e9rience devient plus fun et plus s\u00fbre.\nCTA DESCRIPTIVE: Voir les ateliers\n\n--- PRODUCTS ---\n- Rallye sur glace\n- Conduite pr\u00e9ventive\n- Winter Experiences\nCTA: Voir la collection\n\n--- FOOTER ---\nN/A\n",
+    "slot_number": 2,
+    "status": "completed",
+    "content": "\nSUBJECT: La science qui transforme votre conduite\nPREVIEW: Prenez le contr\u00f4le sur la glace cet hiver.\nHERO IMAGE: Ma\u00eetrisez la glace par la science (Placeholder)\nHERO TITLE: Ma\u00eetrisez la glace par la science\nHERO SUBTITLE: Passez du chaos \u00e0 la ma\u00eetrise sur route glac\u00e9e.\nCTA: Voir les secrets\n\n--- DESCRIPTIVE BLOCK ---\nTITLE: Votre terrain d\u2019exp\u00e9rimentation\nCONTENT: Saviez-vous que la glace peut devenir votre meilleur terrain d\u2019entra\u00eenement ? Pour vraiment dominer l\u2019hiver, il suffit de comprendre quelques principes simples :\n\n\u2022 Dynamique des fluides : Anticipez les r\u00e9actions de votre v\u00e9hicule.\n\u2022 Adh\u00e9rence et friction : Pr\u00e9voyez chaque virage, m\u00eame sur surface glissante.\n\u2022 Physique appliqu\u00e9e : Ma\u00eetrisez chaque instant gr\u00e2ce \u00e0 la science, pour plus de confiance au volant.\n\nAvec ces cl\u00e9s, chaque exp\u00e9rience devient plus fun et plus s\u00fbre.\nCTA DESCRIPTIVE: Voir les ateliers\n\n--- PRODUCTS ---\n- Rallye sur glace\n- Conduite pr\u00e9ventive\n- Winter Experiences\nCTA: Voir la collection\n\n--- FOOTER ---\nN/A\n",
+    "structure_id": "STRUCT_MEDIA_LEFT_OFFSET",
+    "language": "FR"
+  },
+  {
+    "subject": "The Science That Transforms Your Driving",
+    "preview": "Take control on the ice this winter.",
+    "hero_title": "Master the Ice Through Science",
+    "hero_subtitle": "Transform chaos into control on icy roads.",
+    "cta_hero": "Discover the Secrets",
+    "descriptive_block_title": "Your Playground for Experimentation",
+    "descriptive_block_subtitle": "Ice, your greatest ally for improvement.",
+    "descriptive_block_content": "<table width='100%'>\n  <tr>\n    <td width='30%' valign='top' style='padding-right: 10px;'>\n      <img src='[Icon/Image]' width='100%'>\n    </td>\n    <td width='70%' valign='top'>\n      <p>\n        <b>Did you know that ice can become your best training ground?</b><br><br>\n        To truly conquer winter, all it takes is understanding a few simple principles:\n      </p>\n      <p>\n        \u2022 <b>Fluid Dynamics</b>: Anticipate your vehicle's reactions.<br>\n        \u2022 <b>Grip and Friction</b>: Plan for every turn, even on slippery surfaces.<br>\n        \u2022 <b>Applied Physics</b>: Master every moment through science, boosting your confidence behind the wheel.\n      </p>\n      <p>\n        With these keys, <b>every experience becomes more fun and safer</b>.\n      </p>\n    </td>\n  </tr>\n</table>",
+    "cta_descriptive": "Explore the Workshops",
+    "product_block_title": "Experience Mastery",
+    "product_block_subtitle": "Transition from theory to practice with our ice workshops. Discover how science truly transforms your driving.",
+    "products": [
+      "Ice Rally",
+      "Defensive Driving",
+      "Winter Experiences"
+    ],
+    "product_block_content": null,
+    "cta_product": "View the Collection",
+    "full_text_formatted": "\nSUBJECT: The Science That Transforms Your Driving\nPREVIEW: Take control on the ice this winter.\nHERO IMAGE: Master the Ice Through Science (Placeholder)\nHERO TITLE: Master the Ice Through Science\nHERO SUBTITLE: Transform chaos into control on icy roads.\nCTA: Discover the Secrets\n\n--- DESCRIPTIVE BLOCK ---\nTITLE: Your Playground for Experimentation\nCONTENT: <table width='100%'>\n  <tr>\n    <td width='30%' valign='top' style='padding-right: 10px;'>\n      <img src='[Icon/Image]' width='100%'>\n    </td>\n    <td width='70%' valign='top'>\n      <p>\n        <b>Did you know that ice can become your best training ground?</b><br><br>\n        To truly conquer winter, all it takes is understanding a few simple principles:\n      </p>\n      <p>\n        \u2022 <b>Fluid Dynamics</b>: Anticipate your vehicle's reactions.<br>\n        \u2022 <b>Grip and Friction</b>: Plan for every turn, even on slippery surfaces.<br>\n        \u2022 <b>Applied Physics</b>: Master every moment through science, boosting your confidence behind the wheel.\n      </p>\n      <p>\n        With these keys, <b>every experience becomes more fun and safer</b>.\n      </p>\n    </td>\n  </tr>\n</table>\nCTA DESCRIPTIVE: Explore the Workshops\n\n--- PRODUCTS ---\n- Ice Rally\n- Defensive Driving\n- Winter Experiences\nCTA: View the Collection\n\n--- FOOTER ---\nN/A\n",
+    "slot_number": 2,
+    "status": "completed",
+    "content": "\nSUBJECT: The Science That Transforms Your Driving\nPREVIEW: Take control on the ice this winter.\nHERO IMAGE: Master the Ice Through Science (Placeholder)\nHERO TITLE: Master the Ice Through Science\nHERO SUBTITLE: Transform chaos into control on icy roads.\nCTA: Discover the Secrets\n\n--- DESCRIPTIVE BLOCK ---\nTITLE: Your Playground for Experimentation\nCONTENT: <table width='100%'>\n  <tr>\n    <td width='30%' valign='top' style='padding-right: 10px;'>\n      <img src='[Icon/Image]' width='100%'>\n    </td>\n    <td width='70%' valign='top'>\n      <p>\n        <b>Did you know that ice can become your best training ground?</b><br><br>\n        To truly conquer winter, all it takes is understanding a few simple principles:\n      </p>\n      <p>\n        \u2022 <b>Fluid Dynamics</b>: Anticipate your vehicle's reactions.<br>\n        \u2022 <b>Grip and Friction</b>: Plan for every turn, even on slippery surfaces.<br>\n        \u2022 <b>Applied Physics</b>: Master every moment through science, boosting your confidence behind the wheel.\n      </p>\n      <p>\n        With these keys, <b>every experience becomes more fun and safer</b>.\n      </p>\n    </td>\n  </tr>\n</table>\nCTA DESCRIPTIVE: Explore the Workshops\n\n--- PRODUCTS ---\n- Ice Rally\n- Defensive Driving\n- Winter Experiences\nCTA: View the Collection\n\n--- FOOTER ---\nN/A\n",
+    "structure_id": "STRUCT_MEDIA_LEFT_OFFSET",
+    "language": "EN"
+  }
+]

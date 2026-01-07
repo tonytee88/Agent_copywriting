@@ -34,9 +34,9 @@ class StylistAgent:
             
             "STRUCT_EMOJI_CHECKLIST": "<h3>[Headline]</h3><br><ul><li><b>[Emoji] [Benefit 1]:</b> [Short explanation]</li><li><b>[Emoji] [Benefit 2]:</b> [Short explanation]</li><li><b>[Emoji] [Benefit 3]:</b> [Short explanation]</li></ul>",
             
-            "STRUCT_5050_SPLIT": "<table width='100%'><tr><td width='50%' valign='middle'><img src='[ImagePlaceholder]' alt='[Alt]' width='100%'></td><td width='5%'><br></td><td width='45%' valign='middle'><h3>[Headline]</h3><p>[Body Text]</p></td></tr></table>",
+            "STRUCT_5050_SPLIT": "<table width='100%'><tr><td width='50%' valign='middle'><img src='[ImagePlaceholder]' alt='[Alt]' width='100%'></td><td width='5%'><br></td><td width='45%' valign='middle'><p>[Body Text]</p></td></tr></table>",
             
-            "STRUCT_MEDIA_LEFT_OFFSET": "<table width='100%'><tr><td width='30%' valign='top'><img src='[Icon/Image]' width='100%'></td><td width='5%'><br></td><td width='65%' valign='top'><h3>[Headline]</h3><p>[Body Text]</p></td></tr></table>",
+            "STRUCT_MEDIA_LEFT_OFFSET": "<table width='100%'><tr><td width='30%' valign='top' style='padding-right: 10px;'><img src='[Icon/Image]' width='100%'></td><td width='70%' valign='top'><p>[Body Text]</p></td></tr></table>",
             
             "STRUCT_SPOTLIGHT_BOX": "<div style='background-color: #f4f4f4; padding: 20px; text-align: center; border-radius: 8px;'><h3>[Urgent Headline]</h3><p>[Short persuasive text]</p><br><b>[Key Takeaway/Code]</b></div>",
             
@@ -69,6 +69,14 @@ Format the "Raw Content" into the "Target HTML Template".
 3. **Psychological Bolding**: Use `<b>` for key benefits inside paragraphs.
 4. **Language**: Keep the Output in **{language}**.
 5. **Clean HTML**: Return ONLY valid HTML tags. No `<html>` or `<body>` wrappers.
+6. **Casing (CRITICAL)**:
+   - **French (FR)**: Headlines inside `<h3>` MUST use **Sentence case** (Only first letter capitalized). NEVER use Title Case (e.g., "Améliorez vos compétences" NOT "Améliorez Vos Compétences").
+   - **English (EN)**: Use standard casing.
+7. **Rhythm & Flow (CRITICAL)**:
+   - **No Walls of Text**: Aggressively use `<br><br>` (Double Line Break) to create clear paragraphs and white space. Denser text blocks (>3 lines) are forbidden.
+   - **Suspense**: Use single `<br>` to isolate punchlines or key thoughts.
+   - **Variety**: Mix short, punchy sentences with longer, flowing ones.
+   - **Pacing**: Use ellipses (...) or em-dashes (—) *only if appropriate for the voice* to create pauses.
 
 ### INPUT CONTEXT
 - **Brand Voice**: {brand_voice}

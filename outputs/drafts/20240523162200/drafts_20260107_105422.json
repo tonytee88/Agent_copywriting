@@ -1,0 +1,54 @@
+[
+  {
+    "subject": "La science ICAR : domptez la glace",
+    "preview": "Pr\u00e9cision, adr\u00e9naline et offres \u00e0 venir.",
+    "hero_title": "D\u00e9couvrez les secrets de la glace ICAR",
+    "hero_subtitle": "Laissez la science transformer chaque virage en un moment de pr\u00e9cision et d'adr\u00e9naline.",
+    "cta_hero": "Voir les outils",
+    "descriptive_block_title": "Transformez le chaos en contr\u00f4le total",
+    "descriptive_block_subtitle": "Comment la physique vous donne le contr\u00f4le total.",
+    "descriptive_block_content": "<table width='100%'><tr><td width='30%' valign='top'><img src='[Icon/Image]' width='100%'></td><td width='5%'><br></td><td width='65%' valign='top'><h3>Ma\u00eetrisez l\u2019impr\u00e9visible cet hiver</h3><p><b>La glace semble impr\u00e9visible</b>, mais la science vous donne le pouvoir d\u2019anticiper chaque r\u00e9action. Comprenez le <b>frottement</b>, la <b>dynamique des fluides</b> et la <b>r\u00e9partition du poids</b> pour transformer le chaos en ma\u00eetrise. Ressentez la puissance de la pr\u00e9cision scientifique sous vos roues \u00e0 chaque instant. <b>Pr\u00e9parez-vous</b> \u00e0 mettre vos connaissances en pratique avec des rabais hivernaux exceptionnels qui arrivent bient\u00f4t !</p></td></tr></table>",
+    "cta_descriptive": "Voir les exp\u00e9riences glac\u00e9es",
+    "product_block_title": "Passez de la th\u00e9orie \u00e0 l'action",
+    "product_block_subtitle": "Mettez en pratique la science derri\u00e8re la glace avec nos activit\u00e9s phares.",
+    "products": [
+      "Rallye sur glace",
+      "Conduite pr\u00e9ventive",
+      "Winter Experiences"
+    ],
+    "product_block_content": null,
+    "cta_product": "Voir la collection",
+    "full_text_formatted": "\nSUBJECT: La science ICAR : domptez la glace\nPREVIEW: Pr\u00e9cision, adr\u00e9naline et offres \u00e0 venir.\nHERO IMAGE: D\u00e9couvrez les secrets de la glace ICAR (Placeholder)\nHERO TITLE: D\u00e9couvrez les secrets de la glace ICAR\nHERO SUBTITLE: Laissez la science transformer chaque virage en un moment de pr\u00e9cision et d'adr\u00e9naline.\nCTA: Voir les outils\n\n--- DESCRIPTIVE BLOCK ---\nTITLE: Transformez le chaos en contr\u00f4le total\nCONTENT: <b>La glace semble impr\u00e9visible</b>, mais la science vous donne le pouvoir d\u2019anticiper chaque r\u00e9action. Comprenez le <b>frottement</b>, la <b>dynamique des fluides</b> et la <b>r\u00e9partition du poids</b> pour transformer le chaos en ma\u00eetrise. Ressentez la puissance de la pr\u00e9cision scientifique sous vos roues \u00e0 chaque instant. Pr\u00e9parez-vous \u00e0 mettre vos connaissances en pratique avec des rabais hivernaux exceptionnels qui arrivent bient\u00f4t!\nCTA DESCRIPTIVE: Voir les exp\u00e9riences glac\u00e9es\n\n--- PRODUCTS ---\n- Rallye sur glace\n- Conduite pr\u00e9ventive\n- Winter Experiences\nCTA: Voir la collection\n\n--- FOOTER ---\nN/A\n",
+    "slot_number": 2,
+    "status": "completed",
+    "content": "\nSUBJECT: La science ICAR : domptez la glace\nPREVIEW: Pr\u00e9cision, adr\u00e9naline et offres \u00e0 venir.\nHERO IMAGE: D\u00e9couvrez les secrets de la glace ICAR (Placeholder)\nHERO TITLE: D\u00e9couvrez les secrets de la glace ICAR\nHERO SUBTITLE: Laissez la science transformer chaque virage en un moment de pr\u00e9cision et d'adr\u00e9naline.\nCTA: Voir les outils\n\n--- DESCRIPTIVE BLOCK ---\nTITLE: Transformez le chaos en contr\u00f4le total\nCONTENT: <b>La glace semble impr\u00e9visible</b>, mais la science vous donne le pouvoir d\u2019anticiper chaque r\u00e9action. Comprenez le <b>frottement</b>, la <b>dynamique des fluides</b> et la <b>r\u00e9partition du poids</b> pour transformer le chaos en ma\u00eetrise. Ressentez la puissance de la pr\u00e9cision scientifique sous vos roues \u00e0 chaque instant. Pr\u00e9parez-vous \u00e0 mettre vos connaissances en pratique avec des rabais hivernaux exceptionnels qui arrivent bient\u00f4t!\nCTA DESCRIPTIVE: Voir les exp\u00e9riences glac\u00e9es\n\n--- PRODUCTS ---\n- Rallye sur glace\n- Conduite pr\u00e9ventive\n- Winter Experiences\nCTA: Voir la collection\n\n--- FOOTER ---\nN/A\n",
+    "structure_id": "STRUCT_MEDIA_LEFT_OFFSET",
+    "language": "FR"
+  },
+  {
+    "subject": "ICAR Science: Master the Ice",
+    "preview": "Precision, adrenaline, and exciting offers ahead.",
+    "hero_title": "Uncover the Secrets of ICAR Ice",
+    "hero_subtitle": "Let science turn every turn into a moment of precision and adrenaline.",
+    "cta_hero": "Explore the Tools",
+    "descriptive_block_title": "Turn Chaos into Total Control",
+    "descriptive_block_subtitle": "How physics empowers you to take command.",
+    "descriptive_block_content": "<table width='100%'><tr><td width='30%' valign='top'><img src='[Icon/Image]' width='100%'></td><td width='5%'><br></td><td width='65%' valign='top'><h3>Conquer the Unpredictable This Winter</h3><p><b>Ice may seem unpredictable</b>, but science gives you the power to anticipate every reaction. Understand <b>friction</b>, <b>fluid dynamics</b>, and <b>weight distribution</b> to transform chaos into mastery. Feel the thrill of scientific precision beneath your wheels at every moment. <b>Get ready</b> to put your knowledge into practice with our upcoming exceptional winter discounts!</p></td></tr></table>",
+    "cta_descriptive": "Discover Icy Experiences",
+    "product_block_title": "From Theory to Action",
+    "product_block_subtitle": "Experience the science behind the ice with our flagship activities.",
+    "products": [
+      "Ice Rally",
+      "Defensive Driving",
+      "Winter Experiences"
+    ],
+    "product_block_content": null,
+    "cta_product": "View the Collection",
+    "full_text_formatted": "\nSUBJECT: ICAR Science: Master the Ice\nPREVIEW: Precision, adrenaline, and exciting offers ahead.\nHERO IMAGE: Uncover the Secrets of ICAR Ice (Placeholder)\nHERO TITLE: Uncover the Secrets of ICAR Ice\nHERO SUBTITLE: Let science turn every turn into a moment of precision and adrenaline.\nCTA: Explore the Tools\n\n--- DESCRIPTIVE BLOCK ---\nTITLE: Turn Chaos into Total Control\nCONTENT: <table width='100%'><tr><td width='30%' valign='top'><img src='[Icon/Image]' width='100%'></td><td width='5%'><br></td><td width='65%' valign='top'><h3>Conquer the Unpredictable This Winter</h3><p><b>Ice may seem unpredictable</b>, but science gives you the power to anticipate every reaction. Understand <b>friction</b>, <b>fluid dynamics</b>, and <b>weight distribution</b> to transform chaos into mastery. Feel the thrill of scientific precision beneath your wheels at every moment. <b>Get ready</b> to put your knowledge into practice with our upcoming exceptional winter discounts!</p></td></tr></table>\nCTA DESCRIPTIVE: Discover Icy Experiences\n\n--- PRODUCTS ---\n- Ice Rally\n- Defensive Driving\n- Winter Experiences\nCTA: View the Collection\n\n--- FOOTER ---\nN/A\n",
+    "slot_number": 2,
+    "status": "completed",
+    "content": "\nSUBJECT: ICAR Science: Master the Ice\nPREVIEW: Precision, adrenaline, and exciting offers ahead.\nHERO IMAGE: Uncover the Secrets of ICAR Ice (Placeholder)\nHERO TITLE: Uncover the Secrets of ICAR Ice\nHERO SUBTITLE: Let science turn every turn into a moment of precision and adrenaline.\nCTA: Explore the Tools\n\n--- DESCRIPTIVE BLOCK ---\nTITLE: Turn Chaos into Total Control\nCONTENT: <table width='100%'><tr><td width='30%' valign='top'><img src='[Icon/Image]' width='100%'></td><td width='5%'><br></td><td width='65%' valign='top'><h3>Conquer the Unpredictable This Winter</h3><p><b>Ice may seem unpredictable</b>, but science gives you the power to anticipate every reaction. Understand <b>friction</b>, <b>fluid dynamics</b>, and <b>weight distribution</b> to transform chaos into mastery. Feel the thrill of scientific precision beneath your wheels at every moment. <b>Get ready</b> to put your knowledge into practice with our upcoming exceptional winter discounts!</p></td></tr></table>\nCTA DESCRIPTIVE: Discover Icy Experiences\n\n--- PRODUCTS ---\n- Ice Rally\n- Defensive Driving\n- Winter Experiences\nCTA: View the Collection\n\n--- FOOTER ---\nN/A\n",
+    "structure_id": "STRUCT_MEDIA_LEFT_OFFSET",
+    "language": "EN"
+  }
+]
