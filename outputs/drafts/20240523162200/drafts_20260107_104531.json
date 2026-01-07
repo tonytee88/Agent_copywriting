@@ -1,0 +1,54 @@
+[
+  {
+    "subject": "L'hiver r\u00e9v\u00e8le vos talents de pilote",
+    "preview": "Progressez au volant gr\u00e2ce aux d\u00e9fis de l'hiver.",
+    "hero_title": "L'hiver, votre piste d'\u00e9volution",
+    "hero_subtitle": "Gagnez en confiance et en technique sur chaque virage glac\u00e9.",
+    "cta_hero": "Voir les exp\u00e9riences",
+    "descriptive_block_title": "Les d\u00e9fis qui forgent les pilotes",
+    "descriptive_block_subtitle": "Pourquoi l\u2019hiver booste votre ma\u00eetrise du volant",
+    "descriptive_block_content": "<h3>Am\u00e9liorez Vos Comp\u00e9tences de Conduite Cet Hiver</h3>\n<p>Chez <b>ICAR</b>, nos instructeurs savent que l\u2019hiver est une saison id\u00e9ale pour acc\u00e9l\u00e9rer votre progression en conduite. Les routes hivernales vous permettent de d\u00e9velopper une <b>concentration accrue</b>, une <b>ma\u00eetrise renforc\u00e9e</b>, et une <b>confiance durable</b>.</p>\n<br>\n<p><i>Imaginez-vous dominer les virages glac\u00e9s avec assurance. Rejoignez-nous pour cette transformation.</i></p>",
+    "cta_descriptive": "D\u00e9couvrir les activit\u00e9s ICAR",
+    "product_block_title": "Des exp\u00e9riences pour progresser",
+    "product_block_subtitle": "Nos activit\u00e9s affinent votre pilotage et r\u00e9v\u00e8lent votre potentiel, en toute s\u00e9curit\u00e9.",
+    "products": [
+      "Rallye sur glace",
+      "Conduite pr\u00e9ventive",
+      "Winter Experiences"
+    ],
+    "product_block_content": "Nos \u00e9quipes constatent chaque saison : pratiquer chez ICAR vous donne les cl\u00e9s pour ma\u00eetriser chaque route, hiver comme \u00e9t\u00e9.",
+    "cta_product": "Voir la collection",
+    "full_text_formatted": "\nSUBJECT: L'hiver r\u00e9v\u00e8le vos talents de pilote\nPREVIEW: Progressez au volant gr\u00e2ce aux d\u00e9fis de l'hiver.\nHERO IMAGE: L'hiver, votre piste d'\u00e9volution (Placeholder)\nHERO TITLE: L'hiver, votre piste d'\u00e9volution\nHERO SUBTITLE: Gagnez en confiance et en technique sur chaque virage glac\u00e9.\nCTA: Voir les exp\u00e9riences\n\n--- DESCRIPTIVE BLOCK ---\nTITLE: Les d\u00e9fis qui forgent les pilotes\nCONTENT: <p>Chez ICAR, nos instructeurs ont vu combien l\u2019hiver acc\u00e9l\u00e8re la progression de chaque conducteur. Voici pourquoi :<ul><li><b>Concentration accrue :</b> Les routes hivernales exigent vigilance et adaptation.</li><li><b>Ma\u00eetrise renforc\u00e9e :</b> Surmonter la glace et la neige am\u00e9liore vos r\u00e9flexes et votre contr\u00f4le.</li><li><b>Confiance durable :</b> Ce que vous apprenez dans ces conditions reste toute l\u2019ann\u00e9e.</li></ul>Imaginez-vous ma\u00eetriser les virages glac\u00e9s avec assurance. Rejoignez-nous pour vivre cette transformation.</p>\nCTA DESCRIPTIVE: D\u00e9couvrir les activit\u00e9s ICAR\n\n--- PRODUCTS ---\n- Rallye sur glace\n- Conduite pr\u00e9ventive\n- Winter Experiences\nCTA: Voir la collection\n\n--- FOOTER ---\nN/A\n",
+    "slot_number": 1,
+    "status": "completed",
+    "content": "\nSUBJECT: L'hiver r\u00e9v\u00e8le vos talents de pilote\nPREVIEW: Progressez au volant gr\u00e2ce aux d\u00e9fis de l'hiver.\nHERO IMAGE: L'hiver, votre piste d'\u00e9volution (Placeholder)\nHERO TITLE: L'hiver, votre piste d'\u00e9volution\nHERO SUBTITLE: Gagnez en confiance et en technique sur chaque virage glac\u00e9.\nCTA: Voir les exp\u00e9riences\n\n--- DESCRIPTIVE BLOCK ---\nTITLE: Les d\u00e9fis qui forgent les pilotes\nCONTENT: <p>Chez ICAR, nos instructeurs ont vu combien l\u2019hiver acc\u00e9l\u00e8re la progression de chaque conducteur. Voici pourquoi :<ul><li><b>Concentration accrue :</b> Les routes hivernales exigent vigilance et adaptation.</li><li><b>Ma\u00eetrise renforc\u00e9e :</b> Surmonter la glace et la neige am\u00e9liore vos r\u00e9flexes et votre contr\u00f4le.</li><li><b>Confiance durable :</b> Ce que vous apprenez dans ces conditions reste toute l\u2019ann\u00e9e.</li></ul>Imaginez-vous ma\u00eetriser les virages glac\u00e9s avec assurance. Rejoignez-nous pour vivre cette transformation.</p>\nCTA DESCRIPTIVE: D\u00e9couvrir les activit\u00e9s ICAR\n\n--- PRODUCTS ---\n- Rallye sur glace\n- Conduite pr\u00e9ventive\n- Winter Experiences\nCTA: Voir la collection\n\n--- FOOTER ---\nN/A\n",
+    "structure_id": "STRUCT_NARRATIVE_PARAGRAPH",
+    "language": "FR"
+  },
+  {
+    "subject": "Winter Unleashes Your Driving Skills",
+    "preview": "Advance your driving with winter challenges.",
+    "hero_title": "Winter, Your Path to Progress",
+    "hero_subtitle": "Build confidence and technique with every icy turn.",
+    "cta_hero": "Explore Experiences",
+    "descriptive_block_title": "Challenges That Shape Drivers",
+    "descriptive_block_subtitle": "Why winter boosts your driving mastery",
+    "descriptive_block_content": "<h3>Enhance Your Driving Skills This Winter</h3>\n<p>At <b>ICAR</b>, our instructors know that winter is the perfect season to accelerate your driving progress. Winter roads allow you to develop <b>heightened focus</b>, <b>enhanced control</b>, and <b>lasting confidence</b>.</p>\n<br>\n<p><i>Picture yourself confidently navigating those icy turns. Join us for this transformative experience.</i></p>",
+    "cta_descriptive": "Discover ICAR Activities",
+    "product_block_title": "Experiences to Advance Your Skills",
+    "product_block_subtitle": "Our activities refine your driving and reveal your potential, all in a safe environment.",
+    "products": [
+      "Ice Rally",
+      "Defensive Driving",
+      "Winter Experiences"
+    ],
+    "product_block_content": "Our teams see every season: practicing at ICAR equips you with the skills to master every road, winter and summer alike.",
+    "cta_product": "View the Collection",
+    "full_text_formatted": "\nSUBJECT: Winter Unleashes Your Driving Skills\nPREVIEW: Advance your driving with winter challenges.\nHERO IMAGE: Winter, Your Path to Progress (Placeholder)\nHERO TITLE: Winter, Your Path to Progress\nHERO SUBTITLE: Build confidence and technique with every icy turn.\nCTA: Explore Experiences\n\n--- DESCRIPTIVE BLOCK ---\nTITLE: Challenges That Shape Drivers\nCONTENT: <h3>Enhance Your Driving Skills This Winter</h3>\n<p>At <b>ICAR</b>, our instructors know that winter is the perfect season to accelerate your driving progress. Winter roads allow you to develop <b>heightened focus</b>, <b>enhanced control</b>, and <b>lasting confidence</b>.</p>\n<br>\n<p><i>Picture yourself confidently navigating those icy turns. Join us for this transformative experience.</i></p>\nCTA DESCRIPTIVE: Discover ICAR Activities\n\n--- PRODUCTS ---\n- Ice Rally\n- Defensive Driving\n- Winter Experiences\nCTA: View the Collection\n\n--- FOOTER ---\nN/A\n",
+    "slot_number": 1,
+    "status": "completed",
+    "content": "\nSUBJECT: Winter Unleashes Your Driving Skills\nPREVIEW: Advance your driving with winter challenges.\nHERO IMAGE: Winter, Your Path to Progress (Placeholder)\nHERO TITLE: Winter, Your Path to Progress\nHERO SUBTITLE: Build confidence and technique with every icy turn.\nCTA: Explore Experiences\n\n--- DESCRIPTIVE BLOCK ---\nTITLE: Challenges That Shape Drivers\nCONTENT: <h3>Enhance Your Driving Skills This Winter</h3>\n<p>At <b>ICAR</b>, our instructors know that winter is the perfect season to accelerate your driving progress. Winter roads allow you to develop <b>heightened focus</b>, <b>enhanced control</b>, and <b>lasting confidence</b>.</p>\n<br>\n<p><i>Picture yourself confidently navigating those icy turns. Join us for this transformative experience.</i></p>\nCTA DESCRIPTIVE: Discover ICAR Activities\n\n--- PRODUCTS ---\n- Ice Rally\n- Defensive Driving\n- Winter Experiences\nCTA: View the Collection\n\n--- FOOTER ---\nN/A\n",
+    "structure_id": "STRUCT_NARRATIVE_PARAGRAPH",
+    "language": "EN"
+  }
+]

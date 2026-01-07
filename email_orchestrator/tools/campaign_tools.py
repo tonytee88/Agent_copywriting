@@ -283,8 +283,12 @@ async def generate_email_campaign(
             
         print(f"\n>>> PROCESSING EMAIL #{slot.slot_number} ({slot.email_purpose}) <<<")
         
-        for lang in target_languages:
-            print(f"   > [Language: {lang}]")
+        # 1. PRIMARY RUN (Generate from scratch)
+        primary_lang = target_languages[0]
+        primary_draft_captured = None # Holder for translation
+        
+        for lang in [primary_lang]:
+            print(f"   > [Primary Language: {lang}]")
             
             try:
                 # A. Strategist (Create Blueprint using Slot Directives)
@@ -403,6 +407,7 @@ async def generate_email_campaign(
                         print(f"[Email #{slot.slot_number}-{lang}] Warning: Revised draft still has {len(final_det)} deterministic issues.")
                 
                     print(f"[Email #{slot.slot_number}-{lang}] Revision complete. Auto-approving for export.")
+                    primary_draft_captured = final_draft
             
                 # --- FINAL SAFETY NET (The "Sanitizer") ---
                 # User reported dashes persisting. We will strictly strip them here.
@@ -458,6 +463,57 @@ async def generate_email_campaign(
                     "error": str(e),
                     "language": lang
                 })
+        
+        # 2. SECONDARY RUN (Transcreation)
+        secondary_langs = target_languages[1:]
+        if secondary_langs and primary_draft_captured:
+            from email_orchestrator.subagents.translator_agent import TranslatorAgent
+            translator = TranslatorAgent()
+            
+            for sec_lang in secondary_langs:
+                print(f"   > [Secondary Language: {sec_lang}] (Transcreating from {primary_lang})...")
+                try:
+                    sec_draft = await translator.transcreate_draft(
+                        source_draft=primary_draft_captured,
+                        source_lang=primary_lang,
+                        target_lang=sec_lang,
+                        brand_voice=brand_bio.brand_voice
+                    )
+                    
+                    # Log & Save
+                    log_entry = CampaignLogEntry(
+                        campaign_id=campaign_id,
+                        timestamp=datetime.now().isoformat(),
+                        brand_id=plan.brand_id,
+                        brand_name=plan.brand_name,
+                        # Copy structure metadata from Blueprint
+                        transformation_description=blueprint.transformation_description,
+                        transformation_id=blueprint.transformation_id,
+                        structure_id=blueprint.structure_id,
+                        angle_description=blueprint.angle_description,
+                        angle_id=blueprint.angle_id,
+                        cta_description=blueprint.cta_description,
+                        cta_style_id=blueprint.cta_style_id,
+                        offer_placement_used=blueprint.offer_placement,
+                        blueprint=blueprint,
+                        final_draft=sec_draft
+                    )
+                    history_manager.log_campaign(log_entry)
+                    
+                    draft_data = sec_draft.dict()
+                    draft_data.update({
+                        "slot_number": slot.slot_number,
+                        "status": "completed",
+                        "content": sec_draft.full_text_formatted,
+                        "structure_id": blueprint.structure_id,
+                        "language": sec_lang
+                    })
+                    results.append(draft_data)
+                    print(f"[Email #{slot.slot_number}-{sec_lang}] Transcreation COMPLETE.")
+                    
+                except Exception as e:
+                    print(f"[Email #{slot.slot_number}-{sec_lang}] Transcreation FAILED: {e}")
+                    results.append({"slot_number": slot.slot_number, "status": "failed", "error": str(e), "language": sec_lang})
         
         # F. Export to Google Docs (LEGACY - Disabled)
         # try:

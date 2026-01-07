@@ -248,11 +248,8 @@ def _parse_draft_response(result_json_str: str) -> EmailDraft:
         cleaned_json = _clean_json_string(result_json_str)
         data = json.loads(cleaned_json)
         
-        # Helper to construct full formatted text for email preview
-        full_text = _construct_full_email_text(data)
-        data["full_text_formatted"] = full_text
-        
         draft = EmailDraft(**data)
+        draft.full_text_formatted = draft.to_formatted_text()
         
         print(f"[Drafter] Draft created: {draft.subject}")
         return draft

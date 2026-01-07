@@ -113,7 +113,38 @@ class EmailDraft(BaseModel):
     
     cta_product: str
     
-    full_text_formatted: str # The full email string for easy reading
+    full_text_formatted: Optional[str] = None # The full email string for easy reading
+    
+    def to_formatted_text(self) -> str:
+        """Helper to assemble the email parts into a readable string."""
+        products_list = []
+        if self.products:
+            products_list = [f"- {p}" for p in self.products]
+        elif self.product_block_content:
+            products_list = [self.product_block_content]
+            
+        products_str = "\n".join(products_list)
+
+        return f"""
+SUBJECT: {self.subject}
+PREVIEW: {self.preview}
+HERO IMAGE: {self.hero_title} (Placeholder)
+HERO TITLE: {self.hero_title}
+HERO SUBTITLE: {self.hero_subtitle}
+CTA: {self.cta_hero}
+
+--- DESCRIPTIVE BLOCK ---
+TITLE: {self.descriptive_block_title}
+CONTENT: {self.descriptive_block_content}
+CTA DESCRIPTIVE: {self.cta_descriptive or 'N/A'}
+
+--- PRODUCTS ---
+{products_str}
+CTA: {self.cta_product}
+
+--- FOOTER ---
+N/A
+"""
 
 class CampaignLogEntry(BaseModel):
     """Record of a sent campaign for history tracking."""

@@ -1,0 +1,8 @@
+[
+  {
+    "slot_number": 1,
+    "status": "failed",
+    "error": "3 validation errors for Issue\ntype\n  Field required [type=missing, input_value={'field': 'subject', 'pro...ji: 6. Goal is 1 in 4.'}, input_type=dict]\n    For further information visit https://errors.pydantic.dev/2.12/v/missing\nseverity\n  Field required [type=missing, input_value={'field': 'subject', 'pro...ji: 6. Goal is 1 in 4.'}, input_type=dict]\n    For further information visit https://errors.pydantic.dev/2.12/v/missing\nscope\n  Field required [type=missing, input_value={'field': 'subject', 'pro...ji: 6. Goal is 1 in 4.'}, input_type=dict]\n    For further information visit https://errors.pydantic.dev/2.12/v/missing",
+    "language": "FR"
+  }
+]

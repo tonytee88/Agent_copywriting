@@ -1,0 +1,28 @@
+[
+  {
+    "subject": "De spectateur \u00e0 pilote : vivez ICAR",
+    "preview": "Passez de la tribune \u00e0 la piste chez ICAR.",
+    "hero_title": "Vivez l\u2019adr\u00e9naline chez ICAR",
+    "hero_subtitle": "Passez du r\u00eave \u00e0 l\u2019action sur nos pistes exclusives.",
+    "cta_hero": "D\u00e9couvrir ICAR",
+    "descriptive_block_title": "Devenez acteur de votre passion",
+    "descriptive_block_subtitle": "ICAR vous invite \u00e0 prendre le volant du changement.",
+    "descriptive_block_content": "<h3>Vivez l'adr\u00e9naline au volant</h3><p>Chez ICAR, chaque visite vous transporte : <b>vous quittez la tribune</b> pour <b>ressentir la puissance</b> derri\u00e8re le volant. Ici, <b>l\u2019\u00e9nergie de la vitesse</b> et l\u2019accompagnement d\u2019experts vous permettent de repousser vos limites, tout en vivant une exp\u00e9rience <b>unique et m\u00e9morable</b>.</p><br><p><i>Pr\u00eat \u00e0 explorer de nouvelles \u00e9motions ? D\u00e9couvrez notre univers exceptionnel...</i></p>",
+    "cta_descriptive": "Voir les exp\u00e9riences ICAR",
+    "product_block_title": "Trouvez votre exp\u00e9rience id\u00e9ale",
+    "product_block_subtitle": "Explorez nos activit\u00e9s phares et r\u00e9v\u00e9lez le pilote qui sommeille en vous.",
+    "products": [
+      "Lamborghini Gallardo Experience",
+      "Ferrari 458 Italia Experience",
+      "Karting"
+    ],
+    "product_block_content": null,
+    "cta_product": "Voir la collection",
+    "full_text_formatted": "\nSUBJECT: De spectateur \u00e0 pilote : vivez ICAR\nPREVIEW: Passez de la tribune \u00e0 la piste chez ICAR.\nHERO IMAGE: Vivez l\u2019adr\u00e9naline chez ICAR (Placeholder)\nHERO TITLE: Vivez l\u2019adr\u00e9naline chez ICAR\nHERO SUBTITLE: Passez du r\u00eave \u00e0 l\u2019action sur nos pistes exclusives.\nCTA: D\u00e9couvrir ICAR\n\n--- DESCRIPTIVE BLOCK ---\nTITLE: Devenez acteur de votre passion\nCONTENT: <p>Chez ICAR, chaque visite vous transporte : <b>vous quittez la tribune</b> pour <b>ressentir la puissance</b> derri\u00e8re le volant. Ici, <b>l\u2019\u00e9nergie de la vitesse</b> et l\u2019accompagnement d\u2019experts vous permettent de repousser vos limites, tout en vivant une exp\u00e9rience <b>unique et m\u00e9morable</b>. Que vous soyez passionn\u00e9, en famille ou en groupe, ICAR est le terrain de jeu pour ceux qui veulent se d\u00e9passer et partager des sensations fortes. Pr\u00eat \u00e0 explorer de nouvelles \u00e9motions ? D\u00e9couvrez notre univers exceptionnel...</p>\nCTA DESCRIPTIVE: Voir les exp\u00e9riences ICAR\n\n--- PRODUCTS ---\n- Lamborghini Gallardo Experience\n- Ferrari 458 Italia Experience\n- Karting\nCTA: Voir la collection\n\n--- FOOTER ---\nN/A\n",
+    "slot_number": 1,
+    "status": "completed",
+    "content": "\nSUBJECT: De spectateur \u00e0 pilote : vivez ICAR\nPREVIEW: Passez de la tribune \u00e0 la piste chez ICAR.\nHERO IMAGE: Vivez l\u2019adr\u00e9naline chez ICAR (Placeholder)\nHERO TITLE: Vivez l\u2019adr\u00e9naline chez ICAR\nHERO SUBTITLE: Passez du r\u00eave \u00e0 l\u2019action sur nos pistes exclusives.\nCTA: D\u00e9couvrir ICAR\n\n--- DESCRIPTIVE BLOCK ---\nTITLE: Devenez acteur de votre passion\nCONTENT: <p>Chez ICAR, chaque visite vous transporte : <b>vous quittez la tribune</b> pour <b>ressentir la puissance</b> derri\u00e8re le volant. Ici, <b>l\u2019\u00e9nergie de la vitesse</b> et l\u2019accompagnement d\u2019experts vous permettent de repousser vos limites, tout en vivant une exp\u00e9rience <b>unique et m\u00e9morable</b>. Que vous soyez passionn\u00e9, en famille ou en groupe, ICAR est le terrain de jeu pour ceux qui veulent se d\u00e9passer et partager des sensations fortes. Pr\u00eat \u00e0 explorer de nouvelles \u00e9motions ? D\u00e9couvrez notre univers exceptionnel...</p>\nCTA DESCRIPTIVE: Voir les exp\u00e9riences ICAR\n\n--- PRODUCTS ---\n- Lamborghini Gallardo Experience\n- Ferrari 458 Italia Experience\n- Karting\nCTA: Voir la collection\n\n--- FOOTER ---\nN/A\n",
+    "structure_id": "STRUCT_NARRATIVE_PARAGRAPH",
+    "language": "FR"
+  }
+]

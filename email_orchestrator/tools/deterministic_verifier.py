@@ -228,6 +228,9 @@ class DeterministicVerifier:
                         # We don't FORCE it yet unless we want to, but the prompt should encourage it.
                         if dist_to_last_emoji >= 4:
                             issues.append(Issue(
+                                type="formatting",
+                                severity="P2", 
+                                scope="history",
                                 field="subject",
                                 problem="Subject line requires an emoji (Pacing).",
                                 rationale=f"Gap since last emoji: {dist_to_last_emoji}. Goal is 1 in 4."

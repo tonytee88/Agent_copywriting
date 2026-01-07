@@ -28,45 +28,55 @@ class StylistAgent:
         Returns valid HTML string ready for the export parser.
         """
         
+        # TEMPLATE DEFINITIONS (Agile & Strict)
+        templates = {
+            "STRUCT_NARRATIVE_PARAGRAPH": "<h3>[Headline]</h3><p>[Body Text 2-4 lines max]</p><br><p><i>[Optional subtle closing thought]</i></p>",
+            
+            "STRUCT_EMOJI_CHECKLIST": "<h3>[Headline]</h3><br><ul><li><b>[Emoji] [Benefit 1]:</b> [Short explanation]</li><li><b>[Emoji] [Benefit 2]:</b> [Short explanation]</li><li><b>[Emoji] [Benefit 3]:</b> [Short explanation]</li></ul>",
+            
+            "STRUCT_5050_SPLIT": "<table width='100%'><tr><td width='50%' valign='middle'><img src='[ImagePlaceholder]' alt='[Alt]' width='100%'></td><td width='5%'><br></td><td width='45%' valign='middle'><h3>[Headline]</h3><p>[Body Text]</p></td></tr></table>",
+            
+            "STRUCT_MEDIA_LEFT_OFFSET": "<table width='100%'><tr><td width='30%' valign='top'><img src='[Icon/Image]' width='100%'></td><td width='5%'><br></td><td width='65%' valign='top'><h3>[Headline]</h3><p>[Body Text]</p></td></tr></table>",
+            
+            "STRUCT_SPOTLIGHT_BOX": "<div style='background-color: #f4f4f4; padding: 20px; text-align: center; border-radius: 8px;'><h3>[Urgent Headline]</h3><p>[Short persuasive text]</p><br><b>[Key Takeaway/Code]</b></div>",
+            
+            "STRUCT_STAT_ATTACK": "<table width='100%' style='text-align: center;'><tr><td width='33%'><h1>[Stat 1]</h1><p>[Label 1]</p></td><td width='33%'><h1>[Stat 2]</h1><p>[Label 2]</p></td><td width='33%'><h1>[Stat 3]</h1><p>[Label 3]</p></td></tr></table>",
+            
+            "STRUCT_STEP_BY_STEP": "<p><b>Step 1:</b> [Action]</p><p><b>Step 2:</b> [Action]</p><p><b>Step 3:</b> [Action]</p>",
+            
+            "STRUCT_MINI_GRID": "<table width='100%'><tr><td width='33%'><img src='[Item1]' width='100%'><p align='center'>[Label 1]</p></td><td width='33%'><img src='[Item2]' width='100%'><p align='center'>[Label 2]</p></td><td width='33%'><img src='[Item3]' width='100%'><p align='center'>[Label 3]</p></td></tr></table>",
+            
+            "STRUCT_SOCIAL_PROOF_QUOTE": "<div style='text-align: center; font-style: italic; padding: 15px;'><p>&quot;[Quote Text]&quot;</p><br><p><b>— [Customer Name]</b>, Verified Buyer</p></div>",
+            
+            "STRUCT_GIF_PREVIEW": "<div style='text-align: center;'><img src='[GIF_Placeholder]' width='100%'><br><p>[Caption explaining the motion]</p></div>"
+        }
+        
+        target_template = templates.get(structure_id, "<h3>[Headline]</h3><p>[Formatted Body Text]</p>")
+
         system_prompt = f"""
 You are an expert **Copy Editor and Direct Response Stylist**.
-Your job is to take raw email body text and transform it into a **visuallly engaging, highly readable masterpiece** using "Tactical Formatting".
-You do NOT change the core meaning or the message. You ENHANCE it visually to guide the reader's eye and emphasize emotional triggers.
+Your job is to take raw email body text and transform it into a **visually engaging, highly readable masterpiece** using "Tactical Formatting".
 
-### YOUR TOOLKIT (HTML TAGS Supported)
-- `<b>...</b>`: Use for key benefits, promises, or strong statements.
-- `<i>...</i>`: Use for internal dialogue, thoughts, or subtle emphasis.
-- `<u>...</u>`: Use SPARINGLY for the single most important action or warning.
-- `Caps`: Use UPPERCASE for individual "Power Words" (e.g., FREE, NEVER, INSTANTLY). Do not use for whole sentences.
-- `<br>`: Use for spacing. Short paragraphs are better.
-- `<ul><li>...</li></ul>`: Use for lists (if the structure dictates it).
+### TASK:
+Format the "Raw Content" into the "Target HTML Template".
+
+### TARGET HTML TEMPLATE (STRICTLY FOLLOW THIS STRUCTURE):
+{target_template}
 
 ### RULES
-1. **Preserve Meaning**: Do not rewrite the copy completely. Just polish and format.
-2. **Aggressive Readability**: Break long paragraphs into 1-2 line chunks.
-3. **Psychological Bolding**: Bold the *benefit* ("Wake up with **perfect hair**"), not the feature.
-4. **Structure Compliance**: 
-   - If Structure is `STRUCT_EMOJI_CHECKLIST` or `STRUCT_MEDIA_LEFT_OFFSET`, ensure you return a `<ul>` list.
-   - If Structure is `STRUCT_STAT_ATTACK` or `STRUCT_SPOTLIGHT_BOX` or `STRUCT_STEP_BY_STEP` or `STRUCT_MINI_GRID`, you MUST return a `<table>`.
-   - **STRUCT_MINI_GRID Special Rule**: The `<table>` must ONLY contain the items/content. Any "CTA" or closing sentence must be **OUTSIDE** and AFTER the table.
-   - For `STRUCT_STAT_ATTACK`: Ensure rows/cols are preserved. Format the text *inside* the cells.
-   - For others: Use `<p>` tags separated by `<br>`.
-5. **Language**: Keep the Output in **{language}**.
-6. **STRICT COMPLIANCE** (Refusal to follow these = FAILURE):
-   - **NO** emojis in the body text unless the Structure explicitly requires it.
-   - **NO** em-dashes (—) or en-dashes (–). Use commas, periods, or ellipses (...) instead.
-   - **Hyphens (-)** are ALLOWED for compound words.
-   - **NO** hashtags.
-   - **NO** CTA Buttons inside tables.
+1. **Fill the slots**: Replace placeholders like `[Headline]`, `[Body Text]`, etc. with the content from "Raw Content".
+2. **Preserve Meaning**: Do not rewrite the core message, just fit it into the container.
+3. **Psychological Bolding**: Use `<b>` for key benefits inside paragraphs.
+4. **Language**: Keep the Output in **{language}**.
+5. **Clean HTML**: Return ONLY valid HTML tags. No `<html>` or `<body>` wrappers.
 
 ### INPUT CONTEXT
 - **Brand Voice**: {brand_voice}
-- **Structure**: {structure_id}
 - **Raw Content**:
 "{content}"
 
 ### STRICT OUTPUT FORMAT
-Return ONLY the formatted HTML string. No markdown block markers (```html). Just the raw HTML string.
+Return ONLY the formatted HTML string.
 """
         
         try:

@@ -1,0 +1,28 @@
+[
+  {
+    "subject": "Devenez pilote chez ICAR",
+    "preview": "Vivez l\u2019adr\u00e9naline et devenez acteur de votre passion.",
+    "hero_title": "Passez du r\u00eave \u00e0 la r\u00e9alit\u00e9 chez ICAR",
+    "hero_subtitle": "Imaginez-vous au volant, pr\u00eat \u00e0 ressentir chaque \u00e9motion.",
+    "cta_hero": "Voir le complexe",
+    "descriptive_block_title": "De spectateur \u00e0 pilote passionn\u00e9",
+    "descriptive_block_subtitle": "D\u00e9couvrez le pouvoir de l\u2019exp\u00e9rience ICAR",
+    "descriptive_block_content": "<h3>Franchissez le cap entre r\u00eave et r\u00e9alit\u00e9</h3>\n<p><b>Chez ICAR, vous devenez pilote</b> d\u00e8s votre arriv\u00e9e. L\u2019\u00e9nergie du circuit vous transporte, et chaque vibration r\u00e9veille votre envie de piloter. <b>Vivez le frisson, l\u2019\u00e9motion et la fiert\u00e9</b> de repousser vos limites sur nos pistes.</p><br>\n<p><i>Pr\u00eat \u00e0 d\u00e9couvrir ce qui vous attend ?</i></p>",
+    "cta_descriptive": "Explorer l\u2019univers ICAR",
+    "product_block_title": "Des exp\u00e9riences pour chaque passionn\u00e9",
+    "product_block_subtitle": "Exotiques, rallye, karting et team building : trouvez votre piste id\u00e9ale.",
+    "products": [
+      "Lamborghini Gallardo Experience",
+      "Rally Driving Experience",
+      "Karting"
+    ],
+    "product_block_content": null,
+    "cta_product": "Voir la collection",
+    "full_text_formatted": "\nSUBJECT: Devenez pilote chez ICAR\nPREVIEW: Vivez l\u2019adr\u00e9naline et devenez acteur de votre passion.\nHERO IMAGE: None\nHERO TITLE: Passez du r\u00eave \u00e0 la r\u00e9alit\u00e9 chez ICAR\nHERO SUBTITLE: Imaginez-vous au volant, pr\u00eat \u00e0 ressentir chaque \u00e9motion.\nCTA: None\n\n--- DESCRIPTIVE BLOCK ---\nTITLE: De spectateur \u00e0 pilote passionn\u00e9\nCONTENT: <p>Chez ICAR, vous franchissez le cap entre r\u00eave et r\u00e9alit\u00e9. D\u00e8s votre arriv\u00e9e, l\u2019\u00e9nergie du circuit vous transporte et chaque vibration r\u00e9veille votre envie de piloter. <b>Vous n\u2019\u00eates plus simple spectateur, mais v\u00e9ritable pilote passionn\u00e9</b>. L\u2019adr\u00e9naline monte, l\u2019accomplissement personnel devient palpable et l\u2019encadrement expert vous accompagne \u00e0 chaque \u00e9tape. <b>Vivez le frisson, l\u2019\u00e9motion et la fiert\u00e9</b> de repousser vos limites sur nos pistes. Pr\u00eat \u00e0 d\u00e9couvrir ce qui vous attend ?</p>\nCTA DESCRIPTIVE: Explorer l\u2019univers ICAR\n\n--- PRODUCTS ---\n- Lamborghini Gallardo Experience\n- Rally Driving Experience\n- Karting\nCTA: None\n\n--- FOOTER ---\nNone\n",
+    "slot_number": 1,
+    "status": "completed",
+    "content": "\nSUBJECT: Devenez pilote chez ICAR\nPREVIEW: Vivez l\u2019adr\u00e9naline et devenez acteur de votre passion.\nHERO IMAGE: None\nHERO TITLE: Passez du r\u00eave \u00e0 la r\u00e9alit\u00e9 chez ICAR\nHERO SUBTITLE: Imaginez-vous au volant, pr\u00eat \u00e0 ressentir chaque \u00e9motion.\nCTA: None\n\n--- DESCRIPTIVE BLOCK ---\nTITLE: De spectateur \u00e0 pilote passionn\u00e9\nCONTENT: <p>Chez ICAR, vous franchissez le cap entre r\u00eave et r\u00e9alit\u00e9. D\u00e8s votre arriv\u00e9e, l\u2019\u00e9nergie du circuit vous transporte et chaque vibration r\u00e9veille votre envie de piloter. <b>Vous n\u2019\u00eates plus simple spectateur, mais v\u00e9ritable pilote passionn\u00e9</b>. L\u2019adr\u00e9naline monte, l\u2019accomplissement personnel devient palpable et l\u2019encadrement expert vous accompagne \u00e0 chaque \u00e9tape. <b>Vivez le frisson, l\u2019\u00e9motion et la fiert\u00e9</b> de repousser vos limites sur nos pistes. Pr\u00eat \u00e0 d\u00e9couvrir ce qui vous attend ?</p>\nCTA DESCRIPTIVE: Explorer l\u2019univers ICAR\n\n--- PRODUCTS ---\n- Lamborghini Gallardo Experience\n- Rally Driving Experience\n- Karting\nCTA: None\n\n--- FOOTER ---\nNone\n",
+    "structure_id": "STRUCT_NARRATIVE_PARAGRAPH",
+    "language": "FR"
+  }
+]
