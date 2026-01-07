@@ -40,7 +40,7 @@ class StylistAgent:
             
             "STRUCT_SPOTLIGHT_BOX": "<table width='100%' style='background-color: #f4f4f4; border-radius: 8px;'><tr><td style='padding: 20px; text-align: center;'><h3>[Urgent Headline]</h3><p>[Short persuasive text]</p><br><b>[Key Takeaway/Code]</b></td></tr></table>",
             
-            "STRUCT_STAT_ATTACK": "<table width='100%' style='text-align: center;'><tr><td width='33%'><h1>[Stat 1]</h1><p>[Label 1]</p></td><td width='33%'><h1>[Stat 2]</h1><p>[Label 2]</p></td><td width='33%'><h1>[Stat 3]</h1><p>[Label 3]</p></td></tr><tr><td width='33%' valign='top'><p>[Short explanation (1-2 lines max)]</p></td><td width='33%' valign='top'><p>[Short explanation (1-2 lines max)]</p></td><td width='33%' valign='top'><p>[Short explanation (1-2 lines max)]</p></td></tr></table>",
+            "STRUCT_STAT_ATTACK": "<table width='100%' style='text-align: center;'><tr><td width='33%'><h1>[Stat 1]</h1><br><p>[Label 1]</p></td><td width='33%'><h1>[Stat 2]</h1><br><p>[Label 2]</p></td><td width='33%'><h1>[Stat 3]</h1><br><p>[Label 3]</p></td></tr><tr><td width='33%' valign='top'><p>[Short explanation (1-2 lines max)]</p></td><td width='33%' valign='top'><p>[Short explanation (1-2 lines max)]</p></td><td width='33%' valign='top'><p>[Short explanation (1-2 lines max)]</p></td></tr></table>",
             
             "STRUCT_STEP_BY_STEP": "<p><b>Step 1:</b> [Action]</p><br><br><p><b>Step 2:</b> [Action]</p><br><br><p><b>Step 3:</b> [Action]</p>",
             

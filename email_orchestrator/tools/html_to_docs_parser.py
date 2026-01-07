@@ -107,6 +107,7 @@ class HtmlToDocsParser:
         text = re.sub(r'<li.*?>', '__LI__', text, flags=re.IGNORECASE)
         text = re.sub(r'</li>', '__BR__', text, flags=re.IGNORECASE)
         text = re.sub(r'</blockquote>', '__BR__', text, flags=re.IGNORECASE)
+        text = re.sub(r'</h[1-6]>', '__BR__', text, flags=re.IGNORECASE) # Headers imply newline
         text = re.sub(r'</tr>', '__BR__', text, flags=re.IGNORECASE) # Just in case
 
         # 2. Strip all tags EXCEPT formatting (b, i, u, strong, em)

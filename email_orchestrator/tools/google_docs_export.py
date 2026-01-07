@@ -524,8 +524,7 @@ def write_email_to_doc(docs_service, document_id: str, email_draft: Dict[str, An
         add_text_block(f"{header_text}\n", h1=True)
         add_text_block("##########\n\n")
 
-    # Removed redundant LANGUAGE line
-    # add_text_block(f"LANGUAGE: {language.upper()}\n\n")
+    add_text_block(f"LANGUAGE: {language.upper()}\n\n", bold=True)
 
     add_text_block("SUBJECT: ", bold=True)
     render_rich_field(f"{email_draft.get('subject', '')}")
