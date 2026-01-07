@@ -76,7 +76,7 @@ Format the "Raw Content" into the "Target HTML Template".
    - **No Walls of Text**: Aggressively use `<br><br>` (Double Line Break) to create clear paragraphs and white space. Denser text blocks (>3 lines) are forbidden.
    - **Suspense**: Use single `<br>` to isolate punchlines or key thoughts.
    - **Variety**: Mix short, punchy sentences with longer, flowing ones.
-   - **Pacing**: Use ellipses (...) or em-dashes (—) *only if appropriate for the voice* to create pauses.
+   - **Pacing**: Use ellipses (...) sparingly to create pauses or suspense.
 
 ### INPUT CONTEXT
 - **Brand Voice**: {brand_voice}
