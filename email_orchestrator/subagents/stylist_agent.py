@@ -30,25 +30,25 @@ class StylistAgent:
         
         # TEMPLATE DEFINITIONS (Agile & Strict)
         templates = {
-            "STRUCT_NARRATIVE_PARAGRAPH": "<h3>[Headline]</h3><p>[Body Text 2-4 lines max]</p><br><p><i>[Optional subtle closing thought]</i></p>",
+            "STRUCT_NARRATIVE_PARAGRAPH": "<h3>[Headline].</h3><br><p>[Body Text 2-4 lines max]</p><br><p><i>[Optional subtle closing thought]</i></p>",
             
             "STRUCT_EMOJI_CHECKLIST": "<h3>[Headline]</h3><br><ul><li><b>[Emoji] [Benefit 1]:</b> [Short explanation]</li><li><b>[Emoji] [Benefit 2]:</b> [Short explanation]</li><li><b>[Emoji] [Benefit 3]:</b> [Short explanation]</li></ul>",
             
-            "STRUCT_5050_SPLIT": "<table width='100%'><tr><td width='50%' valign='middle'><img src='[ImagePlaceholder]' alt='[Alt]' width='100%'></td><td width='5%'><br></td><td width='45%' valign='middle'><p>[Body Text]</p></td></tr></table>",
+            "STRUCT_5050_SPLIT": "<table width='100%'><tr><td width='50%' valign='middle'><img src='[ImagePlaceholder]' alt='[Alt]' width='100%'></td><td width='50%' valign='middle' style='padding-left: 15px;'><p>[Body Text]</p></td></tr></table>",
             
             "STRUCT_MEDIA_LEFT_OFFSET": "<table width='100%'><tr><td width='30%' valign='top' style='padding-right: 10px;'><img src='[Icon/Image]' width='100%'></td><td width='70%' valign='top'><p>[Body Text]</p></td></tr></table>",
             
-            "STRUCT_SPOTLIGHT_BOX": "<div style='background-color: #f4f4f4; padding: 20px; text-align: center; border-radius: 8px;'><h3>[Urgent Headline]</h3><p>[Short persuasive text]</p><br><b>[Key Takeaway/Code]</b></div>",
+            "STRUCT_SPOTLIGHT_BOX": "<table width='100%' style='background-color: #f4f4f4; border-radius: 8px;'><tr><td style='padding: 20px; text-align: center;'><h3>[Urgent Headline]</h3><p>[Short persuasive text]</p><br><b>[Key Takeaway/Code]</b></td></tr></table>",
             
-            "STRUCT_STAT_ATTACK": "<table width='100%' style='text-align: center;'><tr><td width='33%'><h1>[Stat 1]</h1><p>[Label 1]</p></td><td width='33%'><h1>[Stat 2]</h1><p>[Label 2]</p></td><td width='33%'><h1>[Stat 3]</h1><p>[Label 3]</p></td></tr></table>",
+            "STRUCT_STAT_ATTACK": "<table width='100%' style='text-align: center;'><tr><td width='33%'><h1>[Stat 1]</h1><p>[Label 1]</p></td><td width='33%'><h1>[Stat 2]</h1><p>[Label 2]</p></td><td width='33%'><h1>[Stat 3]</h1><p>[Label 3]</p></td></tr><tr><td width='33%' valign='top'><p>[Short explanation (1-2 lines max)]</p></td><td width='33%' valign='top'><p>[Short explanation (1-2 lines max)]</p></td><td width='33%' valign='top'><p>[Short explanation (1-2 lines max)]</p></td></tr></table>",
             
-            "STRUCT_STEP_BY_STEP": "<p><b>Step 1:</b> [Action]</p><p><b>Step 2:</b> [Action]</p><p><b>Step 3:</b> [Action]</p>",
+            "STRUCT_STEP_BY_STEP": "<p><b>Step 1:</b> [Action]</p><br><br><p><b>Step 2:</b> [Action]</p><br><br><p><b>Step 3:</b> [Action]</p>",
             
             "STRUCT_MINI_GRID": "<table width='100%'><tr><td width='33%'><img src='[Item1]' width='100%'><p align='center'>[Label 1]</p></td><td width='33%'><img src='[Item2]' width='100%'><p align='center'>[Label 2]</p></td><td width='33%'><img src='[Item3]' width='100%'><p align='center'>[Label 3]</p></td></tr></table>",
             
             "STRUCT_SOCIAL_PROOF_QUOTE": "<div style='text-align: center; font-style: italic; padding: 15px;'><p>&quot;[Quote Text]&quot;</p><br><p><b>— [Customer Name]</b>, Verified Buyer</p></div>",
             
-            "STRUCT_GIF_PREVIEW": "<div style='text-align: center;'><img src='[GIF_Placeholder]' width='100%'><br><p>[Caption explaining the motion]</p></div>"
+            "STRUCT_GIF_PREVIEW": "<table width='100%' style='border: 1px dashed #999; background-color: #f9f9f9;'><tr><td style='padding: 20px; text-align: center;'><b>[[GIF IDEA: [Describe visual... 1-2 lines]]]</b></td></tr></table><br><p>[SUMMARIZE content into 2-3 punchy lines max. Do NOT include full body text. Support the GIF and push to CTA.]</p>"
         }
         
         target_template = templates.get(structure_id, "<h3>[Headline]</h3><p>[Formatted Body Text]</p>")
