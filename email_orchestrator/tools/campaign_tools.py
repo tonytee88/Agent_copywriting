@@ -44,12 +44,16 @@ async def plan_campaign(
     excluded_days: List[str] = [],
     raw_user_input: Optional[str] = None,
     drive_folder_id: Optional[str] = POPBRUSH_FOLDER_ID,
-    website_url: Optional[str] = None
+    website_url: Optional[str] = None,
+    campaign_id: Optional[str] = None
 ) -> str:
     """
     Orchestrates the Campaign Planning Phase.
     """
-    print(f"\n--- STARTING CAMPAIGN PLANNING FOR {brand_name} ---")
+    if not campaign_id:
+        campaign_id = datetime.now().strftime("%Y%m%d%H%M%S")
+        
+    print(f"\n--- STARTING CAMPAIGN PLANNING FOR {brand_name} (ID: {campaign_id}) ---")
     tracker = get_token_tracker()
     tracker.reset()
     
@@ -74,6 +78,9 @@ async def plan_campaign(
         notes=notes,
         raw_user_input=raw_user_input
     )
+    
+    # Enforce System ID
+    plan.campaign_id = campaign_id
     
     # 2. [NEW] Strategic Optimization Layer: Refine Transformations
     plan = await optimize_plan_transformations(plan, brand_bio)
@@ -149,8 +156,14 @@ async def plan_campaign(
                 break
     
     # 4. Save Plan
-    # Ensure created_at is current to prevent auto-cleanup deletion of "old" hallucinated dates
+    # Ensure created_at is current
     plan.created_at = datetime.utcnow().isoformat() + "Z"
+    # Re-apply IDs to ensure they weren't lost during QA revision
+    if campaign_id:
+        plan.campaign_id = campaign_id
+        
+    if not plan.brand_id and brand_bio.brand_id:
+        plan.brand_id = brand_bio.brand_id
 
     # 4. Save Plan
     campaign_manager.save_plan(plan)
@@ -205,7 +218,9 @@ async def generate_email_campaign(
         return f"Error: Campaign {campaign_id} not found."
     
     # Load Brand Bio
-    analysis_result = await analyze_brand(plan.brand_name)
+    # Use brand_id if available, fallback to brand_name
+    lookup_id = plan.brand_id if plan.brand_id else plan.brand_name
+    analysis_result = await analyze_brand(lookup_id)
     brand_bio = BrandBio(**json.loads(analysis_result))
 
     # --- NEW: Sync from Google Sheet if available ---
@@ -271,178 +286,178 @@ async def generate_email_campaign(
         for lang in target_languages:
             print(f"   > [Language: {lang}]")
             
-        try:
-            # A. Strategist (Create Blueprint using Slot Directives)
-            # STRICT RULE: If Educational/Nurture, HIDE the offer to prevent leakage
-            effective_offer = slot.offer_details or "General Brand Awareness"
-            if slot.email_purpose in ["educational", "nurture", "storytelling"]:
-                effective_offer = "NONE (Focus purely on value/content)"
+            try:
+                # A. Strategist (Create Blueprint using Slot Directives)
+                # STRICT RULE: If Educational/Nurture, HIDE the offer to prevent leakage
+                effective_offer = slot.offer_details or "General Brand Awareness"
+                if slot.email_purpose in ["educational", "nurture", "storytelling"]:
+                    effective_offer = "NONE (Focus purely on value/content)"
             
-            request = CampaignRequest(
-                brand_name=plan.brand_name,
-                offer=effective_offer,
-                theme_angle=slot.theme,
-                target_audience=brand_bio.target_audience
-            )
+                request = CampaignRequest(
+                    brand_name=plan.brand_name,
+                    offer=effective_offer,
+                    theme_angle=slot.theme,
+                    target_audience=brand_bio.target_audience
+                )
             
-            # Pass folder selection context? Not needed for Strategist.
-            blueprint = await strategist_agent(request, brand_bio, campaign_context=slot, language=lang)
+                # Pass folder selection context? Not needed for Strategist.
+                blueprint = await strategist_agent(request, brand_bio, campaign_context=slot, language=lang)
             
-            # B. Bundled Generation (Drafter + Stylist)
-            # Concept: The Strategist & Drafter & Stylist work as a production unit.
-            # The Verifier (Deterministic & LLM) checks the FINAL STYLED OUTPUT.
+                # B. Bundled Generation (Drafter + Stylist)
+                # Concept: The Strategist & Drafter & Stylist work as a production unit.
+                # The Verifier (Deterministic & LLM) checks the FINAL STYLED OUTPUT.
             
-            final_draft = None
-            revision_feedback = None
+                final_draft = None
+                revision_feedback = None
             
-            # Determine history for this brand/ isolation
-            history_identifier = brand_bio.brand_id if getattr(brand_bio, 'brand_id', None) else plan.brand_name
-            past_emails = history_manager.get_recent_campaigns(history_identifier, limit=10)
-            past_emails_dicts = [entry.model_dump() for entry in past_emails]
+                # Determine history for this brand/ isolation
+                history_identifier = brand_bio.brand_id if getattr(brand_bio, 'brand_id', None) else plan.brand_name
+                past_emails = history_manager.get_recent_campaigns(history_identifier, limit=10)
+                past_emails_dicts = [entry.model_dump() for entry in past_emails]
     
-            # SESSION START
-            from email_orchestrator.subagents.drafter_agent import DraftingSession
-            drafting_session = DraftingSession(blueprint, brand_bio, language=lang, campaign_context=plan.campaign_context)
+                # SESSION START
+                from email_orchestrator.subagents.drafter_agent import DraftingSession
+                drafting_session = DraftingSession(blueprint, brand_bio, language=lang, campaign_context=plan.campaign_context)
 
-            # --- HELPER: Draft & Style Bundle ---
-            async def generate_and_style(feedback: Optional[str] = None):
-                """
-                Bundles Drafting and Styling.
-                If feedback is provided, it's a revision. Otherwise, it's a fresh start.
-                """
-                if feedback:
-                    # Revision
-                    raw_draft = await drafting_session.revise(feedback)
-                else:
-                    # Fresh Start
-                    raw_draft = await drafting_session.start()
+                # --- HELPER: Draft & Style Bundle ---
+                async def generate_and_style(feedback: Optional[str] = None):
+                    """
+                    Bundles Drafting and Styling.
+                    If feedback is provided, it's a revision. Otherwise, it's a fresh start.
+                    """
+                    if feedback:
+                        # Revision
+                        raw_draft = await drafting_session.revise(feedback)
+                    else:
+                        # Fresh Start
+                        raw_draft = await drafting_session.start()
                 
-                # Apply Styling immediately
-                # Stylist works on the raw draft and returns styled HTML for the body
-                try:
-                    raw_desc = getattr(raw_draft, 'descriptive_block_content', '')
-                    if raw_desc:
-                        styled_desc = await stylist.style_content(
-                            content=raw_desc, 
-                            structure_id=blueprint.structure_id,
-                            brand_voice=brand_bio.brand_voice, 
-                            language=lang
-                        )
-                        raw_draft.descriptive_block_content = styled_desc
-                except Exception as e:
-                    print(f"[Email #{slot.slot_number}-{lang}] Stylist failed, keeping raw draft: {e}")
+                    # Apply Styling immediately
+                    # Stylist works on the raw draft and returns styled HTML for the body
+                    try:
+                        raw_desc = getattr(raw_draft, 'descriptive_block_content', '')
+                        if raw_desc:
+                            styled_desc = await stylist.style_content(
+                                content=raw_desc, 
+                                structure_id=blueprint.structure_id,
+                                brand_voice=brand_bio.brand_voice, 
+                                language=lang
+                            )
+                            raw_draft.descriptive_block_content = styled_desc
+                    except Exception as e:
+                        print(f"[Email #{slot.slot_number}-{lang}] Stylist failed, keeping raw draft: {e}")
                 
-                return raw_draft
+                    return raw_draft
 
-            # 1. INITIAL BUNDLE
-            current_draft = await generate_and_style(None)
+                # 1. INITIAL BUNDLE
+                current_draft = await generate_and_style(None)
             
-            # 2. DETERMINISTIC VERIFICATION LOOP (Checks the STYLED draft)
-            max_det_retries = 3
-            det_attempt = 0
+                # 2. DETERMINISTIC VERIFICATION LOOP (Checks the STYLED draft)
+                max_det_retries = 3
+                det_attempt = 0
             
-            while det_attempt < max_det_retries:
-                det_issues = det_verifier.verify_draft(current_draft, history=past_emails_dicts, campaign_id=plan.campaign_id)
+                while det_attempt < max_det_retries:
+                    det_issues = det_verifier.verify_draft(current_draft, history=past_emails_dicts, campaign_id=plan.campaign_id)
                 
-                if not det_issues:
-                    print(f"[Email #{slot.slot_number}-{lang}] Layer 1 (Deterministic) Passed.")
-                    break
+                    if not det_issues:
+                        print(f"[Email #{slot.slot_number}-{lang}] Layer 1 (Deterministic) Passed.")
+                        break
                     
-                det_attempt += 1
-                print(f"[Email #{slot.slot_number}-{lang}] Layer 1 FAILED ({len(det_issues)} issues). Retry {det_attempt}/{max_det_retries}...")
+                    det_attempt += 1
+                    print(f"[Email #{slot.slot_number}-{lang}] Layer 1 FAILED ({len(det_issues)} issues). Retry {det_attempt}/{max_det_retries}...")
                 
-                # Construct feedback
-                feedback_msg = "STRICT RULES VIOLATION. You MUST fix these before we can proceed:\n"
-                feedback_msg += "\n".join([f"- [{i.field}] {i.problem} (Reason: {i.rationale})" for i in det_issues])
-                print(f"[Email #{slot.slot_number}-{lang}] DET FEEDBACK SENT TO DRAFTER:\n{feedback_msg}")
+                    # Construct feedback
+                    feedback_msg = "STRICT RULES VIOLATION. You MUST fix these before we can proceed:\n"
+                    feedback_msg += "\n".join([f"- [{i.field}] {i.problem} (Reason: {i.rationale})" for i in det_issues])
+                    print(f"[Email #{slot.slot_number}-{lang}] DET FEEDBACK SENT TO DRAFTER:\n{feedback_msg}")
                 
-                # REVISE & RE-STYLE
-                current_draft = await generate_and_style(feedback_msg)
+                    # REVISE & RE-STYLE
+                    current_draft = await generate_and_style(feedback_msg)
     
-            if det_attempt >= max_det_retries:
-                print(f"[Email #{slot.slot_number}-{lang}] CRITICAL: Failed to fix deterministic issues after {max_det_retries} attempts.")
+                if det_attempt >= max_det_retries:
+                    print(f"[Email #{slot.slot_number}-{lang}] CRITICAL: Failed to fix deterministic issues after {max_det_retries} attempts.")
 
-            # 3. LLM QA LOOP (Checks the final STYLED draft)
-            print(f"[Email #{slot.slot_number}-{lang}] Proceeding to LLM QA (Verifier)...")
-            verification = await verifier_agent(current_draft, blueprint, plan.brand_name, campaign_context=plan.campaign_context)
+                # 3. LLM QA LOOP (Checks the final STYLED draft)
+                print(f"[Email #{slot.slot_number}-{lang}] Proceeding to LLM QA (Verifier)...")
+                verification = await verifier_agent(current_draft, blueprint, plan.brand_name, campaign_context=plan.campaign_context)
             
-            if verification.approved:
-                print(f"[Email #{slot.slot_number}-{lang}] APPROVED! Score: {verification.score}")
-                final_draft = current_draft
-            else:
-                print(f"[Email #{slot.slot_number}-{lang}] REJECTED. Requesting ONE-TIME Strategic Revision...")
+                if verification.approved:
+                    print(f"[Email #{slot.slot_number}-{lang}] APPROVED! Score: {verification.score}")
+                    final_draft = current_draft
+                else:
+                    print(f"[Email #{slot.slot_number}-{lang}] REJECTED. Requesting ONE-TIME Strategic Revision...")
                 
-                # Construct detailed feedback
-                feedback_lines = [f"QA VERDICT: {verification.feedback_for_drafter}"]
-                for imp in verification.top_improvements:
-                    feedback_lines.append(f"- [Rank {imp.rank}] [{imp.category}] {imp.problem}")
-                    feedback_lines.append(f"  Fix Options: {json.dumps(imp.options)}")
-                revision_feedback = "\n".join(feedback_lines)
+                    # Construct detailed feedback
+                    feedback_lines = [f"QA VERDICT: {verification.feedback_for_drafter}"]
+                    for imp in verification.top_improvements:
+                        feedback_lines.append(f"- [Rank {imp.rank}] [{imp.category}] {imp.problem}")
+                        feedback_lines.append(f"  Fix Options: {json.dumps(imp.options)}")
+                    revision_feedback = "\n".join(feedback_lines)
                 
-                # REVISE & RE-STYLE (Final Pass)
-                final_draft = await generate_and_style(revision_feedback)
+                    # REVISE & RE-STYLE (Final Pass)
+                    final_draft = await generate_and_style(revision_feedback)
                 
-                # Final Deterministic Check on revised draft (Safety)
-                final_det = det_verifier.verify_draft(final_draft, history=past_emails_dicts, campaign_id=plan.campaign_id)
-                if final_det:
-                    print(f"[Email #{slot.slot_number}-{lang}] Warning: Revised draft still has {len(final_det)} deterministic issues.")
+                    # Final Deterministic Check on revised draft (Safety)
+                    final_det = det_verifier.verify_draft(final_draft, history=past_emails_dicts, campaign_id=plan.campaign_id)
+                    if final_det:
+                        print(f"[Email #{slot.slot_number}-{lang}] Warning: Revised draft still has {len(final_det)} deterministic issues.")
                 
-                print(f"[Email #{slot.slot_number}-{lang}] Revision complete. Auto-approving for export.")
+                    print(f"[Email #{slot.slot_number}-{lang}] Revision complete. Auto-approving for export.")
             
-            # --- FINAL SAFETY NET (The "Sanitizer") ---
-            # User reported dashes persisting. We will strictly strip them here.
-            # This handles cases where Stylist or Drafter (after N retries) still failed.
-            if final_draft:
-                 import re
-                 def sanitize_text(t):
-                     if not t: return t
-                     t = t.replace("—", ", ").replace("–", ", ") # Replace with comma space
-                     t = t.replace(" - ", ", ")
-                     return t
+                # --- FINAL SAFETY NET (The "Sanitizer") ---
+                # User reported dashes persisting. We will strictly strip them here.
+                # This handles cases where Stylist or Drafter (after N retries) still failed.
+                if final_draft:
+                     import re
+                     def sanitize_text(t):
+                         if not t: return t
+                         t = t.replace("—", ", ").replace("–", ", ") # Replace with comma space
+                         t = t.replace(" - ", ", ")
+                         return t
 
-                 final_draft.subject = sanitize_text(final_draft.subject)
-                 final_draft.preview = sanitize_text(final_draft.preview)
-                 final_draft.hero_subtitle = sanitize_text(final_draft.hero_subtitle)
-                 final_draft.descriptive_block_subtitle = sanitize_text(final_draft.descriptive_block_subtitle)
+                     final_draft.subject = sanitize_text(final_draft.subject)
+                     final_draft.preview = sanitize_text(final_draft.preview)
+                     final_draft.hero_subtitle = sanitize_text(final_draft.hero_subtitle)
+                     final_draft.descriptive_block_subtitle = sanitize_text(final_draft.descriptive_block_subtitle)
             
-            log_entry = CampaignLogEntry(
-                campaign_id=campaign_id,
-                timestamp=datetime.now().isoformat(),
-                brand_id=plan.brand_id, 
-                brand_name=plan.brand_name,
-                transformation_description=blueprint.transformation_description,
-                transformation_id=blueprint.transformation_id,
-                structure_id=blueprint.structure_id,
-                angle_description=blueprint.angle_description,
-                angle_id=blueprint.angle_id,
-                cta_description=blueprint.cta_description,
-                cta_style_id=blueprint.cta_style_id,
-                offer_placement_used=blueprint.offer_placement,
-                blueprint=blueprint,
-                final_draft=final_draft
-            )
-            history_manager.log_campaign(log_entry)
+                log_entry = CampaignLogEntry(
+                    campaign_id=campaign_id,
+                    timestamp=datetime.now().isoformat(),
+                    brand_id=plan.brand_id, 
+                    brand_name=plan.brand_name,
+                    transformation_description=blueprint.transformation_description,
+                    transformation_id=blueprint.transformation_id,
+                    structure_id=blueprint.structure_id,
+                    angle_description=blueprint.angle_description,
+                    angle_id=blueprint.angle_id,
+                    cta_description=blueprint.cta_description,
+                    cta_style_id=blueprint.cta_style_id,
+                    offer_placement_used=blueprint.offer_placement,
+                    blueprint=blueprint,
+                    final_draft=final_draft
+                )
+                history_manager.log_campaign(log_entry)
             
-            # Serialize full draft for compiler
-            draft_data = final_draft.dict()
-            draft_data.update({
-                "slot_number": slot.slot_number,
-                "status": "completed",
-                "content": final_draft.full_text_formatted,
-                "structure_id": blueprint.structure_id,
-                "language": lang 
-            })
-            results.append(draft_data)
-        except Exception as e:
-            print(f"[Email #{slot.slot_number}-{lang}] ERROR processing slot: {str(e)}")
-            import traceback
-            traceback.print_exc()
-            results.append({
-                "slot_number": slot.slot_number,
-                "status": "failed",
-                "error": str(e),
-                "language": lang
-            })
+                # Serialize full draft for compiler
+                draft_data = final_draft.dict()
+                draft_data.update({
+                    "slot_number": slot.slot_number,
+                    "status": "completed",
+                    "content": final_draft.full_text_formatted,
+                    "structure_id": blueprint.structure_id,
+                    "language": lang 
+                })
+                results.append(draft_data)
+            except Exception as e:
+                print(f"[Email #{slot.slot_number}-{lang}] ERROR processing slot: {str(e)}")
+                import traceback
+                traceback.print_exc()
+                results.append({
+                    "slot_number": slot.slot_number,
+                    "status": "failed",
+                    "error": str(e),
+                    "language": lang
+                })
         
         # F. Export to Google Docs (LEGACY - Disabled)
         # try:

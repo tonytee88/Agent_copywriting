@@ -80,6 +80,17 @@ class BrandBioManager:
             if data.get("brand_name", "").lower() == identifier:
                 return BrandBio(**data)
                 
+        # 3. Fuzzy Lookup (Substring)
+        # Useful if Plan says "ICAR EXPERIENCE" but Bio is "ICAR"
+        for data in db.values():
+            stored_name = data.get("brand_name", "").strip().lower()
+            if stored_name and (stored_name in identifier or identifier in stored_name):
+                # Only match if reasonable length overlap to avoid "Shop" in "Shopify" false positives
+                # If the shorter string is at least 3 chars?
+                if len(stored_name) >= 3 and len(identifier) >= 3:
+                     print(f"[BrandBioManager] Fuzzy match found: '{identifier}' matched with '{data.get('brand_name')}'")
+                     return BrandBio(**data)
+
         return None
 
     def list_brands(self) -> List[str]:

@@ -67,5 +67,28 @@
       "Gift Cards"
     ],
     "mission_statement": "To deliver thrilling, world-class motor sports experiences and events that cater to individuals, families, and corporate groups while creating unforgettable memories."
+  },
+  "amplock.com": {
+    "brand_id": "amplock.com",
+    "website_url": "amplock.com",
+    "brand_name": "AMPLOCK",
+    "industry": "Trailer and RV Security",
+    "target_audience": "Trailer, RV, and boat owners; individuals and businesses seeking high-security anti-theft solutions for their vehicles, including commercial and heavy-load trailers.",
+    "unique_selling_proposition": "The industry's most durable, secure, and trusted trailer and door locks, engineered to resist the most brutal attacks, providing ultimate peace of mind.",
+    "brand_voice": "Trustworthy, authoritative, secure, professional, and reassuring.",
+    "key_products": [
+      "Ball Coupler Locks",
+      "Kingpin Locks",
+      "Trailer Door & Container Locks",
+      "Gooseneck Locks",
+      "Hitch Locks (1-14\u2019\u2019 to 3\u2019\u2019)",
+      "Lunette Ring Locks",
+      "Bulldog Gooseneck Trailer Locks",
+      "Atwood Gooseneck Trailer Locks",
+      "Unhitched Tube Gooseneck Trailer Locks",
+      "5th Wheel Kingpin Locks",
+      "Semi-Trailer Kingpin Locks"
+    ],
+    "mission_statement": "To provide the strongest, most reliable anti-theft solutions for trailers and RVs, ensuring peace of mind and unmatched security for our customers."
   }
 }
