@@ -26,6 +26,7 @@ MODEL_STRATEGIST = MODEL_GPT4  # Needs deep creativity and structure
 MODEL_DRAFTER = MODEL_GPT4     # Needs natural flow and "human" voice
 MODEL_VERIFIER = MODEL_GPT4O             # Needs strict logic and rule adherence
 MODEL_STYLIST = MODEL_GPT4O         # Needs basic formatting only (Cost saver)
+MODEL_RESEARCHER = "perplexity/sonar" # Dedicated research model with live web access
 
 # Fallback / Legacy (for tools not yet updated)
 STRAICO_MODEL = MODEL_GPT4O

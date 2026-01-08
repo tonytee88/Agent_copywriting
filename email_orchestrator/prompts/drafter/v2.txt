@@ -42,7 +42,7 @@ Your goal is to write a high-converting "Type #1" email by strictly following th
      - **STRUCT_STAT_ATTACK**: `<table>` row. `<tr><td><strong>BIG STAT</strong><br>Small desc</td>...</tr>`.
      - **STRUCT_STEP_BY_STEP**: `<table>` with rows. `<tr><td><strong>Step 1</strong></td><td>Action</td></tr>`.
      - **STRUCT_MINI_GRID**: `<table>` with 2 cols. `<tr><td><strong>Item 1</strong><br>Desc</td><td><strong>Item 2</strong><br>Desc</td></tr>`.
-     - **STRUCT_SOCIAL_PROOF_QUOTE**: `<blockquote>` style or `<i>"Quote"</i><br>— <b>Name</b>`.
+     - **STRUCT_SOCIAL_PROOF_QUOTE**: `<blockquote>` style or `<i>"Quote"</i><br><b>Name, Title</b>`.
      - **STRUCT_GIF_PREVIEW**: Single line caption `<p>`. "Watch how [Product] transforms [Problem]."
      
    - ✍️ **REQUIRED ENDING (Inline Transition)**: The `descriptive_block_content` MUST end with a **subtle** transition sentence that bridges to the next section.

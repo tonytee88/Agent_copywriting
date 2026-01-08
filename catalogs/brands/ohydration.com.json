@@ -1,0 +1,75 @@
+{
+    "brand_id": "ohydration.com",
+    "website_url": "https://ohydration.com",
+    "brand_name": "Ohydration",
+    "industry": "Health and Wellness",
+    "category": "E-commerce",
+    "product_description": "Natural vitaminized water powder sachets. Just tear, pour into water, and shake. Contains electrolytes (Potassium/Sodium) plus a beauty/energy vitamin boost (B-Complex, Vitamin E).",
+    "key_products": [
+        "Vitaminized Water Powders (e.g., Orange and Grapefruit, Lemon Iced Tea, Raspberry Watermelon)",
+        "Ready-to-Drink Vitaminized Water (e.g., Peach & Orange Blossom, Elderberries & Lavender, Blood Orange & Blackcurrant)",
+        "Accessories (e.g., Ö™ Reusable Bottle, Ö™ Motivation 2.5L Bottle)"
+    ],
+    "key_features": [
+        "Zero Sugar & Zero Artificial Sweeteners (No Sucralose/Aspartame)",
+        "Sweetened naturally with Stevia and fruit extracts",
+        "Formulated with Biotin (B7) and Vitamin E for hair/skin health",
+        "Low calorie (10-15 cal per serving)",
+        "Vegan, Gluten-Free, and Keto-friendly"
+    ],
+    "target_audience": "Health-conscious individuals looking for convenient hydration solutions that support their active lifestyles.",
+    "primary_personas": [
+        {
+            "name": "Active Professionals",
+            "description": "Busy individuals who need quick and healthy hydration options to keep up with their demanding schedules."
+        },
+        {
+            "name": "Fitness Enthusiasts",
+            "description": "Health-focused individuals who prioritize hydration and electrolytes to support their workouts and recovery."
+        },
+        {
+            "name": "Wellness Seekers",
+            "description": "Consumers who value clean, natural ingredients and are mindful about their overall health and hydration."
+        }
+    ],
+    "buying_behaviors": [
+        "Purchases in bundles or variety packs for savings",
+        "Tends to subscribe for regular deliveries and discounts",
+        "Prefers online shopping for convenience"
+    ],
+    "values_and_motivations": [
+        "Convenience and portability",
+        "Health and wellness",
+        "Natural and clean ingredients",
+        "Variety of flavors"
+    ],
+    "brand_voice": "Friendly, Informative, Health-focused",
+    "communication_style": "Energetic, Sunny, Encouraging. Uses emojis (💧✨🍊). Focus on 'Easy', 'Yum', 'Happy'.",
+    "avoid_topics": [
+        "Recipes or cooking (It's a drink mix!)",
+        "Complex preparation",
+        "Medical claims (cure diseases)"
+    ],
+    "brand_history": "Founded by Cassandra after her personal struggle to find healthy hydration without the 'chemical cocktail' of red dyes and artificial sweeteners found in mainstream sports drinks.",
+    "mission_statement": "To make hydration simple, accessible, and enjoyable while supporting overall health and wellness.",
+    "vision_and_values": null,
+    "unique_selling_proposition": "Convenient, natural hydration solutions with no sugar, artificial flavors, or synthetic colors, designed to support health and wellness.",
+    "differentiation_elements": [
+        "No sugar",
+        "Natural ingredients",
+        "Supports hydration with added vitamins and electrolytes",
+        "Variety of unique flavors"
+    ],
+    "expertise_and_specialties": null,
+    "industry_positioning": null,
+    "competitive_analysis": "Competes with Liquid I.V., BioSteel, and Gatorade. Differentiates by strictly avoiding 'dirty' ingredients like Red Dye 40 and artificial sweeteners while maintaining a lower price point per serving.",
+    "social_environmental_commitments": null,
+    "customer_journey_touchpoints": null,
+    "pain_points_and_challenges": [
+        "Kids refusing to drink plain water (dehydration risk)",
+        "Commercial sports drinks are full of sugar and dyes",
+        "Afternoon energy slumps due to poor hydration",
+        "Difficulty swallowing pills (vitamins)"
+    ],
+    "social_proof": "Over 56,000 customers. Rated 'Excellent' for taste compared to salty competitors."
+}

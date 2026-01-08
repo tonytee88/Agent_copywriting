@@ -1,0 +1,69 @@
+{
+    "brand_id": "icarexperience.ca",
+    "website_url": "https://icarexperience.ca",
+    "brand_name": "ICAR Experience",
+    "industry": "Motorsports & Entertainment",
+    "category": "Experience / Leisure",
+    "product_description": "An adrenaline-filled motorsports complex in Mirabel offering supercar driving experiences, karting, flight simulation via Aerodium, and defensive driving courses.",
+    "key_products": [
+        "Supercar Driving Experiences (Ferrari, Lamborghini, McLaren)",
+        "ICAR Karting (Rental & League)",
+        "Aerodium (Wind Tunnel Freefall)",
+        "Defensive Driving Courses",
+        "Helicopter Tours",
+        "Corporate Events & Team Building"
+    ],
+    "key_features": [
+        "Professional race tracks (located at former Mirabel airport)",
+        "Safety-first instruction with pro intructors",
+        "Year-round activities (Winter driving)",
+        "Accessibility to beginners and pros alike",
+        "High-octane atmosphere"
+    ],
+    "target_audience": "Adrenaline seekers, car enthusiasts, corporate groups, and families looking for unique thrill experiences.",
+    "primary_personas": [
+        {
+            "name": "The Thrill Seeker",
+            "description": "Wants to feel the power of a Ferrari or Lamborghini on a real track."
+        },
+        {
+            "name": "The Corporate Planner",
+            "description": "Looking for a high-energy team building event that impresses clients/staff."
+        },
+        {
+            "name": "The Karting Fan",
+            "description": "Competitive spirit looking for the best karting track in the region."
+        },
+        {
+            "name": "Gift Buyer",
+            "description": "Looking for the ultimate gift experience for a spouse or parent who loves cars."
+        }
+    ],
+    "buying_behaviors": [
+        "High impulse buy for gifts (Christmas, Father's Day)",
+        "Seasonal booking (Summer peak)",
+        "Group bookings for corporate"
+    ],
+    "values_and_motivations": [
+        "Adrenaline & Thrill",
+        "Prestige (driving a supercar)",
+        "Safety & Mastery",
+        "Fun & Entertainment"
+    ],
+    "brand_voice": "Bold, Energetic, Professional, Exciting",
+    "communication_style": "High-energy, direct, focused on the sensory experience (speed, sound, power). Uses exclamation points and action verbs.",
+    "avoid_topics": [
+        "Reckless driving (focus on track safety)",
+        "Slow/Boring",
+        "Cheap/Discount (focus on Premium Experience)",
+        "Environmental criticism (focus on sport)"
+    ],
+    "unique_selling_proposition": "The ultimate motorsports playground in Quebec where you can drive your dream car on a professional track.",
+    "differentiation_elements": [
+        "Multi-activity complex (Car, Kart, Flight)",
+        "Located at Mirabel (easy access)",
+        "Largest fleet of supercars available for public driving"
+    ],
+    "social_proof": "Thousands of 5-star reviews on TripAdvisor/Google. Host of NASCAR Canada events.",
+    "mission_statement": "To provide safe, accessible, and unforgettable motorsports experiences for everyone."
+}

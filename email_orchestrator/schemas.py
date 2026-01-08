@@ -8,12 +8,67 @@ class BrandBio(BaseModel):
     brand_id: Optional[str] = None # Unique ID (e.g. popbrush.fr)
     website_url: Optional[str] = None
     brand_name: str
+    
+    # ========== PRODUCTS / SERVICES ==========
     industry: str
-    target_audience: str
-    unique_selling_proposition: str
-    brand_voice: str
+    category: Optional[str] = None  # E-commerce, SaaS, Services, etc.
+    product_description: Optional[str] = None  # What the brand sells (detailed)
+    
+    # Features & Benefits
     key_products: List[str] = Field(default_factory=list)
+    key_features: List[str] = Field(default_factory=list)
+    
+    # ========== TARGET AUDIENCE ==========
+    target_audience: str
+    primary_personas: List[Dict[str, str]] = Field(default_factory=list)
+    # Format: [{"name": "Homeowners 30-60", "description": "Bathroom/kitchen renovations..."}]
+    
+    buying_behaviors: List[str] = Field(default_factory=list)
+    # e.g., ["Online research before purchase", "Sensitive to seasonal promotions"]
+    
+    values_and_motivations: List[str] = Field(default_factory=list)
+    # e.g., ["Product quality and durability", "Reliable customer service"]
+    
+    # ========== BRAND VOICE & STYLE ==========
+    brand_voice: str
+    communication_style: Optional[str] = None  # How the brand talks
+    
+    # ========== CONTENT GUARDRAILS ==========
+    avoid_topics: List[str] = Field(default_factory=list)
+    # Topics to explicitly AVOID (e.g. "recipes", "DIY", "software")
+    
+    # ========== BRAND STORY ==========
+    brand_history: Optional[str] = None
     mission_statement: Optional[str] = None
+    vision_and_values: Optional[str] = None
+    
+    # ========== DIFFERENTIATION ==========
+    unique_selling_proposition: str
+    differentiation_elements: List[str] = Field(default_factory=list)
+    # e.g., ["Technical plumbing expertise", "Large inventory available immediately"]
+    
+    expertise_and_specialties: Optional[str] = None
+    
+    # ========== MARKET POSITIONING ==========
+    industry_positioning: Optional[str] = None
+    # e.g., "Specialized mid-to-high-end supplier via e-commerce"
+    
+    competitive_analysis: Optional[str] = None
+    # Direct competitors and differentiation
+    
+    # ========== SOCIAL & ENVIRONMENTAL ==========
+    social_environmental_commitments: Optional[str] = None
+    
+    # ========== CUSTOMER JOURNEY ==========
+    customer_journey_touchpoints: Optional[str] = None
+    # Hypothetical or known journey stages
+    
+    pain_points_and_challenges: List[str] = Field(default_factory=list)
+    # Customer problems the brand solves
+    
+    # ========== PROOF & CREDIBILITY ==========
+    social_proof: Optional[str] = None
+    # Reviews, ratings, testimonials, awards
 
 class CampaignRequest(BaseModel):
     """Initial request from the user."""

@@ -1,0 +1,76 @@
+{
+    "brand_id": "popbrush.fr",
+    "website_url": "popbrush.fr",
+    "brand_name": "popbrush",
+    "industry": "Hair Care",
+    "category": "E-commerce",
+    "product_description": "Innovative detangling hairbrushes designed to gently remove knots without causing pain or breakage, suitable for all hair types.",
+    "key_products": [
+        "Brosse Démêlante Anti-Casse",
+        "Brosse Pliable Format Sac à Main",
+        "Le Peigne Démêlant",
+        "La Shampoo Brosse",
+        "Le Soin Réparateur"
+    ],
+    "key_features": [
+        "Hybrid Bristle Technology: Natural Boar Bristles (for shine) + Nylon Pins (for detangling)",
+        "Curved shape matches head contour for scalp massage",
+        "Vented design for faster blow-drying",
+        "Works on wet or dry hair without breakage",
+        "Reduces brushing time by up to 66%"
+    ],
+    "target_audience": "Families and individuals looking for pain-free, efficient hair detangling solutions.",
+    "primary_personas": [
+        {
+            "name": "Busy Parents",
+            "description": "Parents seeking gentle and efficient hair care tools for their children to make grooming stress-free."
+        },
+        {
+            "name": "Style-Conscious Individuals",
+            "description": "Adults interested in high-quality hair care tools that maintain hair health and enhance shine."
+        },
+        {
+            "name": "Travel Enthusiasts",
+            "description": "People looking for compact and portable hairbrushes for on-the-go grooming."
+        }
+    ],
+    "buying_behaviors": [
+        "Impulse buy driven by emotional video ads (crying vs happy child)",
+        "Buys bundles (one for home, one for bag)",
+        "High sensitivity to 'Pain-Free' promise"
+    ],
+    "values_and_motivations": [
+        "Convenience and time efficiency",
+        "Gentle care for sensitive scalps and children",
+        "High product quality and durability",
+        "Aesthetic variety with a wide range of colors"
+    ],
+    "brand_voice": "Friendly, Reassuring, Family-Oriented",
+    "communication_style": "Empathetic, Gentle, community-focused. Uses 'Moms', 'Little princess', 'Magic'. Lots of testimonials.",
+    "avoid_topics": [
+        "Heat styling (it's a detangler, not a straightener)",
+        "Chemical treatments",
+        "Complicated salon terminology"
+    ],
+    "brand_history": null,
+    "mission_statement": "To make hair care a pleasant and stress-free experience for everyone, turning daily grooming into an enjoyable ritual while promoting healthy, beautiful hair.",
+    "vision_and_values": null,
+    "unique_selling_proposition": "A detangling hairbrush that combines pain-free grooming, faster detangling, and enhanced hair health, suitable for all hair types.",
+    "differentiation_elements": [
+        "Boar bristles distribute natural scalp oils for shiny hair",
+        "Pain-free promise specifically for sensitive scalps",
+        "Ergonomic curved design unlike flat paddle brushes"
+    ],
+    "expertise_and_specialties": null,
+    "industry_positioning": null,
+    "competitive_analysis": "Main competitors: Wet Brush (often lacks boar bristles), Tangle Teezer (plastic only), Mason Pearson (high price). PopBrush offers the 'Boar+Nylon' combo at an accessible price point, specifically targeting the 'pain-free' mom/kid niche.",
+    "social_environmental_commitments": null,
+    "customer_journey_touchpoints": null,
+    "pain_points_and_challenges": [
+        "Morning screaming matches with kids during hair brushing",
+        "Time wasted fighting with knots before school",
+        "Sensitive scalps that hurt with regular brushes",
+        "Hair breakage and split ends from aggressive detangling"
+    ],
+    "social_proof": "Trusted by 187,000+ users. 4.4/5 rating on Trustpilot. Famous for 'ending morning screaming matches'."
+}
