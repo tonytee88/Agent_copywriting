@@ -35,7 +35,7 @@ Your goal is to write a high-converting "Type #1" email by strictly following th
 
    - 🏗️ **STRICT LEVERAGE OF STRUCTURE ID** (Formatted in `descriptive_block_content`):
      - **STRUCT_NARRATIVE_PARAGRAPH**: Plain text `<p>`. One fluid, evocative paragraph (3-4 lines). No bullets.
-     - **STRUCT_EMOJI_CHECKLIST**: `<ul>` list. `<li>✨ <b>Benefit</b>: Short desc</li>`. 3-5 items.
+     - **STRUCT_EMOJI_CHECKLIST**: Intro sentence `<p>` then `<ul>` list. `<li>✨ <b>Benefit</b>: Short desc</li>`. 3-5 items.
      - **STRUCT_5050_SPLIT**: Two paragraphs `<p>` separated by `<br><br>`. Context first, solution second.
      - **STRUCT_MEDIA_LEFT_OFFSET**: `<ul>` list. `<li><strong>Feature Name:</strong> Short explanation</li>`.
      - **STRUCT_SPOTLIGHT_BOX**: Singe-cell `<table>` with centered text, border `1px solid #000`, and UPPERCASE key phrases.

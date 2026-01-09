@@ -32,7 +32,7 @@ class StylistAgent:
         templates = {
             "STRUCT_NARRATIVE_PARAGRAPH": "<h3>[Headline].</h3><br><p>[Body Text 2-4 lines max]</p><br><p><i>[Optional subtle closing thought]</i></p>",
             
-            "STRUCT_EMOJI_CHECKLIST": "<h3>[Headline]</h3><br><ul><li><b>[Emoji] [Benefit 1]:</b> [Short explanation]</li><li><b>[Emoji] [Benefit 2]:</b> [Short explanation]</li><li><b>[Emoji] [Benefit 3]:</b> [Short explanation]</li></ul>",
+            "STRUCT_EMOJI_CHECKLIST": "<h3>[Headline]</h3><p>[Introductory Text/Hook]</p><br><ul><li><b>[Emoji] [Benefit 1]:</b> [Short explanation]</li><li><b>[Emoji] [Benefit 2]:</b> [Short explanation]</li><li><b>[Emoji] [Benefit 3]:</b> [Short explanation]</li></ul>",
             
             "STRUCT_5050_SPLIT": "<table width='100%'><tr><td width='50%' valign='middle'><img src='[ImagePlaceholder]' alt='[Alt]' width='100%'></td><td width='50%' valign='middle' style='padding-left: 15px;'><p>[Body Text]</p></td></tr></table>",
             
