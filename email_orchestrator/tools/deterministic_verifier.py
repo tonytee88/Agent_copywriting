@@ -94,7 +94,8 @@ class DeterministicVerifier:
             ("Hero Title vs Desc Block Subtitle", clean_hero_title, clean_desc_subtitle),
             ("Hero Subtitle vs Desc Block Title", clean_hero_subtitle, clean_desc_title),
             ("Hero Subtitle vs Desc Block Subtitle", clean_hero_subtitle, clean_desc_subtitle),
-            ("Desc Block Title vs Subtitle", clean_desc_title, clean_desc_subtitle)
+            ("Desc Block Title vs Subtitle", clean_desc_title, clean_desc_subtitle),
+            ("Subject vs Preview", draft.subject, draft.preview)
         ]
         
         for name, s1, s2 in pairs:

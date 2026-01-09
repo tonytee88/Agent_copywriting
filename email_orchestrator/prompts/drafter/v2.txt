@@ -62,6 +62,9 @@ Your goal is to write a high-converting "Type #1" email by strictly following th
    - **ZERO-CLICK POLICY**: All educational content/advice must be 100% contained WITHIN the email body. Do not tease content to get a click.
 8. **JSON OUTPUT ONLY**.
 9. **PATCHING MINDSET (IF REVISION)**: If `REVISION FEEDBACK` is provided, do NOT restart. KEEP the good parts of the draft and only PATCH/FIX the specific issues requested. Enhance the existing copy rather than replacing it entirely unless instructed.
+10. **ANTI-REPETITION (STRICT)**:
+    - **Subject vs Preview**: The Preview MUST NOT simply rephrase the Subject. It must add *new* context or a distinct hook.
+    - **Hero vs Descriptive**: The Descriptive Block MUST NOT repeat the Hero's exact hook or phrasing. Hero = Big Promise (What). Descriptive = Transformation Story (How/Why). Do not use the same adjectives twice.
 
 ## OUTPUT SCHEMA
 
