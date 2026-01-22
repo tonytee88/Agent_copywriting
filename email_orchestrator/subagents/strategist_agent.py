@@ -72,6 +72,17 @@ Context:
         campaign_directives=campaign_directives
     )
     
+    # Inject Feedback
+    if brand_bio.feedback_notes:
+        feedback_list = "\n".join([f"- {note}" for note in brand_bio.feedback_notes])
+        feedback_section = f"""
+=== CRITICAL CLIENT FEEDBACK ===
+The client has provided specific feedback. You MUST prioritize these notes over general best practices:
+{feedback_list}
+================================
+"""
+        full_prompt = feedback_section + "\n\n" + full_prompt
+    
     # 5. Call Straico API
     client = get_client()
     model = MODEL_STRATEGIST 

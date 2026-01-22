@@ -8,7 +8,6 @@ Change models here to switch between testing (cheaper/faster) and production (hi
 ADK_MODEL = "gemini-2.0-flash-exp"
 
 # --- Straico Agents (Strategist, Verifier, Drafter, etc.) ---
-# --- Straico Agents (Strategist, Verifier, Drafter, etc.) ---
 # Supported: "openai/gpt-4o-2024-11-20", "openai/gpt-5-chat", "openai/gpt-5", "anthropic/claude-sonnet-4", "anthropic/claude-3-5-haiku-20241022"
 
 # 1. Model Definitions (Aliases)

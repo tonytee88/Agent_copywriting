@@ -1,0 +1,54 @@
+[
+  {
+    "subject": "Derni\u00e8re chance : Livraison gratuite !",
+    "preview": "Dernier rappel : la promo s\u2019ach\u00e8ve bient\u00f4t ! Hydratez-vous, offrez la livraison.",
+    "hero_title": "Livraison gratuite, jusqu'au 1er f\u00e9vrier !",
+    "hero_subtitle": "97% de notes 5 \u00e9toiles et 4,8 sur 5 en satisfaction.",
+    "cta_hero": "Obtenir la promo",
+    "descriptive_block_title": "Hydratation familiale : conseils cl\u00e9s",
+    "descriptive_block_subtitle": "Favorisez la sant\u00e9 de tous avec une boisson naturelle et rapide.",
+    "descriptive_block_content": "<table width='100%' style='text-align: center;'>\n  <tr>\n    <td width='33%'>\n      <h1>100%</h1><br>\n      <p>Hydratation familiale</p>\n    </td>\n    <td width='33%'>\n      <h1>3</h1><br>\n      <p>\u00c9tapes simples</p>\n    </td>\n    <td width='33%'>\n      <h1>1er f\u00e9vrier</h1><br>\n      <p>Livraison gratuite</p>\n    </td>\n  </tr>\n  <tr>\n    <td width='33%' valign='top'>\n      <p><b>Proposez de l'eau</b> \u00e0 chaque repas et encouragez des pauses boisson apr\u00e8s chaque activit\u00e9.</p>\n    </td>\n    <td width='33%' valign='top'>\n      <p>Des ingr\u00e9dients naturels, <b>vitamines</b> et \u00e9lectrolytes pour des journ\u00e9es actives.</p>\n    </td>\n    <td width='33%' valign='top'>\n      <p>Commandez d\u00e8s maintenant et <b>profitez de la livraison gratuite</b> jusqu'au 1er f\u00e9vrier.</p>\n    </td>\n  </tr>\n</table>",
+    "cta_descriptive": "Voir la collection",
+    "product_block_title": "Essayez nos vari\u00e9t\u00e9s \u00e0 shaker",
+    "product_block_subtitle": "Versez, secouez et savourez en famille. Livraison gratuite avant le 1er f\u00e9vrier.",
+    "products": [
+      "Orange & Pamplemousse",
+      "Framboise Past\u00e8que",
+      "Lemon Iced Tea"
+    ],
+    "product_block_content": null,
+    "cta_product": "Shop Now",
+    "full_text_formatted": "\nSUBJECT: Derni\u00e8re chance : Livraison gratuite !\nPREVIEW: Dernier rappel : la promo s\u2019ach\u00e8ve bient\u00f4t ! Hydratez-vous, offrez la livraison.\nHERO IMAGE: Livraison gratuite, jusqu'au 1er f\u00e9vrier ! (Placeholder)\nHERO TITLE: Livraison gratuite, jusqu'au 1er f\u00e9vrier !\nHERO SUBTITLE: 97% de notes 5 \u00e9toiles et 4,8 sur 5 en satisfaction.\nCTA: Obtenir la promo\n\n--- DESCRIPTIVE BLOCK ---\nTITLE: Hydratation familiale : conseils cl\u00e9s\nCONTENT: L'essentiel pour garder toute la famille bien hydrat\u00e9e : proposez de l'eau \u00e0 chaque repas, optez pour des gourdes color\u00e9es, et encouragez les pauses boisson apr\u00e8s chaque activit\u00e9. Notre solution offre des ingr\u00e9dients naturels, vitamines et \u00e9lectrolytes essentiels. Facile \u00e0 pr\u00e9parer, elle accompagne les journ\u00e9es actives et favorise des instants revitalisants. Profitez de la livraison gratuite jusqu'au 1er f\u00e9vrier.\nCTA DESCRIPTIVE: Voir la collection\n\n--- PRODUCTS ---\n- Orange & Pamplemousse\n- Framboise Past\u00e8que\n- Lemon Iced Tea\nCTA: Shop Now\n\n--- FOOTER ---\nN/A\n",
+    "slot_number": 6,
+    "status": "completed",
+    "content": "\nSUBJECT: Derni\u00e8re chance : Livraison gratuite !\nPREVIEW: Dernier rappel : la promo s\u2019ach\u00e8ve bient\u00f4t ! Hydratez-vous, offrez la livraison.\nHERO IMAGE: Livraison gratuite, jusqu'au 1er f\u00e9vrier ! (Placeholder)\nHERO TITLE: Livraison gratuite, jusqu'au 1er f\u00e9vrier !\nHERO SUBTITLE: 97% de notes 5 \u00e9toiles et 4,8 sur 5 en satisfaction.\nCTA: Obtenir la promo\n\n--- DESCRIPTIVE BLOCK ---\nTITLE: Hydratation familiale : conseils cl\u00e9s\nCONTENT: L'essentiel pour garder toute la famille bien hydrat\u00e9e : proposez de l'eau \u00e0 chaque repas, optez pour des gourdes color\u00e9es, et encouragez les pauses boisson apr\u00e8s chaque activit\u00e9. Notre solution offre des ingr\u00e9dients naturels, vitamines et \u00e9lectrolytes essentiels. Facile \u00e0 pr\u00e9parer, elle accompagne les journ\u00e9es actives et favorise des instants revitalisants. Profitez de la livraison gratuite jusqu'au 1er f\u00e9vrier.\nCTA DESCRIPTIVE: Voir la collection\n\n--- PRODUCTS ---\n- Orange & Pamplemousse\n- Framboise Past\u00e8que\n- Lemon Iced Tea\nCTA: Shop Now\n\n--- FOOTER ---\nN/A\n",
+    "structure_id": "STRUCT_STAT_ATTACK",
+    "language": "FR"
+  },
+  {
+    "subject": "Last Chance: Free Shipping!",
+    "preview": "Final reminder: the offer ends soon! Stay hydrated, enjoy free delivery.",
+    "hero_title": "Free Shipping until February 1st!",
+    "hero_subtitle": "97% five-star ratings and 4.8 out of 5 in customer satisfaction.",
+    "cta_hero": "Claim the Offer",
+    "descriptive_block_title": "Family Hydration: Key Tips",
+    "descriptive_block_subtitle": "Support everyone's health with a quick, natural drink.",
+    "descriptive_block_content": "<table width='100%' style='text-align: center;'>\n  <tr>\n    <td width='33%'>\n      <h1>100%</h1><br>\n      <p>Family Hydration</p>\n    </td>\n    <td width='33%'>\n      <h1>3</h1><br>\n      <p>Simple Steps</p>\n    </td>\n    <td width='33%'>\n      <h1>February 1st</h1><br>\n      <p>Free Shipping</p>\n    </td>\n  </tr>\n  <tr>\n    <td width='33%' valign='top'>\n      <p><b>Serve water</b> with every meal and encourage drink breaks after each activity.</p>\n    </td>\n    <td width='33%' valign='top'>\n      <p>Natural ingredients, <b>vitamins</b>, and electrolytes for active days.</p>\n    </td>\n    <td width='33%' valign='top'>\n      <p>Order now and <b>enjoy free shipping</b> until February 1st.</p>\n    </td>\n  </tr>\n</table>",
+    "cta_descriptive": "View the Collection",
+    "product_block_title": "Try Our Shake Varieties",
+    "product_block_subtitle": "Pour, shake, and enjoy with the family. Free shipping before February 1st.",
+    "products": [
+      "Orange & Grapefruit",
+      "Raspberry Watermelon",
+      "Lemon Iced Tea"
+    ],
+    "product_block_content": null,
+    "cta_product": "Shop Now",
+    "full_text_formatted": "\nSUBJECT: Last Chance: Free Shipping!\nPREVIEW: Final reminder: the offer ends soon! Stay hydrated, enjoy free delivery.\nHERO IMAGE: Free Shipping until February 1st! (Placeholder)\nHERO TITLE: Free Shipping until February 1st!\nHERO SUBTITLE: 97% five-star ratings and 4.8 out of 5 in customer satisfaction.\nCTA: Claim the Offer\n\n--- DESCRIPTIVE BLOCK ---\nTITLE: Family Hydration: Key Tips\nCONTENT: <table width='100%' style='text-align: center;'>\n  <tr>\n    <td width='33%'>\n      <h1>100%</h1><br>\n      <p>Family Hydration</p>\n    </td>\n    <td width='33%'>\n      <h1>3</h1><br>\n      <p>Simple Steps</p>\n    </td>\n    <td width='33%'>\n      <h1>February 1st</h1><br>\n      <p>Free Shipping</p>\n    </td>\n  </tr>\n  <tr>\n    <td width='33%' valign='top'>\n      <p><b>Serve water</b> with every meal and encourage drink breaks after each activity.</p>\n    </td>\n    <td width='33%' valign='top'>\n      <p>Natural ingredients, <b>vitamins</b>, and electrolytes for active days.</p>\n    </td>\n    <td width='33%' valign='top'>\n      <p>Order now and <b>enjoy free shipping</b> until February 1st.</p>\n    </td>\n  </tr>\n</table>\nCTA DESCRIPTIVE: View the Collection\n\n--- PRODUCTS ---\n- Orange & Grapefruit\n- Raspberry Watermelon\n- Lemon Iced Tea\nCTA: Shop Now\n\n--- FOOTER ---\nN/A\n",
+    "slot_number": 6,
+    "status": "completed",
+    "content": "\nSUBJECT: Last Chance: Free Shipping!\nPREVIEW: Final reminder: the offer ends soon! Stay hydrated, enjoy free delivery.\nHERO IMAGE: Free Shipping until February 1st! (Placeholder)\nHERO TITLE: Free Shipping until February 1st!\nHERO SUBTITLE: 97% five-star ratings and 4.8 out of 5 in customer satisfaction.\nCTA: Claim the Offer\n\n--- DESCRIPTIVE BLOCK ---\nTITLE: Family Hydration: Key Tips\nCONTENT: <table width='100%' style='text-align: center;'>\n  <tr>\n    <td width='33%'>\n      <h1>100%</h1><br>\n      <p>Family Hydration</p>\n    </td>\n    <td width='33%'>\n      <h1>3</h1><br>\n      <p>Simple Steps</p>\n    </td>\n    <td width='33%'>\n      <h1>February 1st</h1><br>\n      <p>Free Shipping</p>\n    </td>\n  </tr>\n  <tr>\n    <td width='33%' valign='top'>\n      <p><b>Serve water</b> with every meal and encourage drink breaks after each activity.</p>\n    </td>\n    <td width='33%' valign='top'>\n      <p>Natural ingredients, <b>vitamins</b>, and electrolytes for active days.</p>\n    </td>\n    <td width='33%' valign='top'>\n      <p>Order now and <b>enjoy free shipping</b> until February 1st.</p>\n    </td>\n  </tr>\n</table>\nCTA DESCRIPTIVE: View the Collection\n\n--- PRODUCTS ---\n- Orange & Grapefruit\n- Raspberry Watermelon\n- Lemon Iced Tea\nCTA: Shop Now\n\n--- FOOTER ---\nN/A\n",
+    "structure_id": "STRUCT_STAT_ATTACK",
+    "language": "EN"
+  }
+]

@@ -70,6 +70,11 @@ class BrandBio(BaseModel):
     social_proof: Optional[str] = None
     # Reviews, ratings, testimonials, awards
 
+    # ========== FEEDBACK LOOP ==========
+    feedback_notes: List[str] = Field(default_factory=list)
+    # Specific client feedback to override default behavior
+
+
 class CampaignRequest(BaseModel):
     """Initial request from the user."""
     brand_name: str

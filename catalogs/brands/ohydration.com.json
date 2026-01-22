@@ -71,5 +71,8 @@
         "Afternoon energy slumps due to poor hydration",
         "Difficulty swallowing pills (vitamins)"
     ],
-    "social_proof": "Over 56,000 customers. Rated 'Excellent' for taste compared to salty competitors."
+    "social_proof": "Over 56,000 customers. Rated 'Excellent' for taste compared to salty competitors.",
+    "feedback_notes": [
+        "Do NOT mention the name of the brand."
+    ]
 }

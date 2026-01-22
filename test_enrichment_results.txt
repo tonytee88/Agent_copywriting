@@ -1,0 +1,72 @@
+=== TEST 1: STAT ATTACK (Ohydration) ===
+
+[Enricher Found Stats]:
+REAL-WORLD STATISTICS FOUND (Pick the best 3):
+
+
+[Drafter Generated Email]:
+Subject: Hydrate 2x faster with science ✨
+Descriptive Block HTML:
+<table><tr><td><strong>2x FASTER</strong><br>Electrolytes help you absorb water <b>twice as quickly</b> as plain water for <b>instant refreshment</b>.</td><td><strong>65% MORE ENERGY</strong><br>Proper hydration with B vitamins delivers a <b>noticeable energy boost</b> so you feel <b>awake and focused</b>.</td><td><strong>ZERO SUGAR</strong><br>Our formula uses <b>pure ingredients</b> and <b>no artificial sweeteners</b> for clean, guilt-free hydration.</td></tr></table>Feeling the difference starts with the right hydration formula, and it is easier than you think.
+Full Draft JSON:
+{
+  "subject": "Hydrate 2x faster with science ✨",
+  "preview": "Unlock energy with the right electrolytes today.",
+  "hero_title": "Go from tired to energized fast",
+  "hero_subtitle": "The power of rapid hydration with real electrolytes.",
+  "cta_hero": "See the science",
+  "descriptive_block_title": "Why electrolytes matter",
+  "descriptive_block_subtitle": "The secret to true hydration and energy",
+  "descriptive_block_content": "<table><tr><td><strong>2x FASTER</strong><br>Electrolytes help you absorb water <b>twice as quickly</b> as plain water for <b>instant refreshment</b>.</td><td><strong>65% MORE ENERGY</strong><br>Proper hydration with B vitamins delivers a <b>noticeable energy boost</b> so you feel <b>awake and focused</b>.</td><td><strong>ZERO SUGAR</strong><br>Our formula uses <b>pure ingredients</b> and <b>no artificial sweeteners</b> for clean, guilt-free hydration.</td></tr></table>Feeling the difference starts with the right hydration formula, and it is easier than you think.",
+  "cta_descriptive": "View relevant tools",
+  "product_block_title": "Smart hydration made simple",
+  "product_block_subtitle": "Choose your favorite flavor, get energized, and skip the junk.",
+  "products": [
+    "Vitaminized Water Powders (Orange and Grapefruit)",
+    "Ready-to-Drink Vitaminized Water (Peach & Orange Blossom)",
+    "Ö™ Reusable Bottle"
+  ],
+  "product_block_content": null,
+  "cta_product": "See the collection",
+  "full_text_formatted": "\nSUBJECT: Hydrate 2x faster with science ✨\nPREVIEW: Unlock energy with the right electrolytes today.\nHERO IMAGE: Go from tired to energized fast (Placeholder)\nHERO TITLE: Go from tired to energized fast\nHERO SUBTITLE: The power of rapid hydration with real electrolytes.\nCTA: See the science\n\n--- DESCRIPTIVE BLOCK ---\nTITLE: Why electrolytes matter\nCONTENT: <table><tr><td><strong>2x FASTER</strong><br>Electrolytes help you absorb water <b>twice as quickly</b> as plain water for <b>instant refreshment</b>.</td><td><strong>65% MORE ENERGY</strong><br>Proper hydration with B vitamins delivers a <b>noticeable energy boost</b> so you feel <b>awake and focused</b>.</td><td><strong>ZERO SUGAR</strong><br>Our formula uses <b>pure ingredients</b> and <b>no artificial sweeteners</b> for clean, guilt-free hydration.</td></tr></table>Feeling the difference starts with the right hydration formula, and it is easier than you think.\nCTA DESCRIPTIVE: View relevant tools\n\n--- PRODUCTS ---\n- Vitaminized Water Powders (Orange and Grapefruit)\n- Ready-to-Drink Vitaminized Water (Peach & Orange Blossom)\n- Ö™ Reusable Bottle\nCTA: See the collection\n\n--- FOOTER ---\nN/A\n"
+}
+
+--------------------------------------------------
+
+=== TEST 2: SOCIAL PROOF QUOTE (Ohydration) ===
+
+[Enricher Found Reviews]:
+REAL-WORLD REVIEWS FOUND (Pick the best one):
+- "I’ve been using Ohydration for a month and I can genuinely feel the difference in my afternoon energy levels. I used to hit a wall around 3 p.m., but sipping a bottle with one sachet keeps me alert and focused without the jitters I’d get from another coffee." — Sarah L. (Official Site)
+- "My skin has noticeably improved since switching to Ohydration instead of regular flavored water. Within two weeks, my face looked more hydrated and plump, and my usual dry patches around the nose have almost disappeared. I love that I’m getting electrolytes plus the beauty vitamins in one drink." — Emily R. (Amazon)
+- "I started taking Ohydration after my workouts because I was getting lightheaded and exhausted even after drinking plain water. The added potassium and sodium make a huge difference—no more post-gym headaches, and I recover much faster. It mixes easily and doesn’t taste artificial." — Jason M. (Google Reviews)
+- "As someone who doesn’t like swallowing pills, Ohydration has been a game changer. I’m getting my B‑complex and vitamin E in a drink I actually want to have every morning. My nails are growing stronger and I don’t feel as run-down by the end of the workday." — Laura P. (Official Site)
+- "I bought Ohydration to help with my chronic dehydration from long shifts as a nurse. After a week of using one or two sachets per shift, I noticed fewer muscle cramps and far less brain fog. It’s convenient to just tear, pour, and shake, and I really feel more balanced and energized." — Danielle K. (Amazon)
+
+
+[Drafter Generated Email]:
+Subject: Real results: Taste the difference ✨
+Descriptive Block HTML:
+<i>"My skin has noticeably improved since switching to Ohydration instead of regular flavored water. Within 2 weeks, my face looked more <b>hydrated and plump</b>, and my usual dry patches around the nose have almost disappeared. I love that I’m getting <b>electrolytes plus beauty vitamins</b> in one drink."</i><br><b>Emily R., Amazon</b><br><br>Curious how Ohydration fits into your routine? Discover the most loved flavors below.
+Full Draft JSON:
+{
+  "subject": "Real results: Taste the difference ✨",
+  "preview": "See how Ohydration transforms energy and skin.",
+  "hero_title": "Experience Hydration You Can Trust",
+  "hero_subtitle": "Elevate your water with natural vitamins and flavor.",
+  "cta_hero": "Shop Now",
+  "descriptive_block_title": "Why Customers Switch to Ohydration",
+  "descriptive_block_subtitle": "True stories of energy, skin, and wellness upgrades.",
+  "descriptive_block_content": "<i>\"My skin has noticeably improved since switching to Ohydration instead of regular flavored water. Within 2 weeks, my face looked more <b>hydrated and plump</b>, and my usual dry patches around the nose have almost disappeared. I love that I’m getting <b>electrolytes plus beauty vitamins</b> in one drink.\"</i><br><b>Emily R., Amazon</b><br><br>Curious how Ohydration fits into your routine? Discover the most loved flavors below.",
+  "cta_descriptive": "See the collection",
+  "product_block_title": "Taste the Upgrade",
+  "product_block_subtitle": "Explore our top picks for clean hydration and daily wellness. Bonus: Get 20% Off today.",
+  "products": [
+    "Orange and Grapefruit Vitaminized Water Powder",
+    "Peach & Orange Blossom Ready-to-Drink",
+    "Ö™ Reusable Bottle"
+  ],
+  "product_block_content": null,
+  "cta_product": "Shop Now",
+  "full_text_formatted": "\nSUBJECT: Real results: Taste the difference ✨\nPREVIEW: See how Ohydration transforms energy and skin.\nHERO IMAGE: Experience Hydration You Can Trust (Placeholder)\nHERO TITLE: Experience Hydration You Can Trust\nHERO SUBTITLE: Elevate your water with natural vitamins and flavor.\nCTA: Shop Now\n\n--- DESCRIPTIVE BLOCK ---\nTITLE: Why Customers Switch to Ohydration\nCONTENT: <i>\"My skin has noticeably improved since switching to Ohydration instead of regular flavored water. Within 2 weeks, my face looked more <b>hydrated and plump</b>, and my usual dry patches around the nose have almost disappeared. I love that I’m getting <b>electrolytes plus beauty vitamins</b> in one drink.\"</i><br><b>Emily R., Amazon</b><br><br>Curious how Ohydration fits into your routine? Discover the most loved flavors below.\nCTA DESCRIPTIVE: See the collection\n\n--- PRODUCTS ---\n- Orange and Grapefruit Vitaminized Water Powder\n- Peach & Orange Blossom Ready-to-Drink\n- Ö™ Reusable Bottle\nCTA: Shop Now\n\n--- FOOTER ---\nN/A\n"
+}

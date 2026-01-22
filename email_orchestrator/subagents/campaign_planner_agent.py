@@ -116,8 +116,20 @@ class CampaignPlanningSession:
         # Target Language
         target_lang = languages[0] if languages else "FR"
         
+        # Feedback Injection
+        feedback_section = ""
+        if brand_bio.feedback_notes:
+            feedback_list = "\n".join([f"- {note}" for note in brand_bio.feedback_notes])
+            feedback_section = f"""
+=== CRITICAL CLIENT FEEDBACK ===
+The client has provided specific feedback. You MUST prioritize these notes over general best practices:
+{feedback_list}
+================================
+"""
+
         # 2. Build Prompt
         prompt = f"""
+{feedback_section}
 Please create a campaign plan with the following requirements:
 
 Brand: {self.brand_name}

@@ -13,6 +13,7 @@ from email_orchestrator.subagents.campaign_plan_verifier_agent import campaign_p
 from email_orchestrator.subagents.strategist_agent import strategist_agent
 from email_orchestrator.subagents.drafter_agent import drafter_agent
 from email_orchestrator.subagents.stylist_agent import StylistAgent
+from email_orchestrator.subagents.content_enricher import ContentEnricher
 from email_orchestrator.tools.campaign_planner_tools import optimize_plan_transformations
 from email_orchestrator.subagents.verifier_agent import verifier_agent
 from email_orchestrator.tools.deterministic_verifier import DeterministicVerifier
@@ -271,9 +272,11 @@ async def generate_email_campaign(
     print(f"\n--- EXECUTING CAMPAIGN: {plan.campaign_name} ({len(plan.email_slots)} emails) ---")
     
     stylist = StylistAgent()
+    content_enricher = ContentEnricher()
     results = []
     
-    # 2. Iterate Slots
+    # 2. Iterate Slots (logic continues...)
+
     target_languages = plan.languages or ["FR"]
 
     for slot in plan.email_slots:
@@ -307,10 +310,14 @@ async def generate_email_campaign(
                 # Pass folder selection context? Not needed for Strategist.
                 blueprint = await strategist_agent(request, brand_bio, campaign_context=slot, language=lang)
             
+                # --- CONTENT ENRICHMENT (New Layer) ---
+                real_world_data = ""
+                if "STAT_ATTACK" in blueprint.structure_id:
+                     real_world_data = await content_enricher.find_stats(plan.brand_name, brand_bio.product_description)
+                elif "SOCIAL_PROOF" in blueprint.structure_id:
+                     real_world_data = await content_enricher.find_reviews(plan.brand_name, brand_bio.product_description)
+
                 # B. Bundled Generation (Drafter + Stylist)
-                # Concept: The Strategist & Drafter & Stylist work as a production unit.
-                # The Verifier (Deterministic & LLM) checks the FINAL STYLED OUTPUT.
-            
                 final_draft = None
                 revision_feedback = None
             
@@ -327,14 +334,13 @@ async def generate_email_campaign(
                 async def generate_and_style(feedback: Optional[str] = None):
                     """
                     Bundles Drafting and Styling.
-                    If feedback is provided, it's a revision. Otherwise, it's a fresh start.
                     """
                     if feedback:
                         # Revision
                         raw_draft = await drafting_session.revise(feedback)
                     else:
                         # Fresh Start
-                        raw_draft = await drafting_session.start()
+                        raw_draft = await drafting_session.start(real_world_data=real_world_data)
                 
                     # Apply Styling immediately
                     # Stylist works on the raw draft and returns styled HTML for the body

@@ -1,0 +1,54 @@
+[
+  {
+    "subject": "Livraison gratuite sur toutes vos saveurs",
+    "preview": "Profitez de la livraison gratuite et savourez nos saveurs vitamin\u00e9es.",
+    "hero_title": "Offre exclusive : livraison offerte",
+    "hero_subtitle": "Commandez maintenant et partagez des instants revitalisants avec votre famille.",
+    "cta_hero": "Shop Now",
+    "descriptive_block_title": "Passez d\u2019une hydratation fade \u00e0 des moments gourmands en famille",
+    "descriptive_block_subtitle": "Savourez la vari\u00e9t\u00e9 et la naturalit\u00e9 en famille",
+    "descriptive_block_content": "<table width='100%'>\n  <tr>\n    <td width='33%'>\n      <img src='[Item1]' width='100%'>\n      <p align='center'><b>Saveurs vitamin\u00e9es</b><br>Des boissons riches en vitamines et \u00e9lectrolytes.</p>\n    </td>\n    <td width='33%'>\n      <img src='[Item2]' width='100%'>\n      <p align='center'>Recette naturelle<br>Hydratation saine, z\u00e9ro sucre.</p>\n    </td>\n    <td width='33%'>\n      <img src='[Item3]' width='100%'>\n      <p align='center'>Livraison offerte<br>Jusqu\u2019au 1er f\u00e9vrier.</p>\n    </td>\n  </tr>\n</table>",
+    "cta_descriptive": "Voir toutes les saveurs",
+    "product_block_title": "Choisissez vos saveurs favorites",
+    "product_block_subtitle": "Une s\u00e9lection vitamin\u00e9e \u00e0 savourer sans compromis sur la sant\u00e9.",
+    "products": [
+      "Orange & Pamplemousse",
+      "Framboise Past\u00e8que",
+      "Citron Th\u00e9 Glac\u00e9"
+    ],
+    "product_block_content": "Profitez de la livraison offerte sur toutes vos commandes et d\u00e9couvrez vos saveurs pr\u00e9f\u00e9r\u00e9es.",
+    "cta_product": "Acheter vos saveurs",
+    "full_text_formatted": "\nSUBJECT: Livraison gratuite sur toutes vos saveurs\nPREVIEW: Profitez de la livraison gratuite et savourez nos saveurs vitamin\u00e9es.\nHERO IMAGE: Offre exclusive : livraison offerte (Placeholder)\nHERO TITLE: Offre exclusive : livraison offerte\nHERO SUBTITLE: Commandez maintenant et partagez des instants revitalisants avec votre famille.\nCTA: Shop Now\n\n--- DESCRIPTIVE BLOCK ---\nTITLE: Passez d\u2019une hydratation fade \u00e0 des moments gourmands en famille\nCONTENT: <b>Saveurs vitamin\u00e9es</b> pour des boissons riches en vitamines et \u00e9lectrolytes. La recette naturelle, z\u00e9ro sucre, garantit une hydratation saine pour toute la famille. Parce que chaque moment partag\u00e9 autour de nos saveurs naturelles est un pas vers une sant\u00e9 meilleure. <b>Savourez la diff\u00e9rence</b> et partagez de vrais moments revitalisants autour d\u2019un go\u00fbt authentique. N'oubliez pas, la livraison est offerte jusqu\u2019au 1er f\u00e9vrier.\nCTA DESCRIPTIVE: Voir toutes les saveurs\n\n--- PRODUCTS ---\n- Orange & Pamplemousse\n- Framboise Past\u00e8que\n- Citron Th\u00e9 Glac\u00e9\nCTA: Acheter vos saveurs\n\n--- FOOTER ---\nN/A\n",
+    "slot_number": 5,
+    "status": "completed",
+    "content": "\nSUBJECT: Livraison gratuite sur toutes vos saveurs\nPREVIEW: Profitez de la livraison gratuite et savourez nos saveurs vitamin\u00e9es.\nHERO IMAGE: Offre exclusive : livraison offerte (Placeholder)\nHERO TITLE: Offre exclusive : livraison offerte\nHERO SUBTITLE: Commandez maintenant et partagez des instants revitalisants avec votre famille.\nCTA: Shop Now\n\n--- DESCRIPTIVE BLOCK ---\nTITLE: Passez d\u2019une hydratation fade \u00e0 des moments gourmands en famille\nCONTENT: <b>Saveurs vitamin\u00e9es</b> pour des boissons riches en vitamines et \u00e9lectrolytes. La recette naturelle, z\u00e9ro sucre, garantit une hydratation saine pour toute la famille. Parce que chaque moment partag\u00e9 autour de nos saveurs naturelles est un pas vers une sant\u00e9 meilleure. <b>Savourez la diff\u00e9rence</b> et partagez de vrais moments revitalisants autour d\u2019un go\u00fbt authentique. N'oubliez pas, la livraison est offerte jusqu\u2019au 1er f\u00e9vrier.\nCTA DESCRIPTIVE: Voir toutes les saveurs\n\n--- PRODUCTS ---\n- Orange & Pamplemousse\n- Framboise Past\u00e8que\n- Citron Th\u00e9 Glac\u00e9\nCTA: Acheter vos saveurs\n\n--- FOOTER ---\nN/A\n",
+    "structure_id": "STRUCT_MINI_GRID",
+    "language": "FR"
+  },
+  {
+    "subject": "Free Shipping on All Your Flavors",
+    "preview": "Enjoy free shipping and savor our vitamin-packed flavors.",
+    "hero_title": "Exclusive Offer: Free Shipping",
+    "hero_subtitle": "Order now and share revitalizing moments with your family.",
+    "cta_hero": "Shop Now",
+    "descriptive_block_title": "Elevate your hydration from bland to delicious family moments",
+    "descriptive_block_subtitle": "Savor variety and natural goodness together",
+    "descriptive_block_content": "<table width='100%'>\n  <tr>\n    <td width='33%'>\n      <img src='[Item1]' width='100%'>\n      <p align='center'><b>Vitamin-Packed Flavors</b><br>Drinks rich in vitamins and electrolytes.</p>\n    </td>\n    <td width='33%'>\n      <img src='[Item2]' width='100%'>\n      <p align='center'>Natural Recipe<br>Healthy hydration, zero sugar.</p>\n    </td>\n    <td width='33%'>\n      <img src='[Item3]' width='100%'>\n      <p align='center'>Free Shipping<br>Until February 1st.</p>\n    </td>\n  </tr>\n</table>",
+    "cta_descriptive": "See All Flavors",
+    "product_block_title": "Choose Your Favorite Flavors",
+    "product_block_subtitle": "A vitamin-rich selection to enjoy without compromising health.",
+    "products": [
+      "Orange & Grapefruit",
+      "Raspberry Watermelon",
+      "Lemon Iced Tea"
+    ],
+    "product_block_content": "Take advantage of free shipping on all your orders and discover your favorite flavors.",
+    "cta_product": "Buy Your Flavors",
+    "full_text_formatted": "\nSUBJECT: Free Shipping on All Your Flavors\nPREVIEW: Enjoy free shipping and savor our vitamin-packed flavors.\nHERO IMAGE: Exclusive Offer: Free Shipping (Placeholder)\nHERO TITLE: Exclusive Offer: Free Shipping\nHERO SUBTITLE: Order now and share revitalizing moments with your family.\nCTA: Shop Now\n\n--- DESCRIPTIVE BLOCK ---\nTITLE: Elevate your hydration from bland to delicious family moments\nCONTENT: <table width='100%'>\n  <tr>\n    <td width='33%'>\n      <img src='[Item1]' width='100%'>\n      <p align='center'><b>Vitamin-Packed Flavors</b><br>Drinks rich in vitamins and electrolytes.</p>\n    </td>\n    <td width='33%'>\n      <img src='[Item2]' width='100%'>\n      <p align='center'>Natural Recipe<br>Healthy hydration, zero sugar.</p>\n    </td>\n    <td width='33%'>\n      <img src='[Item3]' width='100%'>\n      <p align='center'>Free Shipping<br>Until February 1st.</p>\n    </td>\n  </tr>\n</table>\nCTA DESCRIPTIVE: See All Flavors\n\n--- PRODUCTS ---\n- Orange & Grapefruit\n- Raspberry Watermelon\n- Lemon Iced Tea\nCTA: Buy Your Flavors\n\n--- FOOTER ---\nN/A\n",
+    "slot_number": 5,
+    "status": "completed",
+    "content": "\nSUBJECT: Free Shipping on All Your Flavors\nPREVIEW: Enjoy free shipping and savor our vitamin-packed flavors.\nHERO IMAGE: Exclusive Offer: Free Shipping (Placeholder)\nHERO TITLE: Exclusive Offer: Free Shipping\nHERO SUBTITLE: Order now and share revitalizing moments with your family.\nCTA: Shop Now\n\n--- DESCRIPTIVE BLOCK ---\nTITLE: Elevate your hydration from bland to delicious family moments\nCONTENT: <table width='100%'>\n  <tr>\n    <td width='33%'>\n      <img src='[Item1]' width='100%'>\n      <p align='center'><b>Vitamin-Packed Flavors</b><br>Drinks rich in vitamins and electrolytes.</p>\n    </td>\n    <td width='33%'>\n      <img src='[Item2]' width='100%'>\n      <p align='center'>Natural Recipe<br>Healthy hydration, zero sugar.</p>\n    </td>\n    <td width='33%'>\n      <img src='[Item3]' width='100%'>\n      <p align='center'>Free Shipping<br>Until February 1st.</p>\n    </td>\n  </tr>\n</table>\nCTA DESCRIPTIVE: See All Flavors\n\n--- PRODUCTS ---\n- Orange & Grapefruit\n- Raspberry Watermelon\n- Lemon Iced Tea\nCTA: Buy Your Flavors\n\n--- FOOTER ---\nN/A\n",
+    "structure_id": "STRUCT_MINI_GRID",
+    "language": "EN"
+  }
+]

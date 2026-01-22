@@ -46,6 +46,17 @@ async def drafter_agent(
         brand_bio=brand_bio.model_dump_json(indent=2),
         revision_feedback=revision_feedback or "N/A - First draft"
     )
+
+    # Inject Feedback
+    if brand_bio.feedback_notes:
+        feedback_list = "\n".join([f"- {note}" for note in brand_bio.feedback_notes])
+        feedback_section = f"""
+=== CRITICAL CLIENT FEEDBACK ===
+The client has provided specific feedback. You MUST prioritize these notes over general best practices or style guides:
+{feedback_list}
+================================
+"""
+        full_prompt = feedback_section + "\n\n" + full_prompt
     
     # Inject Language Instruction
     full_prompt += f"\n\nCRITICAL: You MUST write the email in {language}."
@@ -83,7 +94,7 @@ class DraftingSession:
         self.model = MODEL_DRAFTER
         self.knowledge_reader = KnowledgeReader()
 
-    async def start(self) -> EmailDraft:
+    async def start(self, real_world_data: Optional[str] = None) -> EmailDraft:
         """Generates the initial draft."""
         print(f"[DraftingSession] Starting new session for {self.blueprint.brand_name}...")
         
@@ -105,12 +116,28 @@ class DraftingSession:
             raise FileNotFoundError("Drafter prompt v2.txt not found")
 
         # 3. Format Prompt
+        # Handle the new 'real_world_data' slot if I add it to v2.txt, OR append it manually
         full_prompt = prompt_template.format(
             format_guide=format_guide,
             blueprint=self.blueprint.model_dump_json(indent=2),
             brand_bio=self.brand_bio.model_dump_json(indent=2),
             revision_feedback="N/A - First draft"
         )
+
+        # Inject Feedback
+        if self.brand_bio.feedback_notes:
+            feedback_list = "\n".join([f"- {note}" for note in self.brand_bio.feedback_notes])
+            feedback_section = f"""
+=== CRITICAL CLIENT FEEDBACK ===
+The client has provided specific feedback. You MUST prioritize these notes over general best practices or style guides:
+{feedback_list}
+================================
+"""
+            full_prompt = feedback_section + "\n\n" + full_prompt
+        
+        # Inject Real World Data (Stats/Reviews)
+        if real_world_data:
+            full_prompt += f"\n\n=== [IMPORTANT] REAL-WORLD DATA GENERATED FOR THIS EMAIL ===\n{real_world_data}\n\nINSTRUCTION: You MUST use the data above (Stats or Reviews) to populate the relevant sections (STAT_ATTACK or SOCIAL_PROOF). Do not invent numbers if these are provided."
         
         # Inject Language & Context
         full_prompt += f"\n\nCRITICAL: You MUST write the email in {self.language}."

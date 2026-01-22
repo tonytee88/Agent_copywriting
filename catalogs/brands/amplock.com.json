@@ -76,5 +76,8 @@
         "Cheap locks can be cut in seconds with bolt cutters",
         "Insurance deductibles are high and claims are a hassle"
     ],
-    "social_proof": "Over 250,000 satisfied customers in North America. Rated 4.7/5 stars on Amazon."
+    "social_proof": "Over 250,000 satisfied customers in North America. Rated 4.7/5 stars on Amazon.",
+    "feedback_notes": [
+        "Do NOT mention the name of the brand"
+    ]
 }

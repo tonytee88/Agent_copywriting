@@ -1,0 +1,54 @@
+[
+  {
+    "subject": "La brosse PopBrush \u00e0 50% ce mois-ci !",
+    "preview": "Transformez le brossage en moment plaisir, offre exclusive.",
+    "hero_title": "Offre PopBrush : 50% \u00e0 ne pas rater",
+    "hero_subtitle": "Stocks limit\u00e9s, routine cheveux simple et douce.",
+    "cta_hero": "J\u2019en profite",
+    "descriptive_block_title": "Fini la corv\u00e9e, place au plaisir",
+    "descriptive_block_subtitle": "Un brossage doux et rapide, m\u00eame le matin",
+    "descriptive_block_content": "<table width='100%' style='border: 1px dashed #999; background-color: #f9f9f9;'><tr><td style='padding: 20px; text-align: center;'><b>[[GIF IDEA: Une maman souriante d\u00e9m\u00eale facilement les cheveux de sa fille, sans cris ni douleurs]]</b></td></tr></table><br><p><b>D\u00e9m\u00ealer les cheveux</b> n'a jamais \u00e9t\u00e9 aussi simple\u202f!<br><br>Gr\u00e2ce \u00e0 PopBrush, profitez d'un <b>soin doux</b> et <b>efficace</b> pour toute la famille.<br><br><b>Quantit\u00e9s limit\u00e9es</b>\u202f: commandez avant la fin du mois\u202f!</p>",
+    "cta_descriptive": "Profitez de l\u2019offre maintenant",
+    "product_block_title": "La brosse pr\u00e9f\u00e9r\u00e9e des familles",
+    "product_block_subtitle": "Technologie hybride, d\u00e9m\u00ealage sans douleur, approuv\u00e9e par 187000 utilisatrices",
+    "products": [
+      "Brosse D\u00e9m\u00ealante Anti Casse",
+      "Brosse Pliable Format Sac \u00e0 Main",
+      "Le Peigne D\u00e9m\u00ealant"
+    ],
+    "product_block_content": null,
+    "cta_product": "J\u2019en profite",
+    "full_text_formatted": "\nSUBJECT: La brosse PopBrush \u00e0 50% ce mois-ci !\nPREVIEW: Transformez le brossage en moment plaisir, offre exclusive.\nHERO IMAGE: Offre PopBrush : 50% \u00e0 ne pas rater (Placeholder)\nHERO TITLE: Offre PopBrush : 50% \u00e0 ne pas rater\nHERO SUBTITLE: Stocks limit\u00e9s, routine cheveux simple et douce.\nCTA: J\u2019en profite\n\n--- DESCRIPTIVE BLOCK ---\nTITLE: Fini la corv\u00e9e, place au plaisir\nCONTENT: <b>Fini les cris, place au plaisir\u202f!</b> Avec PopBrush, <b>d\u00e9m\u00ealer les cheveux</b> devient enfin facile et agr\u00e9able pour toute la famille. Sa technologie m\u00ealant poils de sanglier et picots nylon assure un <b>soin efficace</b> et <b>doux</b>, m\u00eame sur les cuirs chevelus sensibles. Chaque matin, gagnez du temps et retrouvez le sourire. <b>Quantit\u00e9s limit\u00e9es\u202f: ne manquez pas cette offre exclusive avant la fin du mois\u202f!</b>\nCTA DESCRIPTIVE: Profitez de l\u2019offre maintenant\n\n--- PRODUCTS ---\n- Brosse D\u00e9m\u00ealante Anti Casse\n- Brosse Pliable Format Sac \u00e0 Main\n- Le Peigne D\u00e9m\u00ealant\nCTA: J\u2019en profite\n\n--- FOOTER ---\nN/A\n",
+    "slot_number": 1,
+    "status": "completed",
+    "content": "\nSUBJECT: La brosse PopBrush \u00e0 50% ce mois-ci !\nPREVIEW: Transformez le brossage en moment plaisir, offre exclusive.\nHERO IMAGE: Offre PopBrush : 50% \u00e0 ne pas rater (Placeholder)\nHERO TITLE: Offre PopBrush : 50% \u00e0 ne pas rater\nHERO SUBTITLE: Stocks limit\u00e9s, routine cheveux simple et douce.\nCTA: J\u2019en profite\n\n--- DESCRIPTIVE BLOCK ---\nTITLE: Fini la corv\u00e9e, place au plaisir\nCONTENT: <b>Fini les cris, place au plaisir\u202f!</b> Avec PopBrush, <b>d\u00e9m\u00ealer les cheveux</b> devient enfin facile et agr\u00e9able pour toute la famille. Sa technologie m\u00ealant poils de sanglier et picots nylon assure un <b>soin efficace</b> et <b>doux</b>, m\u00eame sur les cuirs chevelus sensibles. Chaque matin, gagnez du temps et retrouvez le sourire. <b>Quantit\u00e9s limit\u00e9es\u202f: ne manquez pas cette offre exclusive avant la fin du mois\u202f!</b>\nCTA DESCRIPTIVE: Profitez de l\u2019offre maintenant\n\n--- PRODUCTS ---\n- Brosse D\u00e9m\u00ealante Anti Casse\n- Brosse Pliable Format Sac \u00e0 Main\n- Le Peigne D\u00e9m\u00ealant\nCTA: J\u2019en profite\n\n--- FOOTER ---\nN/A\n",
+    "structure_id": "STRUCT_GIF_PREVIEW",
+    "language": "FR"
+  },
+  {
+    "subject": "50% sur PopBrush pour des cheveux brillants",
+    "preview": "Profitez vite de 50% sur PopBrush, offre limit\u00e9e !",
+    "hero_title": "Profitez de 50% sur PopBrush",
+    "hero_subtitle": "Votre routine capillaire n'a jamais \u00e9t\u00e9 aussi simple et douce gr\u00e2ce \u00e0 PopBrush.",
+    "cta_hero": "Shop Now",
+    "descriptive_block_title": "Les secrets d'une belle chevelure",
+    "descriptive_block_subtitle": "Des mat\u00e9riaux choisis pour vos cheveux",
+    "descriptive_block_content": "<table width='100%'>\n  <tr>\n    <td width='50%' valign='middle'>\n      <img src='[ImagePlaceholder]' alt='Brosse PopBrush' width='100%'>\n    </td>\n    <td width='50%' valign='middle' style='padding-left: 15px;'>\n      <p>\n        Imaginez des <b>cheveux doux, brillants et d\u00e9m\u00eal\u00e9s</b> sans effort, chaque jour.\n      </p>\n      <br><br>\n      <p>\n        PopBrush allie 2 mat\u00e9riaux experts :\n      </p>\n      <br>\n      <p>\n        \u2022 <b>Poils de sanglier naturels</b> pour une brillance incomparable et une r\u00e9partition du s\u00e9bum.<br>\n        \u2022 <b>Picots en nylon flexibles</b> pour un d\u00e9m\u00ealage rapide, sans douleur, m\u00eame sur cheveux \u00e9pais ou boucl\u00e9s.\n      </p>\n      <br><br>\n      <p>\n        R\u00e9sultat : <b>moins de casse, moins de frisottis</b>, beaut\u00e9 naturelle pr\u00e9serv\u00e9e.\n      </p>\n      <br><br>\n      <p>\n        Profitez de cette exp\u00e9rience unique \u00e0 <b>-50%</b> pendant quelques jours seulement.\n      </p>\n    </td>\n  </tr>\n</table>",
+    "cta_descriptive": "Obtenir PopBrush \u00e0 50%",
+    "product_block_title": "D\u00e9couvrez la collection PopBrush",
+    "product_block_subtitle": "Chaque brosse r\u00e9v\u00e8le le meilleur de vos cheveux gr\u00e2ce \u00e0 ses mat\u00e9riaux innovants.",
+    "products": [
+      "Brosse D\u00e9m\u00ealante Anti Casse",
+      "Brosse Pliable Format Sac \u00e0 Main",
+      "Le Peigne D\u00e9m\u00ealant"
+    ],
+    "product_block_content": null,
+    "cta_product": "Shop Now",
+    "full_text_formatted": "\nSUBJECT: 50% sur PopBrush pour des cheveux brillants\nPREVIEW: Profitez vite de 50% sur PopBrush, offre limit\u00e9e !\nHERO IMAGE: Profitez de 50% sur PopBrush (Placeholder)\nHERO TITLE: Profitez de 50% sur PopBrush\nHERO SUBTITLE: Votre routine capillaire n'a jamais \u00e9t\u00e9 aussi simple et douce gr\u00e2ce \u00e0 PopBrush.\nCTA: Shop Now\n\n--- DESCRIPTIVE BLOCK ---\nTITLE: Les secrets d'une belle chevelure\nCONTENT: Imaginez des cheveux doux, brillants et d\u00e9m\u00eal\u00e9s sans effort, chaque jour. PopBrush allie 2 mat\u00e9riaux experts :\n\n\u2022 Poils de sanglier naturels pour une brillance incomparable et une r\u00e9partition du s\u00e9bum.\n\n\u2022 Picots en nylon flexibles pour un d\u00e9m\u00ealage rapide, sans douleur, m\u00eame sur cheveux \u00e9pais ou boucl\u00e9s.\n\nR\u00e9sultat : moins de casse, moins de frisottis, beaut\u00e9 naturelle pr\u00e9serv\u00e9e. Profitez de cette exp\u00e9rience unique \u00e0 50% pendant quelques jours seulement.\nCTA DESCRIPTIVE: Obtenir PopBrush \u00e0 50%\n\n--- PRODUCTS ---\n- Brosse D\u00e9m\u00ealante Anti Casse\n- Brosse Pliable Format Sac \u00e0 Main\n- Le Peigne D\u00e9m\u00ealant\nCTA: Shop Now\n\n--- FOOTER ---\nN/A\n",
+    "slot_number": 2,
+    "status": "completed",
+    "content": "\nSUBJECT: 50% sur PopBrush pour des cheveux brillants\nPREVIEW: Profitez vite de 50% sur PopBrush, offre limit\u00e9e !\nHERO IMAGE: Profitez de 50% sur PopBrush (Placeholder)\nHERO TITLE: Profitez de 50% sur PopBrush\nHERO SUBTITLE: Votre routine capillaire n'a jamais \u00e9t\u00e9 aussi simple et douce gr\u00e2ce \u00e0 PopBrush.\nCTA: Shop Now\n\n--- DESCRIPTIVE BLOCK ---\nTITLE: Les secrets d'une belle chevelure\nCONTENT: Imaginez des cheveux doux, brillants et d\u00e9m\u00eal\u00e9s sans effort, chaque jour. PopBrush allie 2 mat\u00e9riaux experts :\n\n\u2022 Poils de sanglier naturels pour une brillance incomparable et une r\u00e9partition du s\u00e9bum.\n\n\u2022 Picots en nylon flexibles pour un d\u00e9m\u00ealage rapide, sans douleur, m\u00eame sur cheveux \u00e9pais ou boucl\u00e9s.\n\nR\u00e9sultat : moins de casse, moins de frisottis, beaut\u00e9 naturelle pr\u00e9serv\u00e9e. Profitez de cette exp\u00e9rience unique \u00e0 50% pendant quelques jours seulement.\nCTA DESCRIPTIVE: Obtenir PopBrush \u00e0 50%\n\n--- PRODUCTS ---\n- Brosse D\u00e9m\u00ealante Anti Casse\n- Brosse Pliable Format Sac \u00e0 Main\n- Le Peigne D\u00e9m\u00ealant\nCTA: Shop Now\n\n--- FOOTER ---\nN/A\n",
+    "structure_id": "STRUCT_5050_SPLIT",
+    "language": "FR"
+  }
+]
