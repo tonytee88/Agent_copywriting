@@ -1,0 +1,82 @@
+[
+  {
+    "subject": "Cheveux impeccables, m\u00eame sous la neige",
+    "preview": "Des astuces pour des cheveux sereins cet hiver",
+    "hero_title": "Routine sereine pour cheveux en hiver",
+    "hero_subtitle": "Passez des tracas hivernaux \u00e0 la confiance et beaut\u00e9 sans effort",
+    "cta_hero": "Voir les essentiels hiver",
+    "descriptive_block_title": "Adieu casse et frisottis",
+    "descriptive_block_subtitle": "Des conseils chaleureux pour des cheveux forts",
+    "descriptive_block_content": "<h3>Prot\u00e9gez vos cheveux cet hiver.</h3><br><p>Nous savons que l\u2019hiver peut \u00eatre rude pour vos cheveux, mais rassurez-vous, vous n\u2019\u00eates pas seule.<br><br>Quelques gestes simples font toute la diff\u00e9rence\u202f: utilisez une <b>brosse douce</b> pour limiter la casse sous le bonnet, appliquez des <b>soins nourrissants</b> pour fortifier votre fibre capillaire, et choisissez des accessoires en <b>mati\u00e8res douces</b> pour limiter l\u2019\u00e9lectricit\u00e9 statique.</p><br><p><i>Avec ces astuces, vos cheveux resteront forts et brillants malgr\u00e9 le froid.</i></p>",
+    "cta_descriptive": "Voir les outils adapt\u00e9s",
+    "product_block_title": "Les alli\u00e9s de votre routine hivernale",
+    "product_block_subtitle": "Brosses et soins pour des cheveux sublimes tout l\u2019hiver",
+    "products": [
+      "Brosse D\u00e9m\u00ealante Anti-Casse",
+      "Le Soin R\u00e9parateur",
+      "Brosse Pliable Format Sac \u00e0 Main"
+    ],
+    "product_block_content": null,
+    "cta_product": "Voir la collection hiver",
+    "full_text_formatted": "\nSUBJECT: Cheveux impeccables, m\u00eame sous la neige\nPREVIEW: Des astuces pour des cheveux sereins cet hiver\nHERO IMAGE: Routine sereine pour cheveux en hiver (Placeholder)\nHERO TITLE: Routine sereine pour cheveux en hiver\nHERO SUBTITLE: Passez des tracas hivernaux \u00e0 la confiance et beaut\u00e9 sans effort\nCTA: Voir les essentiels hiver\n\n--- DESCRIPTIVE BLOCK ---\nTITLE: Adieu casse et frisottis\nCONTENT: Nous savons que l\u2019hiver peut \u00eatre rude pour vos cheveux, mais rassurez-vous, vous n\u2019\u00eates pas seule. Quelques gestes simples font toute la diff\u00e9rence : utilisez une brosse douce pour limiter la casse sous le bonnet, appliquez des soins nourrissants pour fortifier votre fibre capillaire, et choisissez des accessoires en mati\u00e8res douces pour limiter l\u2019\u00e9lectricit\u00e9 statique. \u00c9vitez aussi de sortir avec les cheveux mouill\u00e9s. Vous m\u00e9ritez des cheveux qui brillent et restent forts malgr\u00e9 le froid. Avec ces astuces et les bons outils, vous pouvez sortir chaque jour avec assurance et s\u00e9r\u00e9nit\u00e9.\nCTA DESCRIPTIVE: Voir les outils adapt\u00e9s\n\n--- PRODUCTS ---\n- Brosse D\u00e9m\u00ealante Anti-Casse\n- Le Soin R\u00e9parateur\n- Brosse Pliable Format Sac \u00e0 Main\nCTA: Voir la collection hiver\n\n--- FOOTER ---\nN/A\n",
+    "slot_number": 1,
+    "status": "completed",
+    "content": "\nSUBJECT: Cheveux impeccables, m\u00eame sous la neige\nPREVIEW: Des astuces pour des cheveux sereins cet hiver\nHERO IMAGE: Routine sereine pour cheveux en hiver (Placeholder)\nHERO TITLE: Routine sereine pour cheveux en hiver\nHERO SUBTITLE: Passez des tracas hivernaux \u00e0 la confiance et beaut\u00e9 sans effort\nCTA: Voir les essentiels hiver\n\n--- DESCRIPTIVE BLOCK ---\nTITLE: Adieu casse et frisottis\nCONTENT: Nous savons que l\u2019hiver peut \u00eatre rude pour vos cheveux, mais rassurez-vous, vous n\u2019\u00eates pas seule. Quelques gestes simples font toute la diff\u00e9rence : utilisez une brosse douce pour limiter la casse sous le bonnet, appliquez des soins nourrissants pour fortifier votre fibre capillaire, et choisissez des accessoires en mati\u00e8res douces pour limiter l\u2019\u00e9lectricit\u00e9 statique. \u00c9vitez aussi de sortir avec les cheveux mouill\u00e9s. Vous m\u00e9ritez des cheveux qui brillent et restent forts malgr\u00e9 le froid. Avec ces astuces et les bons outils, vous pouvez sortir chaque jour avec assurance et s\u00e9r\u00e9nit\u00e9.\nCTA DESCRIPTIVE: Voir les outils adapt\u00e9s\n\n--- PRODUCTS ---\n- Brosse D\u00e9m\u00ealante Anti-Casse\n- Le Soin R\u00e9parateur\n- Brosse Pliable Format Sac \u00e0 Main\nCTA: Voir la collection hiver\n\n--- FOOTER ---\nN/A\n",
+    "structure_id": "STRUCT_NARRATIVE_PARAGRAPH",
+    "language": "FR"
+  },
+  {
+    "subject": "Pr\u00eate pour ce soir ? La checklist beaut\u00e9 \u2728",
+    "preview": "Routine express, confiance totale et brillance en 1 geste.",
+    "hero_title": "Rayonnez en quelques minutes",
+    "hero_subtitle": "Soyez pr\u00eate pour le premier rendez-vous avec notre offre sp\u00e9ciale. Ce soir, c\u2019est le moment de briller\u202f: routine rapide, z\u00e9ro stress.",
+    "cta_hero": "Shop Now",
+    "descriptive_block_title": "Checklist Beaut\u00e9 du Premier Soir",
+    "descriptive_block_subtitle": "Moins de temps devant le miroir, plus pour savourer la magie.",
+    "descriptive_block_content": "<h3>Ta routine express pour briller</h3><p>Imagine ce moment\u202f: tu es devant le miroir, le c\u0153ur qui bat vite, l\u2019envie d\u2019\u00eatre au top sans perdre une minute.<br><br>On est l\u00e0 pour toi. Ta routine express va transformer la nervosit\u00e9 en confiance\u202f!</p><br><ul><li><b>\u2728 Termin\u00e9 l\u2019anxi\u00e9t\u00e9\u202f:</b> Chaque \u00e9tape te simplifie la vie.</li><li><b>\u2728 Routine express\u202f:</b> Coiffure sans douleur, brillance au rendez-vous.</li><li><b>\u2728 Douceur absolue\u202f:</b> Prends une minute juste pour toi, le stress s\u2019envole.</li></ul>",
+    "cta_descriptive": "D\u00e9couvrir les alli\u00e9s brillance",
+    "product_block_title": "Ce soir, brillez sans compromis",
+    "product_block_subtitle": "Les indispensables pour une coiffure parfaite, pr\u00eats \u00e0 t\u2019accompagner pour ce grand soir. Offre valable jusqu\u2019\u00e0 minuit\u202f: c\u2019est le moment de foncer\u202f!",
+    "products": [
+      "Brosse D\u00e9m\u00ealante Anti-Casse",
+      "Brosse Pliable Format Sac \u00e0 Main",
+      "Le Peigne D\u00e9m\u00ealant"
+    ],
+    "product_block_content": null,
+    "cta_product": "Voir la collection",
+    "full_text_formatted": "\nSUBJECT: Pr\u00eate pour ce soir ? La checklist beaut\u00e9 \u2728\nPREVIEW: Routine express, confiance totale et brillance en 1 geste.\nHERO IMAGE: Rayonnez en quelques minutes (Placeholder)\nHERO TITLE: Rayonnez en quelques minutes\nHERO SUBTITLE: Soyez pr\u00eate pour le premier rendez-vous avec notre offre sp\u00e9ciale. Ce soir, c\u2019est le moment de briller\u202f: routine rapide, z\u00e9ro stress.\nCTA: Shop Now\n\n--- DESCRIPTIVE BLOCK ---\nTITLE: Checklist Beaut\u00e9 du Premier Soir\nCONTENT: Imagine ce moment\u202f: tu es devant le miroir, le c\u0153ur qui bat vite, l\u2019envie d\u2019\u00eatre au top sans perdre une minute. On est l\u00e0 pour toi, ta routine express va transformer la nervosit\u00e9 en confiance\u202f! Voici ta checklist complice\u202f:\n\n\u2728 Termin\u00e9 l\u2019anxi\u00e9t\u00e9\u202f: chaque \u00e9tape te simplifie la vie\n\u2728 Routine express\u202f: coiffure sans douleur, brillance au rendez-vous\n\u2728 Douceur absolue\u202f: prends une minute juste pour toi, le stress s\u2019envole\n\u2728 L\u2019amour de soi\u202f: commence par ce petit geste devant le miroir\n\nOn a ton dos\u202f: ce soir, tu brilles sans compromis\u202f!\nCTA DESCRIPTIVE: D\u00e9couvrir les alli\u00e9s brillance\n\n--- PRODUCTS ---\n- Brosse D\u00e9m\u00ealante Anti-Casse\n- Brosse Pliable Format Sac \u00e0 Main\n- Le Peigne D\u00e9m\u00ealant\nCTA: Voir la collection\n\n--- FOOTER ---\nN/A\n",
+    "slot_number": 2,
+    "status": "completed",
+    "content": "\nSUBJECT: Pr\u00eate pour ce soir ? La checklist beaut\u00e9 \u2728\nPREVIEW: Routine express, confiance totale et brillance en 1 geste.\nHERO IMAGE: Rayonnez en quelques minutes (Placeholder)\nHERO TITLE: Rayonnez en quelques minutes\nHERO SUBTITLE: Soyez pr\u00eate pour le premier rendez-vous avec notre offre sp\u00e9ciale. Ce soir, c\u2019est le moment de briller\u202f: routine rapide, z\u00e9ro stress.\nCTA: Shop Now\n\n--- DESCRIPTIVE BLOCK ---\nTITLE: Checklist Beaut\u00e9 du Premier Soir\nCONTENT: Imagine ce moment\u202f: tu es devant le miroir, le c\u0153ur qui bat vite, l\u2019envie d\u2019\u00eatre au top sans perdre une minute. On est l\u00e0 pour toi, ta routine express va transformer la nervosit\u00e9 en confiance\u202f! Voici ta checklist complice\u202f:\n\n\u2728 Termin\u00e9 l\u2019anxi\u00e9t\u00e9\u202f: chaque \u00e9tape te simplifie la vie\n\u2728 Routine express\u202f: coiffure sans douleur, brillance au rendez-vous\n\u2728 Douceur absolue\u202f: prends une minute juste pour toi, le stress s\u2019envole\n\u2728 L\u2019amour de soi\u202f: commence par ce petit geste devant le miroir\n\nOn a ton dos\u202f: ce soir, tu brilles sans compromis\u202f!\nCTA DESCRIPTIVE: D\u00e9couvrir les alli\u00e9s brillance\n\n--- PRODUCTS ---\n- Brosse D\u00e9m\u00ealante Anti-Casse\n- Brosse Pliable Format Sac \u00e0 Main\n- Le Peigne D\u00e9m\u00ealant\nCTA: Voir la collection\n\n--- FOOTER ---\nN/A\n",
+    "structure_id": "STRUCT_EMOJI_CHECKLIST",
+    "language": "FR"
+  },
+  {
+    "subject": "Le cadeau Saint-Valentin qui dit vraiment 'je t'aime'",
+    "preview": "Personnalisez son quotidien avec une attention unique (offre 61% limit\u00e9e)",
+    "hero_title": "Une preuve d'amour au quotidien",
+    "hero_subtitle": "Un coffret qui dit tout sans un mot, \u00e9dition limit\u00e9e \u00e0 61%",
+    "cta_hero": "Profiter de 61%",
+    "descriptive_block_title": "Transformez un objet en d\u00e9claration d'amour",
+    "descriptive_block_subtitle": "Un cadeau qui cr\u00e9e un vrai lien chaque matin",
+    "descriptive_block_content": "<table width='100%' style='background-color: #f4f4f4; border-radius: 8px;'><tr><td style='padding: 20px; text-align: center;'><h3>Un geste simple, un souvenir pr\u00e9cieux</h3><p><b>La personnalisation</b> transforme chaque brossage en moment tendre.<br><br>\u2022 Un accessoire quotidien devient <b>message intime</b> gr\u00e2ce au pr\u00e9nom grav\u00e9.<br><br>\u2022 Chaque matin, ce geste tout simple lui rappellera combien vous tenez \u00e0 elle/lui.<br><br>\u2022 Offrez-lui la douceur d'une attention qui r\u00e9chauffe le c\u0153ur et \u00e9voque de pr\u00e9cieux souvenirs.</p><br><b>Partagez des instants complices, jour apr\u00e8s jour.</b></td></tr></table>",
+    "cta_descriptive": "Voir le coffret personnalis\u00e9",
+    "product_block_title": "Le coffret parfait pour la Saint-Valentin",
+    "product_block_subtitle": "Tout pour chouchouter sa chevelure et son sourire chaque jour, offre limit\u00e9e \u00e0 61%",
+    "products": [
+      "2 Brosses d\u00e9m\u00ealantes personnalisables",
+      "1 Brosse de voyage compacte",
+      "1 Brosse pliante pratique",
+      "Elastiques multicolores",
+      "Kit de personnalisation pr\u00e9nom"
+    ],
+    "product_block_content": null,
+    "cta_product": "Profiter de 61% maintenant",
+    "full_text_formatted": "\nSUBJECT: Le cadeau Saint-Valentin qui dit vraiment 'je t'aime'\nPREVIEW: Personnalisez son quotidien avec une attention unique (offre 61% limit\u00e9e)\nHERO IMAGE: Une preuve d'amour au quotidien (Placeholder)\nHERO TITLE: Une preuve d'amour au quotidien\nHERO SUBTITLE: Un coffret qui dit tout sans un mot, \u00e9dition limit\u00e9e \u00e0 61%\nCTA: Profiter de 61%\n\n--- DESCRIPTIVE BLOCK ---\nTITLE: Transformez un objet en d\u00e9claration d'amour\nCONTENT: <b>La personnalisation</b> transforme chaque brossage en moment tendre.<br><br>\u2022 Un accessoire quotidien devient <b>message intime</b> gr\u00e2ce au pr\u00e9nom grav\u00e9.<br>\u2022 Chaque matin, ce geste tout simple lui rappellera combien vous tenez \u00e0 elle/lui.<br>\u2022 Offrez-lui la douceur d'une attention qui r\u00e9chauffe le c\u0153ur et \u00e9voque de pr\u00e9cieux souvenirs.<br><br>Ce coffret invite \u00e0 partager des instants complices, jour apr\u00e8s jour.\nCTA DESCRIPTIVE: Voir le coffret personnalis\u00e9\n\n--- PRODUCTS ---\n- 2 Brosses d\u00e9m\u00ealantes personnalisables\n- 1 Brosse de voyage compacte\n- 1 Brosse pliante pratique\n- Elastiques multicolores\n- Kit de personnalisation pr\u00e9nom\nCTA: Profiter de 61% maintenant\n\n--- FOOTER ---\nN/A\n",
+    "slot_number": 3,
+    "status": "completed",
+    "content": "\nSUBJECT: Le cadeau Saint-Valentin qui dit vraiment 'je t'aime'\nPREVIEW: Personnalisez son quotidien avec une attention unique (offre 61% limit\u00e9e)\nHERO IMAGE: Une preuve d'amour au quotidien (Placeholder)\nHERO TITLE: Une preuve d'amour au quotidien\nHERO SUBTITLE: Un coffret qui dit tout sans un mot, \u00e9dition limit\u00e9e \u00e0 61%\nCTA: Profiter de 61%\n\n--- DESCRIPTIVE BLOCK ---\nTITLE: Transformez un objet en d\u00e9claration d'amour\nCONTENT: <b>La personnalisation</b> transforme chaque brossage en moment tendre.<br><br>\u2022 Un accessoire quotidien devient <b>message intime</b> gr\u00e2ce au pr\u00e9nom grav\u00e9.<br>\u2022 Chaque matin, ce geste tout simple lui rappellera combien vous tenez \u00e0 elle/lui.<br>\u2022 Offrez-lui la douceur d'une attention qui r\u00e9chauffe le c\u0153ur et \u00e9voque de pr\u00e9cieux souvenirs.<br><br>Ce coffret invite \u00e0 partager des instants complices, jour apr\u00e8s jour.\nCTA DESCRIPTIVE: Voir le coffret personnalis\u00e9\n\n--- PRODUCTS ---\n- 2 Brosses d\u00e9m\u00ealantes personnalisables\n- 1 Brosse de voyage compacte\n- 1 Brosse pliante pratique\n- Elastiques multicolores\n- Kit de personnalisation pr\u00e9nom\nCTA: Profiter de 61% maintenant\n\n--- FOOTER ---\nN/A\n",
+    "structure_id": "STRUCT_SPOTLIGHT_BOX",
+    "language": "FR"
+  }
+]

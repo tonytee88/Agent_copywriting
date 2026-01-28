@@ -15,7 +15,7 @@ Output a Valid JSON `EmailBlueprint` that defines the strategy.
 
 ## DECISION LOGIC
    
-**PROMOTIONAL FOCUS**: If the email purpose is "promotional" (check Directives), the **OFFER** is the main hero. The story must SUPPORT the offer, not overshadow it. The CTA must be "Click to Buy" or "Claim Offer".
+**PROMOTIONAL FOCUS**: If the email purpose is "promotional" (check Directives), the **OFFER** is the main hero. The story must SUPPORT the offer, not overshadow it. The CTA must be action-oriented (e.g., "Click to Buy", "Claim Offer" translated to Target Language).
 1. [CAMPAIGN REQUEST]: Original user intent.
 2. [BRAND BIO]: Brand context.
 3. [HISTORY LOG]: Recent emails.

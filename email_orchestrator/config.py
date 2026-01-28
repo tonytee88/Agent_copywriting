@@ -5,7 +5,7 @@ Change models here to switch between testing (cheaper/faster) and production (hi
 
 # --- ADK Agents (Orchestrator, Campaign Planner) ---
 # Supported: "gemini-2.0-flash-exp", "gemini-1.5-pro-preview-0409", "gemini-3-pro-preview"
-ADK_MODEL = "gemini-2.0-flash-exp"
+ADK_MODEL = "gemini-3-pro-preview"
 
 # --- Straico Agents (Strategist, Verifier, Drafter, etc.) ---
 # Supported: "openai/gpt-4o-2024-11-20", "openai/gpt-5-chat", "openai/gpt-5", "anthropic/claude-sonnet-4", "anthropic/claude-3-5-haiku-20241022"

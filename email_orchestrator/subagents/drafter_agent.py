@@ -63,11 +63,14 @@ The client has provided specific feedback. You MUST prioritize these notes over 
     
     # Inject Campaign Context (User Constraints)
     if campaign_context:
-        full_prompt += f"\n\nCAMPAIGN CONTEXT/CONSTRAINTS:\n{campaign_context}\n\nIMPORTANT: You MUST respect all constraints mentioned in the Campaign Context above."
-    
-    # Inject Campaign Context (User Constraints)
-    if campaign_context:
-        full_prompt += f"\n\nCAMPAIGN CONTEXT/CONSTRAINTS:\n{campaign_context}\n\nIMPORTANT: You MUST respect all constraints mentioned in the Campaign Context above."
+        full_prompt += f"""
+\n\n=== GLOBAL CAMPAIGN BACKGROUND (CONTEXT ONLY) ===
+{campaign_context}
+=================================================
+NOTE: This is the background for the entire campaign series.
+CRITICAL RULE: CHECK THE BLUEPRINT. The Blueprint is the specific plan for THIS individual email.
+If the Blueprint contradicts the Global Background (e.g. different offer, different topic), YOU MUST FOLLOW THE BLUEPRINT.
+"""
     
     # 4. Call Straico API
     client = get_client()
@@ -142,7 +145,14 @@ The client has provided specific feedback. You MUST prioritize these notes over 
         # Inject Language & Context
         full_prompt += f"\n\nCRITICAL: You MUST write the email in {self.language}."
         if self.campaign_context:
-            full_prompt += f"\n\nCAMPAIGN CONTEXT/CONSTRAINTS:\n{self.campaign_context}\n\nIMPORTANT: You MUST respect all constraints mentioned in the Campaign Context above."
+            full_prompt += f"""
+\n\n=== GLOBAL CAMPAIGN BACKGROUND (CONTEXT ONLY) ===
+{self.campaign_context}
+=================================================
+NOTE: This is the background for the entire campaign series.
+CRITICAL RULE: CHECK THE BLUEPRINT. The Blueprint is the specific plan for THIS individual email.
+If the Blueprint contradicts the Global Background (e.g. different offer, different topic), YOU MUST FOLLOW THE BLUEPRINT.
+"""
             
         # 4. Execute
         self.history.append({"role": "user", "content": full_prompt})

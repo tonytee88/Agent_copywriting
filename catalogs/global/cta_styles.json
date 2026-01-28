@@ -4,9 +4,8 @@
         "name": "Direct Shop",
         "description": "Standard direct purchase.",
         "guidelines": [
-            "Shop Now",
-            "Buy Now",
-            "Get Yours"
+            "Action Verb + Now (e.g. Shop Now, Acheter, Kaufen)",
+            "Direct ownership claim (e.g. Get Yours)"
         ],
         "tags": [
             "hard_sell"
@@ -17,9 +16,8 @@
         "name": "Discover / Explore",
         "description": "Softer invitation to browse.",
         "guidelines": [
-            "Discover the Collection",
-            "Explore Now",
-            "See What's New"
+            "Low friction verb (e.g. Discover, Explore, Voir)",
+            "Curiosity driven (e.g. See what's new)"
         ],
         "tags": [
             "medium"
@@ -30,9 +28,8 @@
         "name": "Educational / Learn",
         "description": "Invitation to read or learn more.",
         "guidelines": [
-            "Learn More",
-            "Read the Guide",
-            "See How It Works"
+            "Knowledge gain (e.g. Read Guide, Lire le guide)",
+            "Process revelation (e.g. See how it works)"
         ],
         "tags": [
             "soft",
@@ -44,9 +41,8 @@
         "name": "Claim Offer",
         "description": "High urgency offer claiming.",
         "guidelines": [
-            "Claim My 20% Off",
-            "Get My Gift",
-            "Redeem Now"
+            "Benefit claim (e.g. Claim my %, Profiter de l'offre)",
+            "Urgent redemption (e.g. Redeem Now)"
         ],
         "tags": [
             "hard_sell",
@@ -58,9 +54,8 @@
         "name": "Join Community",
         "description": "Membership or social join.",
         "guidelines": [
-            "Join the Club",
-            "Become a Member",
-            "Sign Up Free"
+            "Club entry (e.g. Join the club, Rejoindre)",
+            "Status acquisition (e.g. Become a member)"
         ],
         "tags": [
             "nurture"
@@ -71,9 +66,8 @@
         "name": "Benefit Driven",
         "description": "CTA focuses on the result.",
         "guidelines": [
-            "Start Sleeping Better",
-            "Fix My Hair",
-            "Boost My Energy"
+            "Outcome focus (e.g. Start sleeping better)",
+            "Problem/Solution (e.g. Fix my hair)"
         ],
         "tags": [
             "conversion",
@@ -85,9 +79,8 @@
         "name": "Risk Reversal",
         "description": "Emphasizes guarantee.",
         "guidelines": [
-            "Try Risk-Free",
-            "30-Day Trial",
-            "Money-Back Guarantee"
+            "Safety focus (e.g. Try risk-free, Essai gratuit)",
+            "Guarantee focus (e.g. 30-day trial)"
         ],
         "tags": [
             "high_trust"
@@ -98,9 +91,8 @@
         "name": "Scarcity / Limited",
         "description": "Emphasizes low stock.",
         "guidelines": [
-            "Shop Before It's Gone",
-            "Only 5 Left",
-            "Last Chance"
+            "FOMO trigger (e.g. Shop before it's gone)",
+            "Quantity trigger (e.g. Only 5 left)"
         ],
         "tags": [
             "urgency"
