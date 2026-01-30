@@ -1,0 +1,28 @@
+[
+  {
+    "subject": "Un cadeau utile pour la St-Valentin",
+    "preview": "Pour la personne qui compte, choisissez un pr\u00e9sent rassurant.",
+    "hero_title": "St-Valentin en s\u00e9curit\u00e9 avec 45% de rabais",
+    "hero_subtitle": "Offrez la ma\u00eetrise et profitez des rabais d'hiver exclusifs",
+    "cta_hero": "Profitez des rabais",
+    "descriptive_block_title": "Le chemin vers la confiance au volant",
+    "descriptive_block_subtitle": "Offrir la ma\u00eetrise au volant, c\u2019est offrir bien plus qu\u2019un cadeau, c\u2019est transmettre la s\u00e9r\u00e9nit\u00e9 et prot\u00e9ger vos proches.",
+    "descriptive_block_content": "<p><b>\u00c9tape 1 :</b> Apprenez les gestes qui sauvent lors d\u2019un d\u00e9rapage et transformez votre conduite en un <b>r\u00e9flexe s\u00e9curitaire</b>.</p><br><br><p><b>\u00c9tape 2 :</b> Gr\u00e2ce \u00e0 des <b>exercices pratiques</b>, la peur devient confiance, chaque mouvement est ma\u00eetris\u00e9.</p><br><br><p><b>\u00c9tape 3 :</b> Repartez pr\u00eat \u00e0 prot\u00e9ger vos proches en toute saison.<br>Offrir cette exp\u00e9rience, c\u2019est transmettre la <b>ma\u00eetrise</b> et la <b>s\u00e9r\u00e9nit\u00e9</b> au quotidien.<br>Les options \u00e0 d\u00e9couvrir sont con\u00e7ues pour ceux qui veulent allier <b>plaisir</b> et <b>s\u00e9curit\u00e9</b>.</p>",
+    "cta_descriptive": "Voir les activit\u00e9s",
+    "product_block_title": "Exp\u00e9riences \u00e0 offrir pour surprendre",
+    "product_block_subtitle": "Choisissez la formation qui fera la diff\u00e9rence pour ceux que vous aimez.",
+    "products": [
+      "Cours de conduite pr\u00e9ventive",
+      "Rallye sur glace",
+      "Session karting s\u00e9curitaire"
+    ],
+    "product_block_content": null,
+    "cta_product": "Shop Now",
+    "full_text_formatted": "\nSUBJECT: Un cadeau utile pour la St-Valentin\nPREVIEW: Pour la personne qui compte, choisissez un pr\u00e9sent rassurant.\nHERO IMAGE: St-Valentin en s\u00e9curit\u00e9 avec 45% de rabais (Placeholder)\nHERO TITLE: St-Valentin en s\u00e9curit\u00e9 avec 45% de rabais\nHERO SUBTITLE: Offrez la ma\u00eetrise et profitez des rabais d'hiver exclusifs\nCTA: Profitez des rabais\n\n--- DESCRIPTIVE BLOCK ---\nTITLE: Le chemin vers la confiance au volant\nCONTENT: <b>\u00c9tape 1 :</b> Apprenez les gestes qui sauvent lors d\u2019un d\u00e9rapage et transformez votre conduite en un r\u00e9flexe s\u00e9curitaire.<br><b>\u00c9tape 2 :</b> Gr\u00e2ce \u00e0 des exercices pratiques, la peur devient confiance, chaque mouvement est ma\u00eetris\u00e9.<br><b>\u00c9tape 3 :</b> Repartez pr\u00eat \u00e0 prot\u00e9ger vos proches en toute saison.<br>Offrir cette exp\u00e9rience, c\u2019est transmettre la ma\u00eetrise et la s\u00e9r\u00e9nit\u00e9 au quotidien. Les options \u00e0 d\u00e9couvrir sont con\u00e7ues pour ceux qui veulent allier plaisir et s\u00e9curit\u00e9.\nCTA DESCRIPTIVE: Voir les activit\u00e9s\n\n--- PRODUCTS ---\n- Cours de conduite pr\u00e9ventive\n- Rallye sur glace\n- Session karting s\u00e9curitaire\nCTA: Shop Now\n\n--- FOOTER ---\nN/A\n",
+    "slot_number": 2,
+    "status": "completed",
+    "content": "\nSUBJECT: Un cadeau utile pour la St-Valentin\nPREVIEW: Pour la personne qui compte, choisissez un pr\u00e9sent rassurant.\nHERO IMAGE: St-Valentin en s\u00e9curit\u00e9 avec 45% de rabais (Placeholder)\nHERO TITLE: St-Valentin en s\u00e9curit\u00e9 avec 45% de rabais\nHERO SUBTITLE: Offrez la ma\u00eetrise et profitez des rabais d'hiver exclusifs\nCTA: Profitez des rabais\n\n--- DESCRIPTIVE BLOCK ---\nTITLE: Le chemin vers la confiance au volant\nCONTENT: <b>\u00c9tape 1 :</b> Apprenez les gestes qui sauvent lors d\u2019un d\u00e9rapage et transformez votre conduite en un r\u00e9flexe s\u00e9curitaire.<br><b>\u00c9tape 2 :</b> Gr\u00e2ce \u00e0 des exercices pratiques, la peur devient confiance, chaque mouvement est ma\u00eetris\u00e9.<br><b>\u00c9tape 3 :</b> Repartez pr\u00eat \u00e0 prot\u00e9ger vos proches en toute saison.<br>Offrir cette exp\u00e9rience, c\u2019est transmettre la ma\u00eetrise et la s\u00e9r\u00e9nit\u00e9 au quotidien. Les options \u00e0 d\u00e9couvrir sont con\u00e7ues pour ceux qui veulent allier plaisir et s\u00e9curit\u00e9.\nCTA DESCRIPTIVE: Voir les activit\u00e9s\n\n--- PRODUCTS ---\n- Cours de conduite pr\u00e9ventive\n- Rallye sur glace\n- Session karting s\u00e9curitaire\nCTA: Shop Now\n\n--- FOOTER ---\nN/A\n",
+    "structure_id": "STRUCT_STEP_BY_STEP",
+    "language": "FR"
+  }
+]

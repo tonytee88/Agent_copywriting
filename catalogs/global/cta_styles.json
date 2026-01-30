@@ -4,8 +4,9 @@
         "name": "Direct Shop",
         "description": "Standard direct purchase.",
         "guidelines": [
-            "Action Verb + Now (e.g. Shop Now, Acheter, Kaufen)",
-            "Direct ownership claim (e.g. Get Yours)"
+            "Use a strong Action Verb + 'Now' (Translated to Target Language)",
+            "MUST specify WHAT is being bought/shopped (e.g. 'Shop the Sale', 'Get the Bundle')",
+            "NEVER just 'Shop Now' alone if a specific offer exists"
         ],
         "tags": [
             "hard_sell"
@@ -16,8 +17,8 @@
         "name": "Discover / Explore",
         "description": "Softer invitation to browse.",
         "guidelines": [
-            "Low friction verb (e.g. Discover, Explore, Voir)",
-            "Curiosity driven (e.g. See what's new)"
+            "Low friction verb (Translated to Target Language)",
+            "Curiosity driven (e.g. 'See the new collection' in Target Language)"
         ],
         "tags": [
             "medium"
@@ -28,8 +29,8 @@
         "name": "Educational / Learn",
         "description": "Invitation to read or learn more.",
         "guidelines": [
-            "Knowledge gain (e.g. Read Guide, Lire le guide)",
-            "Process revelation (e.g. See how it works)"
+            "Knowledge gain (Translated to Target Language)",
+            "Process revelation (e.g. 'See how it works' in Target Language)"
         ],
         "tags": [
             "soft",
@@ -41,8 +42,8 @@
         "name": "Claim Offer",
         "description": "High urgency offer claiming.",
         "guidelines": [
-            "Benefit claim (e.g. Claim my %, Profiter de l'offre)",
-            "Urgent redemption (e.g. Redeem Now)"
+            "Explicit Benefit claim (e.g. 'Get my 20% Off' in Target Language)",
+            "Urgent redemption verb (e.g. 'Redeem Now' in Target Language)"
         ],
         "tags": [
             "hard_sell",
@@ -54,8 +55,8 @@
         "name": "Join Community",
         "description": "Membership or social join.",
         "guidelines": [
-            "Club entry (e.g. Join the club, Rejoindre)",
-            "Status acquisition (e.g. Become a member)"
+            "Club entry/Invitation (Translated to Target Language)",
+            "Status acquisition (e.g. 'Become a Member' in Target Language)"
         ],
         "tags": [
             "nurture"
@@ -66,8 +67,8 @@
         "name": "Benefit Driven",
         "description": "CTA focuses on the result.",
         "guidelines": [
-            "Outcome focus (e.g. Start sleeping better)",
-            "Problem/Solution (e.g. Fix my hair)"
+            "Outcome focus (e.g. 'Start Sleeping Better' in Target Language)",
+            "Problem/Solution (e.g. 'Fix My Hair' in Target Language)"
         ],
         "tags": [
             "conversion",
@@ -79,8 +80,8 @@
         "name": "Risk Reversal",
         "description": "Emphasizes guarantee.",
         "guidelines": [
-            "Safety focus (e.g. Try risk-free, Essai gratuit)",
-            "Guarantee focus (e.g. 30-day trial)"
+            "Safety focus (e.g. 'Try Risk-Free' in Target Language)",
+            "Guarantee focus (e.g. '30-Day Trial' in Target Language)"
         ],
         "tags": [
             "high_trust"
@@ -91,8 +92,8 @@
         "name": "Scarcity / Limited",
         "description": "Emphasizes low stock.",
         "guidelines": [
-            "FOMO trigger (e.g. Shop before it's gone)",
-            "Quantity trigger (e.g. Only 5 left)"
+            "FOMO trigger (e.g. 'Shop before it's gone' in Target Language)",
+            "Quantity trigger (e.g. 'Only 5 left' in Target Language)"
         ],
         "tags": [
             "urgency"

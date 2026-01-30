@@ -1,0 +1,79 @@
+[
+  {
+    "subject": "Et si l\u2019hiver devenait votre terrain de jeu?",
+    "preview": "La saison du drift est ouverte. Vivez le frisson.",
+    "hero_title": "D\u00e9couvrez le fun du drift sur glace",
+    "hero_subtitle": "Sensations fortes garanties, jusqu'\u00e0 45% de rabais",
+    "cta_hero": "Voir la piste",
+    "descriptive_block_title": "Transformez la glace en sensations inoubliables",
+    "descriptive_block_subtitle": "Sentez l\u2019appel de l\u2019hiver et ma\u00eetrisez la glisse",
+    "descriptive_block_content": "<table width='100%' style='border: 1px dashed #999; background-color: #f9f9f9;'><tr><td style='padding: 20px; text-align: center;'><b>[[GIF IDEA: Une voiture d\u00e9rapant \u00e9l\u00e9gamment sur une piste glac\u00e9e avec des \u00e9clats de neige en arri\u00e8re-plan]]</b></td></tr></table><br><p><b>L\u2019hiver devient votre terrain de jeu.</b><br><br>Ma\u00eetrisez la glisse avec audace et profitez de <b>rabais jusqu\u2019\u00e0 45%</b> sur les rallyes sur glace.<br><br>Ne laissez pas la saison vous filer entre les doigts... D\u00e9couvrez le frisson d\u00e8s maintenant !</p>",
+    "cta_descriptive": "D\u00e9couvrir la sensation sur glace",
+    "product_block_title": "Saisissez l\u2019exp\u00e9rience tant qu\u2019elle est l\u00e0",
+    "product_block_subtitle": "Cette aventure sensorielle existe seulement en hiver. Sentez l\u2019adr\u00e9naline d\u00e8s le premier virage.",
+    "products": [
+      "Rallye sur glace",
+      "Cours de conduite pr\u00e9ventive",
+      "Exp\u00e9rience supercar hivernale"
+    ],
+    "product_block_content": null,
+    "cta_product": "Voir la collection",
+    "full_text_formatted": "\nSUBJECT: Et si l\u2019hiver devenait votre terrain de jeu?\nPREVIEW: La saison du drift est ouverte. Vivez le frisson.\nHERO IMAGE: D\u00e9couvrez le fun du drift sur glace (Placeholder)\nHERO TITLE: D\u00e9couvrez le fun du drift sur glace\nHERO SUBTITLE: Sensations fortes garanties, jusqu'\u00e0 45% de rabais\nCTA: Voir la piste\n\n--- DESCRIPTIVE BLOCK ---\nTITLE: Transformez la glace en sensations inoubliables\nCONTENT: <p><b>L\u2019hiver n\u2019est plus une contrainte, mais une opportunit\u00e9 unique de vivre des \u00e9motions intenses.</b> Sentez l\u2019appel de l\u2019hiver et ma\u00eetrisez la glisse comme jamais auparavant. Chaque virage devient une c\u00e9l\u00e9bration de l\u2019audace, chaque d\u00e9rapage contr\u00f4l\u00e9 r\u00e9veille votre esprit aventurier. <b>La saison glissante ne dure pas : vivez l\u2019exp\u00e9rience avant qu\u2019il ne soit trop tard.</b> Profitez de rabais jusqu'\u00e0 45% sur les rallyes sur glace et 25% sur la conduite pr\u00e9ventive. Sentez la neige voler, entendez le crissement des pneus et vivez le frisson hivernal accessible \u00e0 tous.</p>\nCTA DESCRIPTIVE: D\u00e9couvrir la sensation sur glace\n\n--- PRODUCTS ---\n- Rallye sur glace\n- Cours de conduite pr\u00e9ventive\n- Exp\u00e9rience supercar hivernale\nCTA: Voir la collection\n\n--- FOOTER ---\nN/A\n",
+    "slot_number": 1,
+    "status": "completed",
+    "content": "\nSUBJECT: Et si l\u2019hiver devenait votre terrain de jeu?\nPREVIEW: La saison du drift est ouverte. Vivez le frisson.\nHERO IMAGE: D\u00e9couvrez le fun du drift sur glace (Placeholder)\nHERO TITLE: D\u00e9couvrez le fun du drift sur glace\nHERO SUBTITLE: Sensations fortes garanties, jusqu'\u00e0 45% de rabais\nCTA: Voir la piste\n\n--- DESCRIPTIVE BLOCK ---\nTITLE: Transformez la glace en sensations inoubliables\nCONTENT: <p><b>L\u2019hiver n\u2019est plus une contrainte, mais une opportunit\u00e9 unique de vivre des \u00e9motions intenses.</b> Sentez l\u2019appel de l\u2019hiver et ma\u00eetrisez la glisse comme jamais auparavant. Chaque virage devient une c\u00e9l\u00e9bration de l\u2019audace, chaque d\u00e9rapage contr\u00f4l\u00e9 r\u00e9veille votre esprit aventurier. <b>La saison glissante ne dure pas : vivez l\u2019exp\u00e9rience avant qu\u2019il ne soit trop tard.</b> Profitez de rabais jusqu'\u00e0 45% sur les rallyes sur glace et 25% sur la conduite pr\u00e9ventive. Sentez la neige voler, entendez le crissement des pneus et vivez le frisson hivernal accessible \u00e0 tous.</p>\nCTA DESCRIPTIVE: D\u00e9couvrir la sensation sur glace\n\n--- PRODUCTS ---\n- Rallye sur glace\n- Cours de conduite pr\u00e9ventive\n- Exp\u00e9rience supercar hivernale\nCTA: Voir la collection\n\n--- FOOTER ---\nN/A\n",
+    "structure_id": "STRUCT_GIF_PREVIEW",
+    "language": "FR"
+  },
+  {
+    "subject": "Et si demain ta voiture d\u00e9rapait ?",
+    "preview": "Rabais d'hiver : jusqu'\u00e0 45% sur l'exp\u00e9rience.",
+    "hero_title": "Garde le contr\u00f4le en situation extr\u00eame",
+    "hero_subtitle": "D\u00e9couvre quoi faire si \u00e7a glisse. Profite de rabais d'hiver jusqu'\u00e0 45% sur nos activit\u00e9s.",
+    "cta_hero": "R\u00e9serve avec 45% de rabais",
+    "descriptive_block_title": "De la peur \u00e0 la ma\u00eetrise : mode d'emploi",
+    "descriptive_block_subtitle": "Transforme chaque impr\u00e9vu en r\u00e9flexe efficace",
+    "descriptive_block_content": "<p><b>\u00c9tape 1 :</b> Identifie les signes d\u2019un d\u00e9rapage <b>sans paniquer</b>.</p><br><br><p><b>\u00c9tape 2 :</b> Applique les bons gestes : <b>volant souple</b>, regard loin, frein pr\u00e9cis.</p><br><br><p><b>\u00c9tape 3 :</b> Reprends le contr\u00f4le, <b>prot\u00e8ge tes proches</b> et poursuis ta route sereinement.</p><br><br><p>La <b>confiance</b> vient de l'apprentissage concret, pas de la th\u00e9orie.<br>Profite de l'<b>exp\u00e9rience r\u00e9elle</b> cet hiver avec nos <b>rabais</b>.</p>",
+    "cta_descriptive": "R\u00e9serve ta place \u00e0 prix r\u00e9duit",
+    "product_block_title": "Passe \u00e0 l\u2019action sur piste r\u00e9elle",
+    "product_block_subtitle": "Vivre la conduite pr\u00e9ventive, c\u2019est choisir la s\u00e9curit\u00e9 et la libert\u00e9 au volant.",
+    "products": [
+      "Formation Conduite Pr\u00e9ventive",
+      "Stage Glisse Contr\u00f4l\u00e9e",
+      "Session Ma\u00eetrise Hivernale"
+    ],
+    "product_block_content": null,
+    "cta_product": "Profite de l'offre d'hiver",
+    "full_text_formatted": "\nSUBJECT: Et si demain ta voiture d\u00e9rapait ?\nPREVIEW: Rabais d'hiver : jusqu'\u00e0 45% sur l'exp\u00e9rience.\nHERO IMAGE: Garde le contr\u00f4le en situation extr\u00eame (Placeholder)\nHERO TITLE: Garde le contr\u00f4le en situation extr\u00eame\nHERO SUBTITLE: D\u00e9couvre quoi faire si \u00e7a glisse. Profite de rabais d'hiver jusqu'\u00e0 45% sur nos activit\u00e9s.\nCTA: R\u00e9serve avec 45% de rabais\n\n--- DESCRIPTIVE BLOCK ---\nTITLE: De la peur \u00e0 la ma\u00eetrise : mode d'emploi\nCONTENT: <b>\u00c9tape 1 :</b> Identifie les signes d\u2019un d\u00e9rapage sans paniquer.<br><b>\u00c9tape 2 :</b> Applique les bons gestes : volant souple, regard loin, frein pr\u00e9cis.<br><b>\u00c9tape 3 :</b> Reprends le contr\u00f4le, prot\u00e8ge tes proches et poursuis ta route sereinement.<br>La confiance vient de l'apprentissage concret, pas de la th\u00e9orie. Profite de l'exp\u00e9rience r\u00e9elle cet hiver avec nos rabais.\nCTA DESCRIPTIVE: R\u00e9serve ta place \u00e0 prix r\u00e9duit\n\n--- PRODUCTS ---\n- Formation Conduite Pr\u00e9ventive\n- Stage Glisse Contr\u00f4l\u00e9e\n- Session Ma\u00eetrise Hivernale\nCTA: Profite de l'offre d'hiver\n\n--- FOOTER ---\nN/A\n",
+    "slot_number": 2,
+    "status": "completed",
+    "content": "\nSUBJECT: Et si demain ta voiture d\u00e9rapait ?\nPREVIEW: Rabais d'hiver : jusqu'\u00e0 45% sur l'exp\u00e9rience.\nHERO IMAGE: Garde le contr\u00f4le en situation extr\u00eame (Placeholder)\nHERO TITLE: Garde le contr\u00f4le en situation extr\u00eame\nHERO SUBTITLE: D\u00e9couvre quoi faire si \u00e7a glisse. Profite de rabais d'hiver jusqu'\u00e0 45% sur nos activit\u00e9s.\nCTA: R\u00e9serve avec 45% de rabais\n\n--- DESCRIPTIVE BLOCK ---\nTITLE: De la peur \u00e0 la ma\u00eetrise : mode d'emploi\nCONTENT: <b>\u00c9tape 1 :</b> Identifie les signes d\u2019un d\u00e9rapage sans paniquer.<br><b>\u00c9tape 2 :</b> Applique les bons gestes : volant souple, regard loin, frein pr\u00e9cis.<br><b>\u00c9tape 3 :</b> Reprends le contr\u00f4le, prot\u00e8ge tes proches et poursuis ta route sereinement.<br>La confiance vient de l'apprentissage concret, pas de la th\u00e9orie. Profite de l'exp\u00e9rience r\u00e9elle cet hiver avec nos rabais.\nCTA DESCRIPTIVE: R\u00e9serve ta place \u00e0 prix r\u00e9duit\n\n--- PRODUCTS ---\n- Formation Conduite Pr\u00e9ventive\n- Stage Glisse Contr\u00f4l\u00e9e\n- Session Ma\u00eetrise Hivernale\nCTA: Profite de l'offre d'hiver\n\n--- FOOTER ---\nN/A\n",
+    "structure_id": "STRUCT_STEP_BY_STEP",
+    "language": "FR"
+  },
+  {
+    "subject": "Jusqu'\u00e0 45% rabais : choisissez votre hiver",
+    "preview": "Adr\u00e9naline ou s\u00e9curit\u00e9, les deux \u00e9motions \u00e0 prix r\u00e9duit.",
+    "hero_title": "Rallye sur glace ou conduite pr\u00e9ventive",
+    "hero_subtitle": "Derni\u00e8re chance : la glace fond bient\u00f4t",
+    "cta_hero": "Profiter des offres",
+    "descriptive_block_title": "Votre choix d\u00e9finit votre hiver",
+    "descriptive_block_subtitle": "Choisissez votre chemin : adr\u00e9naline ou ma\u00eetrise cet hiver",
+    "descriptive_block_content": "<table width='100%'>\n  <tr>\n    <td width='50%' valign='middle'>\n      <img src='[ImagePlaceholder]' alt='[Alt]' width='100%'>\n    </td>\n    <td width='50%' valign='middle' style='padding-left: 15px;'>\n      <p>\n        <b>Ne laissez pas l'hiver d\u00e9cider pour vous.</b><br><br>\n        Frisson pur ou contr\u00f4le total ?<br><br>\n        <b>Incarnez le pilote que vous r\u00eavez d\u2019\u00eatre</b> ou devenez le ma\u00eetre de la route hivernale.<br><br>\n        Les promotions disparaissent <b>quand la glace fond.</b><br><br>\n        <b>Votre choix, votre hiver.</b><br>\n        Faites-le avant qu'il ne soit trop tard.\n      </p>\n    </td>\n  </tr>\n</table>",
+    "cta_descriptive": "Voir les exp\u00e9riences",
+    "product_block_title": "Deux exp\u00e9riences, deux \u00e9motions",
+    "product_block_subtitle": "Rallye sur glace pour l\u2019adr\u00e9naline. Conduite pr\u00e9ventive pour dominer l\u2019hiver en toute confiance. Ces exp\u00e9riences hivernales \u00e0 prix r\u00e9duit ne dureront pas.",
+    "products": [
+      "Rallye sur glace",
+      "Conduite pr\u00e9ventive"
+    ],
+    "product_block_content": null,
+    "cta_product": "S\u00e9lectionner mon exp\u00e9rience",
+    "full_text_formatted": "\nSUBJECT: Jusqu'\u00e0 45% rabais : choisissez votre hiver\nPREVIEW: Adr\u00e9naline ou s\u00e9curit\u00e9, les deux \u00e9motions \u00e0 prix r\u00e9duit.\nHERO IMAGE: Rallye sur glace ou conduite pr\u00e9ventive (Placeholder)\nHERO TITLE: Rallye sur glace ou conduite pr\u00e9ventive\nHERO SUBTITLE: Derni\u00e8re chance : la glace fond bient\u00f4t\nCTA: Profiter des offres\n\n--- DESCRIPTIVE BLOCK ---\nTITLE: Votre choix d\u00e9finit votre hiver\nCONTENT: Ne laissez pas l'hiver d\u00e9cider pour vous. Frisson pur ou contr\u00f4le total ? Incarnez le pilote que vous r\u00eavez d\u2019\u00eatre ou devenez le ma\u00eetre de la route hivernale. Les promotions disparaissent quand la glace fond. Votre choix, votre hiver. Faites-le avant qu'il ne soit trop tard.\nCTA DESCRIPTIVE: Voir les exp\u00e9riences\n\n--- PRODUCTS ---\n- Rallye sur glace\n- Conduite pr\u00e9ventive\nCTA: S\u00e9lectionner mon exp\u00e9rience\n\n--- FOOTER ---\nN/A\n",
+    "slot_number": 3,
+    "status": "completed",
+    "content": "\nSUBJECT: Jusqu'\u00e0 45% rabais : choisissez votre hiver\nPREVIEW: Adr\u00e9naline ou s\u00e9curit\u00e9, les deux \u00e9motions \u00e0 prix r\u00e9duit.\nHERO IMAGE: Rallye sur glace ou conduite pr\u00e9ventive (Placeholder)\nHERO TITLE: Rallye sur glace ou conduite pr\u00e9ventive\nHERO SUBTITLE: Derni\u00e8re chance : la glace fond bient\u00f4t\nCTA: Profiter des offres\n\n--- DESCRIPTIVE BLOCK ---\nTITLE: Votre choix d\u00e9finit votre hiver\nCONTENT: Ne laissez pas l'hiver d\u00e9cider pour vous. Frisson pur ou contr\u00f4le total ? Incarnez le pilote que vous r\u00eavez d\u2019\u00eatre ou devenez le ma\u00eetre de la route hivernale. Les promotions disparaissent quand la glace fond. Votre choix, votre hiver. Faites-le avant qu'il ne soit trop tard.\nCTA DESCRIPTIVE: Voir les exp\u00e9riences\n\n--- PRODUCTS ---\n- Rallye sur glace\n- Conduite pr\u00e9ventive\nCTA: S\u00e9lectionner mon exp\u00e9rience\n\n--- FOOTER ---\nN/A\n",
+    "structure_id": "STRUCT_5050_SPLIT",
+    "language": "FR"
+  }
+]

@@ -188,6 +188,9 @@ Requirements:
         if context_parts:
             plan.campaign_context = "\n\n".join(context_parts)
             
+        # 5.b Ensure Languages are passed through
+        plan.languages = languages
+            
         return plan
 
     async def process_qa_feedback(

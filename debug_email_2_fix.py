@@ -17,7 +17,7 @@ async def test_email_2_fix():
         angle_description="Don't miss out",
         offer_details="50% OFF EVERYTHING",
         offer_placement="Hero",
-        cta_description="Action Verb + Now (e.g. Shop Now, Acheter, Kaufen)", # New abstract style
+        cta_description="CTA mentioning the 50% discount", # New dynamic directive
         cta_style_id="CTA_HARD",
         subject_ideas=["50% de reduction!"],
         preview_text_ideas=["C'est maintenant."],
@@ -42,12 +42,14 @@ async def test_email_2_fix():
     print(f"HERO SUBTITLE: {draft.hero_subtitle}")
     print(f"HERO CTA: {draft.cta_hero}")
     
-    # 4. Check CTA Language
+    # 4. Check CTA Language & Context
     lower_cta = draft.cta_hero.lower()
     if "shop now" in lower_cta or "get yours" in lower_cta:
         print("[FAIL] CTA is English!")
+    elif "50%" not in lower_cta and "black friday" not in lower_cta and "offre" not in lower_cta and "profiter" not in lower_cta:
+         print("[WARNING] CTA seems generic. Expected mention of offer.")
     else:
-        print("[SUCCESS] CTA seems French/Target (Not 'Shop Now').")
+        print("[SUCCESS] CTA seems Contextual & French.")
         
     # 5. Check Subtitle Length
     if len(draft.hero_subtitle) > 60: # giving slightly buffer over 50 strict

@@ -57,10 +57,11 @@ async def parse_campaign_request(user_input: str) -> CampaignRequest:
 
     Language Rules:
     - Default to ["FR"] if not specified.
-    - If user says "in English" or "en Anglais", return ["EN"].
-    - If user says "in French" or "en FR" or "en Français", return ["FR"].
-    - If user says "French and English" or "FR + EN", return ["FR", "EN"].
-    - If user says "English and French", return ["FR", "EN"] order is always FR then EN unless specifically mapped otherwise.
+    - If user says "English", "in English", "Anglais", or "EN" (without mentioning French), return ["EN"].
+    - If user mentions BOTH "FR" and "EN" (e.g. "FR et EN", "FR + EN", "French & English"), return ["FR", "EN"].
+    - If user says "Mixed" or "Bilingual", return ["FR", "EN"].
+    - ALWAYS return a List of strings.
+    - NEVER return null/None for 'excluded_days' or 'languages'. Use [] for empty lists.
     """
     
     try:

@@ -56,10 +56,13 @@ Your goal is to write a high-converting "Type #1" email by strictly following th
    - **OUTPUT FORMAT**: HTML-compatible tags only.
 6. **Adopt the Persona**: Use the voice/tone defined by the Persona Description.
 7. **CTA Strategy (Context-Aware)**:
-   - **Promotional**: Action-oriented (e.g., "Acheter maintenant", "Profiter de l'offre" if French, "Shop Now" if English).
-   - **Educational/Nurture**: Soft action (e.g., "Voir la collection", "Découvrir les conseils").
+   - **Promotional**: YOU MUST DESCRIBE THE OFFER. (e.g. "Get 50% Off", "Unlock Free Shipping").
+   - **Educational/Nurture**: Soft action (e.g. "See the routine", "Read the guide").
    - **CRITICAL**: The CTA text MUST be in the Target Language of the email.
-   - **BANNED**: NEVER use "Learn More", "Read More", "See Advice" (We do not have a blog). ALL CTAs must drive to a Product or Collection page.
+   - **BANNED**: 
+     - NEVER use "Shop Now", "Buy Now", or "Get Yours" as generic placeholders. 
+     - NEVER use "Learn More" or "Read More".
+   - **RULE**: If there is a discount, the CTA MUST mention it (e.g. "-50% Here").
    - **ZERO-CLICK POLICY**: All educational content/advice must be 100% contained WITHIN the email body. Do not tease content to get a click.
 8. **JSON OUTPUT ONLY**.
 9. **PATCHING MINDSET (IF REVISION)**: If `REVISION FEEDBACK` is provided, do NOT restart. KEEP the good parts of the draft and only PATCH/FIX the specific issues requested. Enhance the existing copy rather than replacing it entirely unless instructed.
@@ -91,7 +94,7 @@ Return valid JSON:
     "Product Name 2",
     "Product Name 3"
   ],
-  "cta_product": "Context-aware action in TARGET LANGUAGE (e.g., 'Acheter' for Promo, 'Voir la collection' for Edu)"
+  "cta_product": "Context-aware action (e.g., 'Get 30% Off', 'See the Routine' in Target Language)"
 }}
 ```
 

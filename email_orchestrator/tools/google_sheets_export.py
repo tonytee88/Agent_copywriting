@@ -164,6 +164,7 @@ class GoogleSheetsExporter:
             ["Promotional Balance", safe('promotional_balance')],
             ["Narrative", safe('overarching_narrative')],
             ["Campaign Context", safe('campaign_context')], # ADDED: Visibility for User
+            ["Target Languages", ", ".join(plan.get('languages', ["FR"]))], # ADDED: Multi-lang visibility
             ["", ""]  # Spacer
         ]
 

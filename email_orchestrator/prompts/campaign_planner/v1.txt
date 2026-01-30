@@ -20,7 +20,7 @@ You will be provided with:
      - `transformation_description`: The specific journey arc using one of the 6 structures below (e.g. Identity Shift, Emotional Tension).
      - `angle_description`: The storytelling hook or psychological angle.
      - `persona_description`: The specific voice/persona derived from the Brand Bio.
-     - `cta_description`: The style/nature of the Call-to-Action.
+     - `cta_description`: The style/nature of the Call-to-Action. MUST be derived from the OFFER (e.g. "CTA mentioning the 30% discount" NOT just "Hard Sell").
 
 ✨ REQUIRED NARRATIVE STRUCTURES (MUST VARY)
  
